@@ -1,0 +1,229 @@
+
+<html>
+<head>
+  <meta charset=utf-8 />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Cloud Messaging Example</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="main.css">
+  <link rel="manifest" href="manifest.json">
+
+</head>
+<body>
+<div class="">
+
+  <div class="header">
+    <h3>CBO REMOTE VIEW</h3>
+  </div>
+  <div class="container-fluid ">
+    <div class="row">
+      <div class="col-lg-10">
+        
+        <p id="titleAds" style="text-align: center;">VISUAL ADS</p>
+
+        <div class="row " id="horizontalRow"  style="margin-left: 10px">
+          
+        </div>
+       
+        <div id="visualAdDiv"> 
+
+
+        </div>
+      </div>
+      <div class="col-lg-2" id="commandWriteDivRight">
+        
+        <button class="btn primary" style="margin-left: 4px;margin-top: 20px" onclick="getLinkForDoctor()">GET DOCTOR LINK</button>
+
+        <div class="row" style="margin-top: 10px" >
+          <input type="number" id="mdInput" placeholder="COMMNAD" style="text-transform:uppercase; width: 140px;" >
+          <button class="btn success" style="margin-left: 4px" onclick="insertNewCommand()">SEND</button>
+        </div>
+        <div id="comandDivs"> </div>
+       
+      </div>
+      
+    </div>
+  </div>
+  
+
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-database.js"></script>
+
+<script>
+  
+  var firebaseConfig = {
+                apiKey: "AIzaSyBgmz9o0z2VoQ1WwuGsOBHIpiPiyiB6W48",
+                authDomain: "cbo-firebase.firebaseapp.com",
+                databaseURL: "https://cbo-firebase.firebaseio.com",
+                projectId: "cbo-firebase",
+                storageBucket: "cbo-firebase.appspot.com",
+                messagingSenderId: "660818354622",
+                appId: "1:660818354622:web:f5fc81341d1c9b247319ef",
+                measurementId: "G-NL7VK58DNC"
+            };
+            // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  var adsArray = []
+;
+  var database = firebase.database();
+
+  var commandCount =1;
+
+  var representativeId = 11;
+  var mChannelName = "visualAd" ;
+  var mrWisePah = (mChannelName+'/' + representativeId);
+
+  var mDBRef = firebase.database().ref(mrWisePah).limitToLast(10);
+
+  var mDBRefTxn = firebase.database().ref(mrWisePah);
+
+  mDBRef.on('child_added', function(data) {
+   var imageIndex = parseInt(data.val()["imageIndex"]+"");
+   diplayImage(imageIndex);
+
+  });
+
+  mDBRef.on('child_changed', function(data) {
+    //alert("child_changed");
+  });
+
+  function insertNewCommand(){
+    var mdInput = document.getElementById("mdInput");
+
+    if(mdInput.value != "" ){
+
+      if(parseInt(mdInput.value)<adsArray.length){
+
+        var nCmd = mdInput.value +":"+commandCount;
+        createNewComment("SHIVAM",(mdInput.value),nCmd);
+  
+      }else{
+
+        alert("Command Index Should not be grater then max Length "+adsArray.length);
+
+      }
+      mdInput.value='';
+
+
+    }else{
+
+      alert("Invalid Command");
+    }
+    
+
+  }
+  
+function createNewComment( username, imageIndex, text) {
+  mDBRefTxn.push( { text: text,  author: username, imageIndex: imageIndex });
+}
+
+mDBRef.on('value', function(snapshot) {
+  //alert( JSON.stringify(snapshot.val()));
+  appendItem(null,true);
+
+  snapshot.forEach(function(childSnapshot) {
+    var childKey = childSnapshot.key;
+    var childData = childSnapshot.val();
+      appendItem(childData,false);
+  });
+  
+});
+
+function appendItem(eachSnapShot,shouldRemoveAll){
+  var comandDivs = document.getElementById("comandDivs");
+  if(shouldRemoveAll){
+    commandCount = 1;
+    removeAllChildNodes(comandDivs);
+
+  }else{
+
+  var eachItem =  document.createElement("p");
+  eachItem.innerHTML = eachSnapShot["author"]+" -> "+eachSnapShot["imageIndex"]
+  comandDivs.append(eachItem);
+  commandCount++;
+}
+}
+
+
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+async function  getImagesData(){
+  let response = await fetch("https://www.roopakstores.com/index.php?route=webservice/home");
+  let responseJson = await response.json();
+  return responseJson;
+}
+
+function displayImagesDefaul(){
+
+  var horizontalRow = document.getElementById("horizontalRow");
+  removeAllChildNodes(horizontalRow);
+ 
+
+  getImagesData().then(data=>{
+
+    var banners = data["response"]["data"]["banners"];
+    for (var x=0; x<banners.length;x++){
+
+      adsArray.push(banners[x]);
+
+      var eachItem =  document.createElement("img");
+      eachItem.src = banners[x]["image"];
+      eachItem.style.height = 50;
+      eachItem.style.width = 100;
+      horizontalRow.append(eachItem);
+
+    }
+    //diplayImage(0);
+
+  });
+
+  var commandWriteDivRight = document.getElementById("commandWriteDivRight");
+  var mCurrURL = window.location.href;
+  if(mCurrURL.endsWith("MR")){
+  
+    commandWriteDivRight.style.display = "block";
+
+  }else{
+    commandWriteDivRight.style.display = "none";
+
+  }
+
+}
+function getLinkForDoctor(){
+  var mCurrURL = window.location.href;
+  mCurrURL = mCurrURL.indexOf("?")>=0?mCurrURL.split("?")[0]:mCurrURL;
+  alert(mCurrURL);
+
+}
+function diplayImage(index){
+    
+    var titleAds = document.getElementById("titleAds");
+    titleAds.innerHTML = "Visual Ad => "+(index+1)+" of "+ adsArray.length;
+
+    var visualAdDiv = document.getElementById("visualAdDiv");
+    removeAllChildNodes(visualAdDiv);
+
+    var eachItem =  document.createElement("img");
+    eachItem.src = adsArray[index]["image"];
+    visualAdDiv.append(eachItem);
+  }
+
+  displayImagesDefaul();
+
+
+</script>
+</body>
+</html>
