@@ -84,7 +84,7 @@ li a {
 
 #myBottomDiv {
   position: fixed;
-  bottom: -1px;
+  bottom: -27px;
   right: 10px;
   left: 10px;
   /* width: 100%; */
@@ -99,6 +99,7 @@ li a {
   overflow-x: scroll;
   width: auto;
   white-space: nowrap;
+  background-color: white;
   }
   .horizontalItem{
     display: inline-block;
