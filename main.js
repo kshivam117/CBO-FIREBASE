@@ -112,8 +112,6 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             displayBrandWiseItems(mVsualAdsArray,mActiveBrandId,mActiveItemId);
             
         });
-
-       // hideLoader();
     }
     if (MeetingId != "") {
         
@@ -255,32 +253,6 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
         }
     }
 
-
-  function insertNewCommand(){
-    var mdInput = document.getElementById("mdInput");
-
-    if(mdInput.value != "" ){
-
-      if(parseInt(mdInput.value)<mVsualAdsArray.length){
-
-        var nCmd = mdInput.value +":"+mActiveIndex;
-        createNewComment("SHIVAM",(mdInput.value),nCmd);
-  
-      }else{
-
-        alert("Command Index Should not be grater then max Length "+mVsualAdsArray.length);
-
-      }
-      mdInput.value='';
-
-
-    }else{
-
-      alert("Invalid Command");
-    }
-
-  }
-
  function switchBrand(brandId) {
     mMeetingDbRfrence.set(
          {    DCR_ID: mMeetingDbSnapShot["DCR_ID"], 
@@ -332,27 +304,6 @@ $scope.goNext = function () {
      );
  }
  
-
-// function appendItem(eachSnapShot,shouldRemoveAll){
-
-//   var comandDivs = document.getElementById("comandDivs");
-
-
-//     if(shouldRemoveAll){
-        
-//         mActiveIndex = 1;
-//         removeAllChildNodes(comandDivs);
-
-//     }else{
-//         alert(JSON.stringify(eachSnapShot));
-
-//         var eachItem =  document.createElement("p");
-//         eachItem.innerHTML = eachSnapShot["author"]+" -> "+eachSnapShot["imageIndex"]
-//         comandDivs.append(eachItem);
-//         mActiveIndex++;
-//     }
-// }
-
     function hideLoader() {
         hideView(loaderView);
         showView(dataView);
