@@ -1,447 +1,383 @@
-/**
- * Copyright 2015 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-'use strict';
+﻿
+var rootController = angular.module("MyApp",[]);
+rootController.config(['$locationProvider', function ($locationProvider) {
+    $locationProvider.html5Mode(true);
+}]);
+
+rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
+   
+    //var MeetingId = "-MHvtzwbKclQX1uzf-MC"; 
+    var MeetingId = $location.search().mId;
+
+    MeetingId = MeetingId == undefined || MeetingId.length<10 ? "" : MeetingId;
+
+    var mVsualAdsArray = [];  
+    var mActiveItemId = 0;     
+    var mActiveItemIdIndex = 0; 
+     var itemsIdsOfBrand =[];
+    var mActiveBrandId = 0;       
+    var mChannelName = "CBO-E-DETAILING" ;
+    var mRootChannelName = "CBO-E-DETAILING" ;
+    var mMeethingDetail = "MEETINGS";
+    var mMeetingChannelName = (mRootChannelName+"/"+MeetingId);        
+    var mMeetingDbRfrence ;   
+    var mMeetingDbSnapShot;   
+
+    var loaderView = document.getElementById("loaderView");
+    var dataView = document.getElementById("dataView");
+
+    $scope.initFirebase = function(){
+                
+        var firebaseConfig = {
+            apiKey: "AIzaSyDI5MobOoKxfw4jBnyRruchySt1pYbtvsc",
+            authDomain: "cbofcm-197f1.firebaseapp.com",
+            databaseURL: "https://cbofcm-197f1-d1461.firebaseio.com/",
+            projectId: "cbofcm-197f1",
+            storageBucket: "cbofcm-197f1.appspot.com",
+            messagingSenderId: "173555013984",
+            appId: "1:173555013984:web:c57a482e7ddb8c876f6605"
+          };
+        firebase.initializeApp(firebaseConfig);
+
+        mMeetingDbRfrence = firebase.database().ref(mMeetingChannelName+"/MEETING");
+
+        // var meetingRef = firebase.database().ref(mMeetingChannelName+"/MEETING");
+        // meetingRef.push();
+        // meetingRef.set(
+        //             {    DCR_ID: "DCR_ID123", 
+        //                  DR_ID: "DRID-1", 
+        //                  PA_ID: "1232",
+        //                  MANAGERES_ID : "1,2,3,4,5",
+        //                  ACTIVE_ITEM_ID :"1",
+        //                  ACTIVE_BRAND_ID :"1",
+        //                  MEETING_DATE:"23/09/2020",
+        //                  MEETING_TIME:"11:20"
+        //             }
+        //         );
 
 
-// Shortcuts to DOM Elements.
-var messageForm = document.getElementById('message-form');
-var messageInput = document.getElementById('new-post-message');
-var titleInput = document.getElementById('new-post-title');
-var signInButton = document.getElementById('sign-in-button');
-var signOutButton = document.getElementById('sign-out-button');
-var splashPage = document.getElementById('page-splash');
-var addPost = document.getElementById('add-post');
-var addButton = document.getElementById('add');
-var recentPostsSection = document.getElementById('recent-posts-list');
-var userPostsSection = document.getElementById('user-posts-list');
-var topUserPostsSection = document.getElementById('top-user-posts-list');
-var recentMenuButton = document.getElementById('menu-recent');
-var myPostsMenuButton = document.getElementById('menu-my-posts');
-var myTopPostsMenuButton = document.getElementById('menu-my-top-posts');
-var listeningFirebaseRefs = [];
+        // var meetingItemsRef = firebase.database().ref(mMeetingChannelName+"/ITEMS");
+            // for(var x=1;x<10;x++){
 
-/**
- * Saves a new post to the Firebase DB.
- */
-// [START write_fan_out]
-function writeNewPost(uid, username, picture, title, body) {
-  // A post entry.
-  var postData = {
-    author: username,
-    uid: uid,
-    body: body,
-    title: title,
-    starCount: 0,
-    authorPic: picture
-  };
+            //     var eachItemsRef = firebase.database().ref(mMeetingChannelName+"/ITEMS/"+x);
+            //     eachItemsRef.push();
+            //     eachItemsRef.set(
+            //         {
+            //             BRAND_ID: x, 
+            //             ITEM_NAME:(x+"item1,")+(x+"item2,")+(x+"iteem3,")+(x+"item4"),
+            //             ITEM_ID:"1,2,3,4",
+            //             FILE_NAME:"https://www.roopakstores.com/image/catalog/Amla-muraba-Dry.jpg,https://www.roopakstores.com/image/catalog/Amla-muraba-Dry.jpg,https://www.roopakstores.com/image/catalog/product/279.jpg,https://www.roopakstores.com/image/catalog/product/279.jpg",
+            //             SRNO:"1,2,3,4",
+            //             ISSELECTED : "1,1,1,1"
+            //         }
 
-  // Get a key for a new Post.
-  var newPostKey = firebase.database().ref().child('posts').push().key;
+            //     );
 
-  // Write the new post's data simultaneously in the posts list and the user's post list.
-  var updates = {};
-  updates['/posts/' + newPostKey] = postData;
-  updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+            // }
 
-  return firebase.database().ref().update(updates);
-}
-// [END write_fan_out]
+        //var mDBRefTxn = firebase.database().ref(mrWisePah).limitToLast(10);
+       
 
-/**
- * Star/unstar post.
- */
-// [START post_stars_transaction]
-function toggleStar(postRef, uid) {
-  postRef.transaction(function(post) {
-    if (post) {
-      if (post.stars && post.stars[uid]) {
-        post.starCount--;
-        post.stars[uid] = null;
-      } else {
-        post.starCount++;
-        if (!post.stars) {
-          post.stars = {};
+        // mMeetingDbRfrence.on('child_added', function(data) {
+        //     var imageIndex = parseInt(data.val()["imageIndex"]+"");
+        //     //diplayImage(imageIndex);
+        // });
+ 
+
+        // mMeetingDbRfrence.on('child_changed', function(data) {
+            
+        //     alert(JSON.stringify(data));
+
+        // });
+
+        mMeetingDbRfrence.on('value', function(snapshot) {
+            mMeetingDbSnapShot = snapshot.val();
+            mActiveItemId = snapshot.val()["ACTIVE_ITEM_ID"];
+            mActiveBrandId = snapshot.val()["ACTIVE_BRAND_ID"];
+            diplayImage(mActiveBrandId,mActiveItemId);
+            
+        });
+        
+        firebase.database().ref(mMeetingChannelName+"/ITEMS").on('value', function(snapshot) {
+    
+            hideLoader();
+
+            snapshot.forEach(function(childSnapshot) {
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+
+                mVsualAdsArray.push(childData);
+            });
+
+            displayBrandWiseItems(mVsualAdsArray,mActiveBrandId,mActiveItemId);
+            
+        });
+
+       // hideLoader();
+    }
+    if (MeetingId != "") {
+        
+        showLoader();
+        $scope.initFirebase();   
+
+    }else{
+
+        hideLoader();
+            
+
+        alert("Incorrect/Expired Meeting Details");
+
+    }
+
+    function displayBrandWiseItems(mVsualAdsArray,brandId,itemId){
+
+            var horizontalRow = document.getElementById("horizontalRow");
+            removeAllChildNodes(horizontalRow);
+                for (var x=0; x<mVsualAdsArray.length;x++){
+
+                        // IMAGE CRATING BY JAVACRIPT 
+                        // var eachItem =  document.createElement("img");
+                        // eachItem.src = mVsualAdsArray[x]["image"];
+                        // eachItem.style.height = 50;
+                        // eachItem.style.width = 100;
+                        // eachItem.style.display = "inline-block";
+                        // eachItem.className = "img";
+
+                        var eachItem =  document.createElement("button");
+                        eachItem.innerText = ( "BRAND-ID : "+mVsualAdsArray[x]["BRAND_ID"]);
+                        eachItem.value = mVsualAdsArray[x]["BRAND_ID"];
+                        eachItem.style.height = 40;
+                        eachItem.style.width = 150;
+                        eachItem.style.marginLeft = 6;
+                        eachItem.style.marginRight = 6;
+                        eachItem.className = "success horizontalItem";
+                        eachItem.style.display = "inline-block";
+                        eachItem.onclick = function() { 
+                            switchBrand(this.value);
+                          };
+
+                        horizontalRow.append(eachItem);
+
+                }
+
+                diplayImage(brandId,itemId);
+    }
+
+    function diplayImage(brandIdStr,activeItemIdStr){
+
+        var NextBTN = document.getElementById("NextBTN");
+        var PreviousBTN = document.getElementById("PreviousBTN");
+
+        if(mVsualAdsArray.length>0){
+
+
+            var brandId = parseInt(brandIdStr);
+            var itemId  = parseInt(activeItemIdStr);
+
+            var brands = mVsualAdsArray.filter((x) => { return parseInt(x["BRAND_ID"])==brandId; });
+
+            var brandObject;
+            var titleString ="";
+            var itemsFilesOfBrand =[];
+            var itemsNamesOfBrand =[];
+            
+            var activeItemId=0;
+            var activeImageURL ="";
+            
+            if(brands.length>0){
+
+                brandObject = brands[0];
+                itemsFilesOfBrand = brandObject["FILE_NAME"].split(",");
+                itemsNamesOfBrand = brandObject["ITEM_NAME"].split(",");
+                itemsIdsOfBrand = brandObject["ITEM_ID"].split(",");
+
+                for(var y=0;y<itemsIdsOfBrand.length;y++){
+
+                    if(parseInt(itemsIdsOfBrand[y])==itemId){
+                        activeItemId = itemId;
+                        mActiveItemIdIndex = y;
+                        break;
+                    }
+                    
+                }
+
+                titleString =  "Visual Ad => "+(itemsIdsOfBrand[mActiveItemIdIndex])+" of "+ itemsIdsOfBrand.length+"<br> "
+                + "BRAND ID : "+brandIdStr +" & ITEM NAME : "+ itemsNamesOfBrand[mActiveItemIdIndex];
+
+                activeImageURL = itemsFilesOfBrand[mActiveItemIdIndex];
+
+                if(itemsFilesOfBrand.length==(mActiveItemIdIndex+1)){
+
+                    NextBTN.disabled = true;
+                    PreviousBTN.disabled = false;
+
+                }else if(mActiveItemIdIndex==0){
+
+                    NextBTN.disabled = false;
+                    PreviousBTN.disabled = true;
+
+                }else{
+                    
+                    NextBTN.disabled = false;
+                    PreviousBTN.disabled = false;
+                }
+            
+            }else{
+
+                titleString ="Invalid Command"; 
+                activeImageURL ="";
+            }
+
+            var titleAds = document.getElementById("titleAds");
+            titleAds.innerHTML = titleString;
+            
+
+            var visualAdDiv = document.getElementById("visualAdDiv");
+            removeAllChildNodes(visualAdDiv);
+
+            var eachItem =  document.createElement("img");
+            eachItem.src = activeImageURL;
+            eachItem.style.height ="80%";
+            eachItem.style.width ="auto";
+            visualAdDiv.append(eachItem);
+
+            if(activeImageURL !=""){
+                //alert(activeImageURL);
+            }
+
         }
-        post.stars[uid] = true;
+        
+    }
+
+    function removeAllChildNodes(parent) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
+
+
+  function insertNewCommand(){
+    var mdInput = document.getElementById("mdInput");
+
+    if(mdInput.value != "" ){
+
+      if(parseInt(mdInput.value)<mVsualAdsArray.length){
+
+        var nCmd = mdInput.value +":"+mActiveIndex;
+        createNewComment("SHIVAM",(mdInput.value),nCmd);
+  
+      }else{
+
+        alert("Command Index Should not be grater then max Length "+mVsualAdsArray.length);
+
       }
+      mdInput.value='';
+
+
+    }else{
+
+      alert("Invalid Command");
     }
-    return post;
-  });
-}
-// [END post_stars_transaction]
 
-/**
- * Creates a post element.
- */
-function createPostElement(postId, title, text, author, authorId, authorPic) {
-  var uid = firebase.auth().currentUser.uid;
-
-  var html =
-      '<div class="post post-' + postId + ' mdl-cell mdl-cell--12-col ' +
-                  'mdl-cell--6-col-tablet mdl-cell--4-col-desktop mdl-grid mdl-grid--no-spacing">' +
-        '<div class="mdl-card mdl-shadow--2dp">' +
-          '<div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">' +
-            '<h4 class="mdl-card__title-text"></h4>' +
-          '</div>' +
-          '<div class="header">' +
-            '<div>' +
-              '<div class="avatar"></div>' +
-              '<div class="username mdl-color-text--black"></div>' +
-            '</div>' +
-          '</div>' +
-          '<span class="star">' +
-            '<div class="not-starred material-icons">star_border</div>' +
-            '<div class="starred material-icons">star</div>' +
-            '<div class="star-count">0</div>' +
-          '</span>' +
-          '<div class="text"></div>' +
-          '<div class="comments-container"></div>' +
-          '<form class="add-comment" action="#">' +
-            '<div class="mdl-textfield mdl-js-textfield">' +
-              '<input class="mdl-textfield__input new-comment" type="text">' +
-              '<label class="mdl-textfield__label">Comment...</label>' +
-            '</div>' +
-          '</form>' +
-        '</div>' +
-      '</div>';
-
-  // Create the DOM element from the HTML.
-  var div = document.createElement('div');
-  div.innerHTML = html;
-  var postElement = div.firstChild;
-  if (componentHandler) {
-    componentHandler.upgradeElements(postElement.getElementsByClassName('mdl-textfield')[0]);
   }
 
-  var addCommentForm = postElement.getElementsByClassName('add-comment')[0];
-  var commentInput = postElement.getElementsByClassName('new-comment')[0];
-  var star = postElement.getElementsByClassName('starred')[0];
-  var unStar = postElement.getElementsByClassName('not-starred')[0];
+ function switchBrand(brandId) {
+    mMeetingDbRfrence.set(
+         {    DCR_ID: mMeetingDbSnapShot["DCR_ID"], 
+              DR_ID: mMeetingDbSnapShot["DR_ID"], 
+              PA_ID: mMeetingDbSnapShot["PA_ID"],
+              MANAGERES_ID : mMeetingDbSnapShot["MANAGERES_ID"],
+              ACTIVE_ITEM_ID : (parseInt(mActiveItemId)-1),
+              ACTIVE_BRAND_ID : brandId,
+              //MEETING_DATE: mMeetingDbSnapShot["MEETING_DATE"],
+              MEETING_TIME: mMeetingDbSnapShot["MEETING_TIME"]
+         }
+     );
+ }
+  
+$scope.goPrevious = function () {
+   if(mActiveItemId==0){
+       return;
+   }
+   mActiveItemIdIndex =  (parseInt(mActiveItemIdIndex)-1);
 
-  // Set values.
-  postElement.getElementsByClassName('text')[0].innerText = text;
-  postElement.getElementsByClassName('mdl-card__title-text')[0].innerText = title;
-  postElement.getElementsByClassName('username')[0].innerText = author || 'Anonymous';
-  postElement.getElementsByClassName('avatar')[0].style.backgroundImage = 'url("' +
-      (authorPic || './silhouette.jpg') + '")';
-
-  // Listen for comments.
-  // [START child_event_listener_recycler]
-  var commentsRef = firebase.database().ref('post-comments/' + postId);
-  commentsRef.on('child_added', function(data) {
-    addCommentElement(postElement, data.key, data.val().text, data.val().author);
-  });
-
-  commentsRef.on('child_changed', function(data) {
-    setCommentValues(postElement, data.key, data.val().text, data.val().author);
-  });
-
-  commentsRef.on('child_removed', function(data) {
-    deleteComment(postElement, data.key);
-  });
-  // [END child_event_listener_recycler]
-
-  // Listen for likes counts.
-  // [START post_value_event_listener]
-  var starCountRef = firebase.database().ref('posts/' + postId + '/starCount');
-  starCountRef.on('value', function(snapshot) {
-    updateStarCount(postElement, snapshot.val());
-  });
-  // [END post_value_event_listener]
-
-  // Listen for the starred status.
-  var starredStatusRef = firebase.database().ref('posts/' + postId + '/stars/' + uid);
-  starredStatusRef.on('value', function(snapshot) {
-    updateStarredByCurrentUser(postElement, snapshot.val());
-  });
-
-  // Keep track of all Firebase reference on which we are listening.
-  listeningFirebaseRefs.push(commentsRef);
-  listeningFirebaseRefs.push(starCountRef);
-  listeningFirebaseRefs.push(starredStatusRef);
-
-  // Create new comment.
-  addCommentForm.onsubmit = function(e) {
-    e.preventDefault();
-    createNewComment(postId, firebase.auth().currentUser.displayName, uid, commentInput.value);
-    commentInput.value = '';
-    commentInput.parentElement.MaterialTextfield.boundUpdateClassesHandler();
-  };
-
-  // Bind starring action.
-  var onStarClicked = function() {
-    var globalPostRef = firebase.database().ref('/posts/' + postId);
-    var userPostRef = firebase.database().ref('/user-posts/' + authorId + '/' + postId);
-    toggleStar(globalPostRef, uid);
-    toggleStar(userPostRef, uid);
-  };
-  unStar.onclick = onStarClicked;
-  star.onclick = onStarClicked;
-
-  return postElement;
+   mMeetingDbRfrence.set(
+        {    DCR_ID: mMeetingDbSnapShot["DCR_ID"], 
+             DR_ID: mMeetingDbSnapShot["DR_ID"], 
+             PA_ID: mMeetingDbSnapShot["PA_ID"],
+             MANAGERES_ID : mMeetingDbSnapShot["MANAGERES_ID"],
+             ACTIVE_ITEM_ID : itemsIdsOfBrand[mActiveItemIdIndex],
+             ACTIVE_BRAND_ID : mMeetingDbSnapShot["ACTIVE_BRAND_ID"],
+             //MEETING_DATE: mMeetingDbSnapShot["MEETING_DATE"],
+             MEETING_TIME: mMeetingDbSnapShot["MEETING_TIME"]
+        }
+    );
 }
 
-/**
- * Writes a new comment for the given post.
- */
-function createNewComment(postId, username, uid, text) {
-  firebase.database().ref('post-comments/' + postId).push({
-    text: text,
-    author: username,
-    uid: uid
-  });
-}
 
-/**
- * Updates the starred status of the post.
- */
-function updateStarredByCurrentUser(postElement, starred) {
-  if (starred) {
-    postElement.getElementsByClassName('starred')[0].style.display = 'inline-block';
-    postElement.getElementsByClassName('not-starred')[0].style.display = 'none';
-  } else {
-    postElement.getElementsByClassName('starred')[0].style.display = 'none';
-    postElement.getElementsByClassName('not-starred')[0].style.display = 'inline-block';
-  }
-}
+$scope.goNext = function () {
+   
+    mActiveItemIdIndex =  (parseInt(mActiveItemIdIndex)+1);
 
-/**
- * Updates the number of stars displayed for a post.
- */
-function updateStarCount(postElement, nbStart) {
-  postElement.getElementsByClassName('star-count')[0].innerText = nbStart;
-}
+    mMeetingDbRfrence.set(
+         {    DCR_ID: mMeetingDbSnapShot["DCR_ID"], 
+              DR_ID: mMeetingDbSnapShot["DR_ID"], 
+              PA_ID: mMeetingDbSnapShot["PA_ID"],
+              MANAGERES_ID : mMeetingDbSnapShot["MANAGERES_ID"],
+              ACTIVE_ITEM_ID : itemsIdsOfBrand[mActiveItemIdIndex],
+              ACTIVE_BRAND_ID : mMeetingDbSnapShot["ACTIVE_BRAND_ID"],
+             // MEETING_DATE: mMeetingDbSnapShot["MEETING_DATE"],
+              MEETING_TIME: mMeetingDbSnapShot["MEETING_TIME"]
+         }
+     );
+ }
+ 
 
-/**
- * Creates a comment element and adds it to the given postElement.
- */
-function addCommentElement(postElement, id, text, author) {
-  var comment = document.createElement('div');
-  comment.classList.add('comment-' + id);
-  comment.innerHTML = '<span class="username"></span><span class="comment"></span>';
-  comment.getElementsByClassName('comment')[0].innerText = text;
-  comment.getElementsByClassName('username')[0].innerText = author || 'Anonymous';
+// function appendItem(eachSnapShot,shouldRemoveAll){
 
-  var commentsContainer = postElement.getElementsByClassName('comments-container')[0];
-  commentsContainer.appendChild(comment);
-}
+//   var comandDivs = document.getElementById("comandDivs");
 
-/**
- * Sets the comment's values in the given postElement.
- */
-function setCommentValues(postElement, id, text, author) {
-  var comment = postElement.getElementsByClassName('comment-' + id)[0];
-  comment.getElementsByClassName('comment')[0].innerText = text;
-  comment.getElementsByClassName('fp-username')[0].innerText = author;
-}
 
-/**
- * Deletes the comment of the given ID in the given postElement.
- */
-function deleteComment(postElement, id) {
-  var comment = postElement.getElementsByClassName('comment-' + id)[0];
-  comment.parentElement.removeChild(comment);
-}
+//     if(shouldRemoveAll){
+        
+//         mActiveIndex = 1;
+//         removeAllChildNodes(comandDivs);
 
-/**
- * Starts listening for new posts and populates posts lists.
- */
-function startDatabaseQueries() {
-  // [START my_top_posts_query]
-  var myUserId = firebase.auth().currentUser.uid;
-  var topUserPostsRef = firebase.database().ref('user-posts/' + myUserId).orderByChild('starCount');
-  // [END my_top_posts_query]
-  // [START recent_posts_query]
-  var recentPostsRef = firebase.database().ref('posts').limitToLast(100);
-  // [END recent_posts_query]
-  var userPostsRef = firebase.database().ref('user-posts/' + myUserId);
+//     }else{
+//         alert(JSON.stringify(eachSnapShot));
 
-  var fetchPosts = function(postsRef, sectionElement) {
-    postsRef.on('child_added', function(data) {
-      var author = data.val().author || 'Anonymous';
-      var containerElement = sectionElement.getElementsByClassName('posts-container')[0];
-      containerElement.insertBefore(
-        createPostElement(data.key, data.val().title, data.val().body, author, data.val().uid, data.val().authorPic),
-        containerElement.firstChild);
-    });
-    postsRef.on('child_changed', function(data) {
-      var containerElement = sectionElement.getElementsByClassName('posts-container')[0];
-      var postElement = containerElement.getElementsByClassName('post-' + data.key)[0];
-      postElement.getElementsByClassName('mdl-card__title-text')[0].innerText = data.val().title;
-      postElement.getElementsByClassName('username')[0].innerText = data.val().author;
-      postElement.getElementsByClassName('text')[0].innerText = data.val().body;
-      postElement.getElementsByClassName('star-count')[0].innerText = data.val().starCount;
-    });
-    postsRef.on('child_removed', function(data) {
-      var containerElement = sectionElement.getElementsByClassName('posts-container')[0];
-      var post = containerElement.getElementsByClassName('post-' + data.key)[0];
-      post.parentElement.removeChild(post);
-    });
-  };
+//         var eachItem =  document.createElement("p");
+//         eachItem.innerHTML = eachSnapShot["author"]+" -> "+eachSnapShot["imageIndex"]
+//         comandDivs.append(eachItem);
+//         mActiveIndex++;
+//     }
+// }
 
-  // Fetching and displaying all posts of each sections.
-  fetchPosts(topUserPostsRef, topUserPostsSection);
-  fetchPosts(recentPostsRef, recentPostsSection);
-  fetchPosts(userPostsRef, userPostsSection);
-
-  // Keep track of all Firebase refs we are listening to.
-  listeningFirebaseRefs.push(topUserPostsRef);
-  listeningFirebaseRefs.push(recentPostsRef);
-  listeningFirebaseRefs.push(userPostsRef);
-}
-
-/**
- * Writes the user's data to the database.
- */
-// [START basic_write]
-function writeUserData(userId, name, email, imageUrl) {
-  firebase.database().ref('users/' + userId).set({
-    username: name,
-    email: email,
-    profile_picture : imageUrl
-  });
-}
-// [END basic_write]
-
-/**
- * Cleanups the UI and removes all Firebase listeners.
- */
-function cleanupUi() {
-  // Remove all previously displayed posts.
-  topUserPostsSection.getElementsByClassName('posts-container')[0].innerHTML = '';
-  recentPostsSection.getElementsByClassName('posts-container')[0].innerHTML = '';
-  userPostsSection.getElementsByClassName('posts-container')[0].innerHTML = '';
-
-  // Stop all currently listening Firebase listeners.
-  listeningFirebaseRefs.forEach(function(ref) {
-    ref.off();
-  });
-  listeningFirebaseRefs = [];
-}
-
-/**
- * The ID of the currently signed-in User. We keep track of this to detect Auth state change events that are just
- * programmatic token refresh but not a User status change.
- */
-var currentUID;
-
-/**
- * Triggers every time there is a change in the Firebase auth state (i.e. user signed-in or user signed out).
- */
-function onAuthStateChanged(user) {
-  // We ignore token refresh events.
-  if (user && currentUID === user.uid) {
-    return;
-  }
-
-  cleanupUi();
-  if (user) {
-    currentUID = user.uid;
-    splashPage.style.display = 'none';
-    writeUserData(user.uid, user.displayName, user.email, user.photoURL);
-    startDatabaseQueries();
-  } else {
-    // Set currentUID to null.
-    currentUID = null;
-    // Display the splash page where you can sign-in.
-    splashPage.style.display = '';
-  }
-}
-
-/**
- * Creates a new post for the current user.
- */
-function newPostForCurrentUser(title, text) {
-  // [START single_value_read]
-  var userId = firebase.auth().currentUser.uid;
-  return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
-    var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-    // [START_EXCLUDE]
-    return writeNewPost(firebase.auth().currentUser.uid, username,
-      firebase.auth().currentUser.photoURL,
-      title, text);
-    // [END_EXCLUDE]
-  });
-  // [END single_value_read]
-}
-
-/**
- * Displays the given section element and changes styling of the given button.
- */
-function showSection(sectionElement, buttonElement) {
-  recentPostsSection.style.display = 'none';
-  userPostsSection.style.display = 'none';
-  topUserPostsSection.style.display = 'none';
-  addPost.style.display = 'none';
-  recentMenuButton.classList.remove('is-active');
-  myPostsMenuButton.classList.remove('is-active');
-  myTopPostsMenuButton.classList.remove('is-active');
-
-  if (sectionElement) {
-    sectionElement.style.display = 'block';
-  }
-  if (buttonElement) {
-    buttonElement.classList.add('is-active');
-  }
-}
-
-// Bindings on load.
-window.addEventListener('load', function() {
-  // Bind Sign in button.
-  signInButton.addEventListener('click', function() {
-    var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider);
-  });
-
-  // Bind Sign out button.
-  signOutButton.addEventListener('click', function() {
-    firebase.auth().signOut();
-  });
-
-  // Listen for auth state changes
-  firebase.auth().onAuthStateChanged(onAuthStateChanged);
-
-  // Saves message on form submit.
-  messageForm.onsubmit = function(e) {
-    e.preventDefault();
-    var text = messageInput.value;
-    var title = titleInput.value;
-    if (text && title) {
-      newPostForCurrentUser(title, text).then(function() {
-        myPostsMenuButton.click();
-      });
-      messageInput.value = '';
-      titleInput.value = '';
+    function hideLoader() {
+        hideView(loaderView);
+        showView(dataView);
     }
-  };
+    function showLoader() {
+        hideView(dataView);
+        showView(loaderView);
+    }
+    function hideView(x) {
+        x.style.display = "none";
+    }
 
-  // Bind menu buttons.
-  recentMenuButton.onclick = function() {
-    showSection(recentPostsSection, recentMenuButton);
-  };
-  myPostsMenuButton.onclick = function() {
-    showSection(userPostsSection, myPostsMenuButton);
-  };
-  myTopPostsMenuButton.onclick = function() {
-    showSection(topUserPostsSection, myTopPostsMenuButton);
-  };
-  addButton.onclick = function() {
-    showSection(addPost);
-    messageInput.value = '';
-    titleInput.value = '';
-  };
-  recentMenuButton.onclick();
-}, false);
+    function showView(x) {
+        x.style.display = "block";
+    }
+    function getdmyString(dateObj, isYMD) {
+
+        var date = dateObj.getDate();
+        var month = dateObj.getMonth() + 1;
+        var year = dateObj.getFullYear();
+        if (isYMD) {
+            return year + "-" + (month > 9 ? month : "0" + month) + "-" + (date > 9 ? date : "0" + date);
+        } else {
+            return (date > 9 ? date : "0" + date) + "-" + (month > 9 ? month : "0" + month) + "-" + year;
+        }
+    }
+
+}]);

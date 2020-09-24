@@ -31,7 +31,7 @@ li a {
   background: #0288d1;
   color: white;
 }
-img{
+.img{
   max-width: 100%;
   max-height: 100%;
   display: block; /* remove extra space below image */
@@ -74,3 +74,101 @@ img{
   color: #0067ee;
   border-radius: 5px;
 }
+.feedback {
+  background-color : white;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border-color: #46b8da;
+}
+
+#myBottomDiv {
+  position: fixed;
+  bottom: -1px;
+  right: 10px;
+  left: 10px;
+  /* width: 100%; */
+  padding: 10px;
+  overflow-x: scroll;
+  width: auto;
+  white-space: nowrap;
+}
+
+
+.horizontalScrollableItems{
+  overflow-x: scroll;
+  width: auto;
+  white-space: nowrap;
+  }
+  .horizontalItem{
+    display: inline-block;
+    width: 150px;
+    height: 40px;
+    border:1px solid;
+ }
+
+
+
+
+
+.center-square {
+  background-color: #FFFFFF;
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.center-square2 {
+  background-color: #FFFFFF;
+  width: 300px;
+  height: 300px;
+  left: 40%;
+  top: 50%;
+  position: inherit;
+  transform: translate(-50%, -50%);
+}
+
+.loader-lg {
+  border: 12px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 12px solid #3498db;
+  width: 100px;
+  height: 100px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+.loader-sm {
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 35px;
+  height: 35px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+      -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+      -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+      transform: rotate(0deg);
+  }
+
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
