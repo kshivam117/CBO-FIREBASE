@@ -79,10 +79,26 @@ li a {
 }
 
 /* Green */
-.success {
+.success-selected {
   border-color: #4CAF50;
   color: green;
   border-radius: 5px;
+  border-width: 3px !important;
+}
+
+.success-non-selected {
+  border-color: #000000 !important;
+  color: black;
+  border-radius: 5px;
+  border-width: 2px !important;
+}
+
+.success-active {
+  border-color: #000000 !important;
+  color: white;
+  background-color: green;
+  border-radius: 5px;
+  border-width: 1px !important;
 }
 
 
@@ -148,7 +164,7 @@ li a {
   background-color: #FFFFFF;
   width: 300px;
   height: 300px;
-  left: 40%;
+  left: 30%;
   top: 50%;
   position: inherit;
   transform: translate(-50%, -50%);

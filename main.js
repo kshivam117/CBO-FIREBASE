@@ -1,4 +1,20 @@
 ﻿
+//  DIsabLING INSPECT ELEMENT
+$(document).bind("contextmenu",function(e) {
+    e.preventDefault();
+   });
+
+//  DISABLING  F12  FUNCCTION
+// $(document).keydown(function(e){
+//     if(e.which === 123){
+//        return false;
+//     }
+// });
+
+//  MAKING ERROR WHHILE INSPECTING CODE
+    eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('(3(){(3 a(){8{(3 b(2){7((\'\'+(2/2)).6!==1||2%5===0){(3(){}).9(\'4\')()}c{4}b(++2)})(0)}d(e){g(a,f)}})()})();',17,17,'||i|function|debugger|20|length|if|try|constructor|||else|catch||5000|setTimeout'.split('|'),0,{}))
+
+
 var rootController = angular.module("MyApp",[]);
 rootController.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode(true);
@@ -12,10 +28,13 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     MeetingId = MeetingId == undefined || MeetingId.length<10 ? "" : MeetingId;
 
     var mVsualAdsArray = [];  
+    var mActiveBrandId = 0;
     var mActiveItemId = 0;     
+    var mActiveItemIdSRN = 0; 
     var mActiveItemIdIndex = 0; 
-     var itemsIdsOfBrand =[];
-    var mActiveBrandId = 0;       
+    
+    var itemsIdsOfBrand =[];
+    var itemsSRNOfBrand =[];
     var mChannelName = "CBO-E-DETAILING" ;
     var mRootChannelName = "CBO-E-DETAILING" ;
     var mMeethingDetail = "MEETINGS";
@@ -92,9 +111,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
         mMeetingDbRfrence.on('value', function(snapshot) {
             mMeetingDbSnapShot = snapshot.val();
+            mActiveItemIdSRN = snapshot.val()["ACTIVE_ITEM_SRN"] == undefined ? "1": snapshot.val()["ACTIVE_ITEM_SRN"] ;
             mActiveItemId = snapshot.val()["ACTIVE_ITEM_ID"];
             mActiveBrandId = snapshot.val()["ACTIVE_BRAND_ID"];
-            diplayImage(mActiveBrandId,mActiveItemId);
+            diplayImage(mActiveBrandId,mActiveItemId,mActiveItemIdSRN);
             
         });
         
@@ -109,7 +129,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                 mVsualAdsArray.push(childData);
             });
 
-            displayBrandWiseItems(mVsualAdsArray,mActiveBrandId,mActiveItemId);
+            displayBrandWiseItems(mVsualAdsArray,mActiveBrandId,mActiveItemId,mActiveItemIdSRN);
             
         });
     }
@@ -127,7 +147,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
     }
 
-    function displayBrandWiseItems(mVsualAdsArray,brandId,itemId){
+    function displayBrandWiseItems(mVsualAdsArray,brandId,itemId,itemSRN){
 
             var horizontalRow = document.getElementById("horizontalRow");
             removeAllChildNodes(horizontalRow);
@@ -142,15 +162,54 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                         // eachItem.className = "img";
 
                         var eachItem =  document.createElement("button");
-                        eachItem.innerText = ( "BRAND-ID : "+mVsualAdsArray[x]["BRAND_ID"]);
+                        eachItem.innerText = (mVsualAdsArray[x]["BRAND_NAME"] ==  undefined) ? ( "BRAND-ID : "+mVsualAdsArray[x]["BRAND_ID"]) : mVsualAdsArray[x]["BRAND_NAME"];
                         eachItem.value = mVsualAdsArray[x]["BRAND_ID"];
                         eachItem.style.height = 40;
                         eachItem.style.width = 150;
                         eachItem.style.marginLeft = 6;
                         eachItem.style.marginRight = 6;
-                        eachItem.className = "success horizontalItem";
+
+                        if(brandId == parseInt(mVsualAdsArray[x]["BRAND_ID"])){
+
+                            eachItem.className = "success-active horizontalItem";
+
+                        }else{
+
+                            if(mVsualAdsArray[x]["ISSELECTED"].includes("1")){
+
+                                eachItem.className = "success-selected horizontalItem";
+    
+                            }else{
+                                
+                                eachItem.className = "success-non-selected horizontalItem";
+                            }
+                        }
+                        
+                        
                         eachItem.style.display = "inline-block";
                         eachItem.onclick = function() { 
+
+                            for (var t=0 ; t< horizontalRow.children.length ; t++){
+
+                                if(horizontalRow.children[t].value == this.value ){
+
+                                    horizontalRow.children[t].className = "success-active horizontalItem";
+
+
+                                }else {
+
+                                    if(mVsualAdsArray[t]["ISSELECTED"].includes("1")){
+
+                                        horizontalRow.children[t].className = "success-selected horizontalItem";
+        
+                                    }else{
+                                        
+                                        horizontalRow.children[t].className = "success-non-selected horizontalItem";
+                                    }
+                                }
+
+                            }
+
                             switchBrand(this.value);
                           };
 
@@ -158,10 +217,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
                 }
 
-                diplayImage(brandId,itemId);
+                diplayImage(brandId,itemId,itemSRN);
     }
 
-    function diplayImage(brandIdStr,activeItemIdStr){
+    function diplayImage(brandIdStr,activeItemIdStr,activeItemSRNStr){
 
         var NextBTN = document.getElementById("NextBTN");
         var PreviousBTN = document.getElementById("PreviousBTN");
@@ -179,7 +238,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             var itemsFilesOfBrand =[];
             var itemsNamesOfBrand =[];
             
-            var activeItemId=0;
+            //var activeItemId=0;
             var activeImageURL ="";
             
             if(brands.length>0){
@@ -188,30 +247,45 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                 itemsFilesOfBrand = brandObject["FILE_NAME"].split(",");
                 itemsNamesOfBrand = brandObject["ITEM_NAME"].split(",");
                 itemsIdsOfBrand = brandObject["ITEM_ID"].split(",");
+                itemsSRNOfBrand = brandObject["SRNO"].split(",")
 
-                for(var y=0;y<itemsIdsOfBrand.length;y++){
+                //var itemsLST = itemsIdsOfBrand.filter((y) => { return parseInt(itemsIdsOfBrand[y])==itemId;});
+                //activeItemId = singleItem[""];
 
-                    if(parseInt(itemsIdsOfBrand[y])==itemId){
-                        activeItemId = itemId;
-                        mActiveItemIdIndex = y;
-                        break;
-                    }
+                // for(var y=0; y<itemsIdsOfBrand.length; y++){
+
+                //     if( parseInt(itemsIdsOfBrand[y]) == itemId ){
+
+                //         if( parseInt(itemsSRNOfBrand[y]) == parseInt(activeItemSRNStr) ){
+
+                //             mActiveItemId = itemId;
+                //             mActiveItemIdIndex = y;
+                //             break;
+                //         }
+                //     }
                     
-                }
+                // }
+
+
+                mActiveItemIdIndex  =  parseInt(activeItemSRNStr);
+                mActiveItemId = itemId;
+        
 
                 // titleString =  "Visual Ad => "+(itemsIdsOfBrand[mActiveItemIdIndex])+" of "+ itemsIdsOfBrand.length+"<br> "
                 // + "BRAND ID : "+brandIdStr +" & ITEM NAME : "+ itemsNamesOfBrand[mActiveItemIdIndex];
 
+                // titleString =  brandObject["SRNO"]+">>"+itemsNamesOfBrand[mActiveItemIdIndex];
+                
                 titleString =  itemsNamesOfBrand[mActiveItemIdIndex];
 
                 activeImageURL = itemsFilesOfBrand[mActiveItemIdIndex];
 
-                if(itemsFilesOfBrand.length==(mActiveItemIdIndex+1)){
+                if((itemsFilesOfBrand.length-1) == mActiveItemIdIndex){
 
                     NextBTN.disabled = true;
                     PreviousBTN.disabled = false;
 
-                }else if(mActiveItemIdIndex==0){
+                }else if(mActiveItemIdIndex == 0){
 
                     NextBTN.disabled = false;
                     PreviousBTN.disabled = true;
@@ -257,11 +331,15 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     }
 
  function switchBrand(brandId) {
+    mActiveItemIdIndex = 0;
+    mActiveItemIdSRN = mActiveItemIdIndex;
+    // mActiveItemIdSRN = itemsSRNOfBrand[mActiveItemIdIndex];
     mMeetingDbRfrence.set(
          {    DCR_ID: mMeetingDbSnapShot["DCR_ID"], 
               DR_ID: mMeetingDbSnapShot["DR_ID"], 
               PA_ID: mMeetingDbSnapShot["PA_ID"],
               MANAGERES_ID : mMeetingDbSnapShot["MANAGERES_ID"],
+              ACTIVE_ITEM_SRN : mActiveItemIdSRN, 
               ACTIVE_ITEM_ID : (parseInt(mActiveItemId)-1),
               ACTIVE_BRAND_ID : brandId,
               //MEETING_DATE: mMeetingDbSnapShot["MEETING_DATE"],
@@ -271,7 +349,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
  }
   
 $scope.goPrevious = function () {
-   if(mActiveItemId==0){
+   if(mActiveItemIdIndex==0){
        return;
    }
    mActiveItemIdIndex =  (parseInt(mActiveItemIdIndex)-1);
@@ -281,6 +359,8 @@ $scope.goPrevious = function () {
              DR_ID: mMeetingDbSnapShot["DR_ID"], 
              PA_ID: mMeetingDbSnapShot["PA_ID"],
              MANAGERES_ID : mMeetingDbSnapShot["MANAGERES_ID"],
+             //ACTIVE_ITEM_SRN : itemsSRNOfBrand[mActiveItemIdIndex],
+             ACTIVE_ITEM_SRN : ""+mActiveItemIdIndex,
              ACTIVE_ITEM_ID : itemsIdsOfBrand[mActiveItemIdIndex],
              ACTIVE_BRAND_ID : mMeetingDbSnapShot["ACTIVE_BRAND_ID"],
              //MEETING_DATE: mMeetingDbSnapShot["MEETING_DATE"],
@@ -291,14 +371,20 @@ $scope.goPrevious = function () {
 
 
 $scope.goNext = function () {
-   
+    
     mActiveItemIdIndex =  (parseInt(mActiveItemIdIndex)+1);
+
+    if(mActiveItemIdIndex >= itemsIdsOfBrand.length){
+        return;
+    }
 
     mMeetingDbRfrence.set(
          {    DCR_ID: mMeetingDbSnapShot["DCR_ID"], 
               DR_ID: mMeetingDbSnapShot["DR_ID"], 
               PA_ID: mMeetingDbSnapShot["PA_ID"],
               MANAGERES_ID : mMeetingDbSnapShot["MANAGERES_ID"],
+              //ACTIVE_ITEM_SRN : itemsSRNOfBrand[mActiveItemIdIndex],
+              ACTIVE_ITEM_SRN : ""+mActiveItemIdIndex,
               ACTIVE_ITEM_ID : itemsIdsOfBrand[mActiveItemIdIndex],
               ACTIVE_BRAND_ID : mMeetingDbSnapShot["ACTIVE_BRAND_ID"],
              // MEETING_DATE: mMeetingDbSnapShot["MEETING_DATE"],
