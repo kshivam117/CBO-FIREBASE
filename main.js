@@ -199,8 +199,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                     
                 }
 
-                titleString =  "Visual Ad => "+(itemsIdsOfBrand[mActiveItemIdIndex])+" of "+ itemsIdsOfBrand.length+"<br> "
-                + "BRAND ID : "+brandIdStr +" & ITEM NAME : "+ itemsNamesOfBrand[mActiveItemIdIndex];
+                // titleString =  "Visual Ad => "+(itemsIdsOfBrand[mActiveItemIdIndex])+" of "+ itemsIdsOfBrand.length+"<br> "
+                // + "BRAND ID : "+brandIdStr +" & ITEM NAME : "+ itemsNamesOfBrand[mActiveItemIdIndex];
+
+                titleString =  itemsNamesOfBrand[mActiveItemIdIndex];
 
                 activeImageURL = itemsFilesOfBrand[mActiveItemIdIndex];
 
@@ -237,6 +239,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             eachItem.src = activeImageURL;
             eachItem.style.height ="80%";
             eachItem.style.width ="auto";
+            eachItem.className="img-responsive";
             visualAdDiv.append(eachItem);
 
             if(activeImageURL !=""){

@@ -4,11 +4,11 @@
 <!-- follow these commands for run/deploment and setup https://github.com/firebase/quickstart-js/tree/master/database -->
 <html>
 <head>
-  <meta charset=utf-8 />
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CBO PRESENTATION </title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -24,7 +24,7 @@
 
 </head>
 <body data-ng-app="MyApp" data-ng-controller="MyCntrl">
-<div class="">
+<div class="bgr">
   <div class="header">
     <h3>CBO PRESENTATION</h3>
   </div>
@@ -35,20 +35,21 @@
     <div class="row" id="dataView">
       <div class="col-lg-12">
         
-      <div class="row">
-        <div class="col-sm-2">
-          <button class="btn primary" id="PreviousBTN" style="margin-top: 4px" ng-click="goPrevious()">Previous</button>
 
-        </div>
-        <div class="col-sm-8">
-          <p id="titleAds" style="text-align: center;">VISUAL GRAPICS</p>
-        </div>
-        <div class="col-sm-2">
-          <button class="btn primary" id="NextBTN"  style="margin-top: 4px" ng-click="goNext()">Next</button>
-        </div>
-      </div>
 
-        <div id="visualAdDiv" style="text-align: center; margin-bottom: 90px;"> </div>
+        <div id="visualAdDiv" style="text-align: center; margin-bottom: 20px;"> </div>
+        <div class="row uppernex">
+          <div class="col-sm-2 col">
+            <button class="btn btn-primary" id="PreviousBTN" style="margin-top: 4px" ng-click="goPrevious()">Previous</button>
+  
+          </div>
+          <div class="col-sm-8 col">
+            <p id="titleAds" style="text-align: center;">VISUAL GRAPICS</p>
+          </div>
+          <div class="col-sm-2 col coln">
+            <button class="btn btn-success" id="NextBTN"  style="margin-top: 4px" ng-click="goNext()">Next</button>
+          </div>
+        </div>
         <div id="myBottomDiv">
           <!-- <button class="feedback">Feedback</button> -->
           <div class="horizontalScrollableItems" id="horizontalRow" > </div>
