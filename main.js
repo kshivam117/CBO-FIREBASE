@@ -1,8 +1,8 @@
 ﻿
 //  DIsabLING INSPECT ELEMENT
 $(document).bind("contextmenu",function(e) {
-    e.preventDefault();
-   });
+   e.preventDefault();
+ });
 
 //  DISABLING  F12  FUNCCTION
 // $(document).keydown(function(e){
@@ -311,7 +311,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
             var eachItem =  document.createElement("img");
             eachItem.src = activeImageURL;
-            eachItem.style.height ="80%";
+            eachItem.style.height ="72%";
             eachItem.style.width ="auto";
             eachItem.className="img-responsive";
             visualAdDiv.append(eachItem);
