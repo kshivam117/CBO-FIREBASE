@@ -168,11 +168,11 @@ li a {
 }
 
 .loader-lg {
-  border: 12px solid #f3f3f3;
+  border: 6px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 12px solid #3498db;
-  width: 100px;
-  height: 100px;
+  border-top: 6px solid #3498db;
+  width: 60px;
+  height: 60px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
