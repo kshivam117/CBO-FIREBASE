@@ -79,8 +79,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
 
         // var meetingItemsRef = firebase.database().ref(mMeetingChannelName+"/ITEMS");
-            // for(var x=1;x<10;x++){
-
+            // for(var x=1;x<10;x++){ 
             //     var eachItemsRef = firebase.database().ref(mMeetingChannelName+"/ITEMS/"+x);
             //     eachItemsRef.push();
             //     eachItemsRef.set(
@@ -283,6 +282,11 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
                 titleString =  itemsNamesOfBrand[mActiveItemIndex];
                 activeImageURL = itemsFilesOfBrand[mActiveItemIndex];
+                if(activeImageURL.includes("http://test.cboinfotech.co")){
+                    activeImageURL =  activeImageURL.replace("http://test.cboinfotech.co.in","https://seagullpharma1.net");
+                }
+
+                
 
                // titleString =  activeImageURL;
 
@@ -312,15 +316,16 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             titleAds.innerHTML = titleString;
             
 
-            var visualAdDiv = document.getElementById("visualAdDiv");
-            removeAllChildNodes(visualAdDiv);
+            var visualAdDiv = document.getElementById("imageCnter");
+            visualAdDiv.src = activeImageURL;
+            //removeAllChildNodes(visualAdDiv);
 
-            var eachItem =  document.createElement("img");
-            eachItem.src = activeImageURL;
-            eachItem.style.height ="72%";
-            eachItem.style.width ="auto";
-            eachItem.className="img-responsive";
-            visualAdDiv.append(eachItem);
+            // var eachItem =  document.createElement("img");
+            // eachItem.src = activeImageURL;
+            // eachItem.style.height ="72%";
+            // eachItem.style.width ="auto";
+            // eachItem.className="img-responsive";
+            // visualAdDiv.append(eachItem);
 
             if(activeImageURL != "") {
                 //alert(activeImageURL);

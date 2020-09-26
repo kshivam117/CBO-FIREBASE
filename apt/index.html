@@ -12,12 +12,11 @@
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
   <link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
   <link href="../assets/css/index_apt.css" rel="stylesheet">
 
   <script src="../script/angular/angular.min.js"></script>
@@ -25,26 +24,22 @@
 
 </head>
 
-<body>
-  
-  
-  <!-- ======= Header ======= -->
+<body data-ng-app="MyApp" data-ng-controller="MyCntrl">
+
   <header id="header" class="fixed-top">
     <div class="container">
 
       <div class="logo mr-auto">
         <h1 class="text-light" style="text-align: center;"><a><span>APPOINTMENT REQUEST</span></a></h1>
-      
+
       </div>
 
-      
     </div>
-  </header><!-- End Header -->
+  </header>
 
-  <!-- ======= Hero Section ======= -->
   <section id="hero">
-
-    <div class="container">
+    <div class="center-square loader-lg" id="loaderView"></div>
+    <div class="container" id="dataView">
       <div class="row">
         <div class="col-lg-6 order-1 order-lg-2">
 
@@ -52,39 +47,74 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="name">Representative Name</label>
-                <input type="text" name="name" disabled class="form-control" ng-model = "mMrName" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                <input type="text" name="name" disabled class="form-control" ng-model="mMrName" data-rule="minlen:4"
+                  data-msg="Please enter at least 4 chars" />
                 <div class="validate"></div>
               </div>
               <div class="form-group col-md-6">
                 <label for="name">Representative Mobile</label>
-                <input type="email" class="form-control" name="number"  disabled ng-model = "mMrMobile" data-msg="Please enter a valid Number" />
+                <input type="email" class="form-control" name="number" disabled ng-model="mMrMobile"
+                  data-msg="Please enter a valid Number" />
                 <div class="validate"></div>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="name">Appointment Date</label>
+                <input type="text" name="date" disabled class="form-control" ng-model="mApDate" data-rule="minlen:4"
+                  data-msg="" />
+                <div class="validate"></div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="name">Appointment Time</label>
+                <input type="time" class="form-control" name="time" ng-model="mAptTime"
+                  data-msg="Please enter valid time" />
+                <div class="validate"></div>
+              </div>
+            </div>
+            <div class="form-group" style="display: none;">
               <label for="name">Subject</label>
-              <input type="text" class="form-control" name="subject" id="subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+              <input type="text" class="form-control" disabled name="subject" id="subject" data-rule="minlen:4"
+                data-msg="Please enter at least 8 chars of subject" />
               <div class="validate"></div>
             </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>Appointment Confirmation</label>
+              </div>
+              <div class="form-group col-md-6">
+                <table>
+                  <td>
+                    <div>
+                      <label class="form-control"><input type="radio" value="" name="radioGroup"> CONFIRM</label>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <label class="form-control"><input type="radio" value="" name="radioGroup"> DENY</label>
+                    </div>
+                  </td>
+                </table>
+              </div>
+              <div class="validate"></div>
+            </div>
+
             <div class="form-group">
-              <label for="name">Message</label>
-              <textarea class="form-control" name="message" rows="10" data-rule="required" data-msg="Please write something for us"></textarea>
+              <label for="name">Remark</label>
+              <textarea class="form-control" name="message" rows="3"  data-msg="Write something..."></textarea>
               <div class="validate"></div>
             </div>
-            <div class="mb-3">
-              <div class="loading">Loading</div>
-              <div class="error-message"></div>
-              <div class="sent-message">Your message has been sent. Thank you!</div>
-            </div>
-            <div class="text-center"><button type="submit">Send Message</button></div>
+
+            <div class="text-center"><button type="submit" class="button">SUBMIT</button></div>
           </form>
         </div>
-        <div class="col-lg-6 order-1 order-lg-2 hero-img" >
+        <div class="col-lg-6 order-1 order-lg-2 hero-img">
           <img src="../assets/img/hero-img.png" class="img-fluid" alt="">
         </div>
-        </div>
-       
       </div>
+
+    </div>
     </div>
 
   </section><!-- End Hero -->
