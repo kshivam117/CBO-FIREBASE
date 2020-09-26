@@ -44,7 +44,9 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     var loaderView = document.getElementById("loaderView");
     var dataView = document.getElementById("dataView");
 
-    $scope.mCompanyName = "CBO <T>";
+    $scope.mCompanyName = "CBO PRESENTATION";
+    $scope.mRepresentativName = " ";
+
 
     $scope.initFirebase = function(){
                 
@@ -115,6 +117,11 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             mActiveItemIdSRN = snapshot.val()["ACTIVE_ITEM_SRN"] == undefined ? "1": snapshot.val()["ACTIVE_ITEM_SRN"] ;
             mActiveBrandId = snapshot.val()["ACTIVE_BRAND_ID"];
             // mActiveItemId = snapshot.val()["ACTIVE_ITEM_ID"];
+
+            $scope.mRepresentativName  = snapshot.val()["PA_NAME"];
+            $scope.mCompanyName = snapshot.val()["COMPANY_NAME"];
+
+            $scope.mCompanyName = "ZXCVB";
             diplayImage(mActiveBrandId,mActiveItemIdSRN);
             
         });
@@ -133,7 +140,8 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                 mVsualAdsArray.push(childData);
             });
             //mVsualAdsArray.reverse();
-
+            mVsualAdsArray.sort((a, b) => parseInt(a["SRN"])- parseInt(b["SRN"]));
+           
             displayBrandWiseItems(mVsualAdsArray,mActiveBrandId,mActiveItemIdSRN);
             
         });
@@ -179,7 +187,9 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
                         }else{
 
-                            if(mVsualAdsArray[x]["ISSELECTED"] || mVsualAdsArray[x]["ISSELECTED"] === "true" ){
+                            var IS_SELECTED = (mVsualAdsArray[x]["ISSELECTED"] === 'true');
+
+                            if(IS_SELECTED){
 
                                 eachItem.className = "success-selected horizontalItem";
     
@@ -201,7 +211,9 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
                                 }else {
 
-                                    if(mVsualAdsArray[t]["ISSELECTED"] || mVsualAdsArray[t]["ISSELECTED"] === "true" ){
+                                    var IS_SELECTED = (mVsualAdsArray[t]["ISSELECTED"] === 'true');
+
+                                    if(IS_SELECTED){
 
                                         horizontalRow.children[t].className = "success-selected horizontalItem";
         
@@ -269,10 +281,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                 // titleString =  "Visual Ad => "+(itemsIdsOfBrand[mActiveItemIndex])+" of "+ itemsIdsOfBrand.length+"<br> "
                 // + "BRAND ID : "+brandIdStr +" & ITEM NAME : "+ itemsNamesOfBrand[mActiveItemIndex];
 
-                titleString =  brandObject["SRNO"]+">>"+itemsNamesOfBrand[mActiveItemIndex];
+                titleString =  itemsNamesOfBrand[mActiveItemIndex];
                 activeImageURL = itemsFilesOfBrand[mActiveItemIndex];
 
-                //titleString =  activeImageURL;
+               // titleString =  activeImageURL;
 
                 if((itemsFilesOfBrand.length-1) == mActiveItemIndex){
 
@@ -326,7 +338,9 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
                 }else {
 
-                    if(mVsualAdsArray[t]["ISSELECTED"]){
+                    var IS_SELECTED = (mVsualAdsArray[t]["ISSELECTED"] === 'true');
+
+                    if(IS_SELECTED){
 
                         horizontalRow.children[t].className = "success-selected horizontalItem";
 
