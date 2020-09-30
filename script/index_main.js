@@ -124,7 +124,22 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             
             mCompanyBasURL = snapshot.val()["COMPANY_WEBURL"];
 
-            mCompanyNameId.innerHTML = COMPANY_NAME.split(" ")[0] + " PRESENTATION BY '"+PA_NAME+"'";
+            if(COMPANY_NAME == undefined ){
+                COMPANY_NAME = "";
+            }
+            if(PA_NAME == undefined ){
+                PA_NAME = "";
+            }
+
+            if(USER_PROFILE_PIC == undefined ){
+                USER_PROFILE_PIC = "";
+            }
+
+            if(mCompanyBasURL == undefined ){
+                mCompanyBasURL = "";
+            }
+
+            mCompanyNameId.innerHTML =  COMPANY_NAME.split(" ")[0] + " PRESENTATION BY '"+PA_NAME+"'";
 
               // default usr image
             mrPhotoImg.src = USER_PROFILE_PIC != '' ? USER_PROFILE_PIC : DEFAUL_USER_PICTURE;
@@ -341,7 +356,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             // eachItem.src = activeImageURL;
             // eachItem.style.height ="72%";
             // eachItem.style.width ="auto";
-            // eachItem.className="img-responsive";
+             eachItem.className="img-responsive";
             // visualAdDiv.append(eachItem);
 
             if(activeImageURL != "") {

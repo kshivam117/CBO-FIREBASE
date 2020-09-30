@@ -66,8 +66,10 @@ li a {
   font-size: 18px; 
   line-height: 50px;
   border-radius: 4px;
+  width: 100%;
+  display: contents;
 }
-
+.image-circle{height:50px;width: 50px;;}
 .header a.logo {
   font-size: 25px;
   font-weight: bold;
@@ -92,14 +94,14 @@ li a {
   .header a {
     float: none;
     display: block;
-    text-align: left;
+    text-align: center;
+    font-size: 16px;
   }
   
   .header-right {
     float: none;
   }
 }
-
 
 
 
@@ -274,16 +276,16 @@ li a {
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
 #myBottomDiv {
     position: unset !important;
-    bottom: 20px;
-    right: 10px;
-    left: 10px;
+    bottom: 10px;
+    right: 5px;
+    left: 5px;
     width: 100%;
     /* padding: 10px; */
     overflow-x: scroll;
     width: auto;
     white-space: nowrap;
 }
-img{height: 37% !important;width:100% !important;}
+.img-responsive{height: 37% !important;width:100% !important;}
 .col{text-align: center;}
 .row{padding-left: 0px !important;padding-right: 0px !important;height: 100vh !important;}
 .col-lg-12{padding-left: 0px !important;padding-right: 0px !important;}
@@ -312,5 +314,11 @@ html ,body{height:100%;overflow: hidden;margin: 0;}
   transform: translate(-50%, -50%);
 }
 
+.image-circle{height: 60px !important;float: right;width: 60px !important;}
+
+.col-9{width:80%;}
+.col-3{width:20%}
+.header a{line-height: 30px;}
+.header{height: 70px;}
 
 }

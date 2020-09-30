@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "staging": "cbo-firebase",
+    "productio": "cbo-firebase",
+    "production": "cbo-firebase"
+  }
+}
