@@ -22,7 +22,6 @@ rootController.config(['$locationProvider', function ($locationProvider) {
 
 rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
    
-    //var MeetingId = "-MHvtzwbKclQX1uzf-MC"; 
     var MeetingId = $location.search().mId;
 
     MeetingId = MeetingId == undefined || MeetingId.length<10 ? "" : MeetingId;
@@ -34,9 +33,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     var mActiveBrandId = 0;
     var mActiveItemIndex = 0; 
     
-    var mChannelName = "CBO-E-DETAILING" ;
+    var DEFAUL_USER_PICTURE = "https://f0.pngfuel.com/png/304/305/man-with-formal-suit-illustration-png-clip-art.png";
+    var mCompanyBasURL = "";
+
     var mRootChannelName = "CBO-E-DETAILING" ;
-    var mMeethingDetail = "MEETINGS";
     var mMeetingChannelName = (mRootChannelName+"/"+MeetingId);        
     var mMeetingDbRfrence ;   
     var mMeetingDbSnapShot;   
@@ -46,7 +46,6 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     var mCompanyNameId = document.getElementById("mCompanyName"); 
     var mrPhotoImg = document.getElementById("mrPhotoImg"); 
     
-    var mBasURL = "";
     
     $scope.initFirebase = function(){
                 
@@ -123,12 +122,12 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             var USER_PROFILE_PIC = snapshot.val()["USER_PROFILE_PIC"];
 
             
-            mBasURL = snapshot.val()["BASE_URL"];
+            mCompanyBasURL = snapshot.val()["COMPANY_WEBURL"];
 
             mCompanyNameId.innerHTML = COMPANY_NAME.split(" ")[0] + " PRESENTATION BY '"+PA_NAME+"'";
 
               // default usr image
-            mrPhotoImg.src = USER_PROFILE_PIC != '' ? USER_PROFILE_PIC : "https://f0.pngfuel.com/png/304/305/man-with-formal-suit-illustration-png-clip-art.png";
+            mrPhotoImg.src = USER_PROFILE_PIC != '' ? USER_PROFILE_PIC : DEFAUL_USER_PICTURE;
            
             diplayImage(mActiveBrandId,mActiveItemIdSRN);
             
@@ -295,13 +294,13 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
                 titleString =  itemsNamesOfBrand[mActiveItemIndex];
                 activeImageURL = itemsFilesOfBrand[mActiveItemIndex];
-                if(activeImageURL.includes("http://test.cboinfotech.co")){
+                if(activeImageURL.includes("http://test.cboinfotech.co.in")){
 
-                    if( mBasURL === '' || mBasURL == undefined){
-                        mBasURL =  "https://seagullpharma1.net";
-                    }
+                    //if( mCompanyBasURL === '' || mCompanyBasURL == undefined){
+                       mCompanyBasURL =  "https://seagullpharma1.net";
+                   // }
 
-                    activeImageURL =  activeImageURL.replace("http://test.cboinfotech.co.in",mBasURL);
+                    activeImageURL =  activeImageURL.replace("http://test.cboinfotech.co.in",mCompanyBasURL);
                 }
 
                 
