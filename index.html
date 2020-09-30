@@ -23,8 +23,12 @@
    </head>
    <body data-ng-app="MyApp" data-ng-controller="MyCntrl">
       <div class="bgr" id="fullscreen">
-         <div class="header">
-            <h3 data-ng-bind="mCompanyName"></h3>
+         <div class="header ">
+            <a data-ng-bind="mCompanyName" id="mCompanyName" ></a>
+            <div class="header-right">
+               <img src="img_avatar.png" id="mrPhotoImg" class="image-circle " alt="Avatar" style="width:50px; height:50px">
+             </div>
+          
          </div>
          <div class="container-fluid">
             <div class="center-square loader-lg" id="loaderView"></div>

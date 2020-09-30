@@ -43,11 +43,11 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
     var loaderView = document.getElementById("loaderView");
     var dataView = document.getElementById("dataView");
-
-    $scope.mCompanyName = "CBO PRESENTATION";
-    $scope.mRepresentativName = " ";
-
-
+    var mCompanyNameId = document.getElementById("mCompanyName"); 
+    var mrPhotoImg = document.getElementById("mrPhotoImg"); 
+    
+    var mBasURL = "";
+    
     $scope.initFirebase = function(){
                 
         var firebaseConfig = {
@@ -118,9 +118,18 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             // mActiveItemId = snapshot.val()["ACTIVE_ITEM_ID"];
 
             $scope.mRepresentativName  = snapshot.val()["PA_NAME"];
-            $scope.mCompanyName = snapshot.val()["COMPANY_NAME"];
+            var COMPANY_NAME = snapshot.val()["COMPANY_NAME"];
+            var PA_NAME = snapshot.val()["PA_NAME"];
+            var USER_PROFILE_PIC = snapshot.val()["USER_PROFILE_PIC"];
 
-            $scope.mCompanyName = "ZXCVB";
+            
+            mBasURL = snapshot.val()["BASE_URL"];
+
+            mCompanyNameId.innerHTML = COMPANY_NAME.split(" ")[0] + " PRESENTATION BY '"+PA_NAME+"'";
+
+              // default usr image
+            mrPhotoImg.src = USER_PROFILE_PIC != '' ? USER_PROFILE_PIC : "https://f0.pngfuel.com/png/304/305/man-with-formal-suit-illustration-png-clip-art.png";
+           
             diplayImage(mActiveBrandId,mActiveItemIdSRN);
             
         });
@@ -144,7 +153,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             displayBrandWiseItems(mVsualAdsArray,mActiveBrandId,mActiveItemIdSRN);
             
         });
+
+      
     }
+    
     if (MeetingId != "") {
         
         showLoader();
@@ -155,6 +167,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
         hideLoader();
             
         alert("Incorrect/Expired Meeting Details");
+       
 
     }
 
@@ -283,7 +296,12 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                 titleString =  itemsNamesOfBrand[mActiveItemIndex];
                 activeImageURL = itemsFilesOfBrand[mActiveItemIndex];
                 if(activeImageURL.includes("http://test.cboinfotech.co")){
-                    activeImageURL =  activeImageURL.replace("http://test.cboinfotech.co.in","https://seagullpharma1.net");
+
+                    if( mBasURL === '' || mBasURL == undefined){
+                        mBasURL =  "https://seagullpharma1.net";
+                    }
+
+                    activeImageURL =  activeImageURL.replace("http://test.cboinfotech.co.in",mBasURL);
                 }
 
                 
