@@ -22,45 +22,67 @@ rootController.config(['$locationProvider', function ($locationProvider) {
 
 rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
    
-    $scope.COMPANY_CODE = $location.search().C_CODE;
-    $scope.DCR_ID = $location.search().DCRID;
-    $scope.DR_ID = $location.search().DRID;
+    $scope.COMPANY_CODE = $location.search().companyCode;
+    $scope.APT_ID = $location.search().aptId;
+    // $scope.DR_ID = $location.search().DRID;
 
     //dcrId= 621
     // drid = 3384
 
     $scope.COMPANY_CODE = $scope.COMPANY_CODE == undefined || $scope.COMPANY_CODE== "" ? "DEMOTEST" : $scope.COMPANY_CODE;
-    $scope.DCR_ID = $scope.DCR_ID == undefined || $scope.DCR_ID== "" ? 621 : $scope.DCR_ID;
-    $scope.DR_ID = $scope.DR_ID == undefined || $scope.DR_ID== "" ? 3384 : $scope.DR_ID;
+    $scope.APT_ID = $scope.APT_ID == undefined || $scope.APT_ID== "" ? 0 : $scope.APT_ID;
+    //$scope.DR_ID = $scope.DR_ID == undefined || $scope.DR_ID== "" ? 3384 : $scope.DR_ID;
    
     var loaderView = document.getElementById("loaderView");
     var dataView = document.getElementById("dataView");
 
     $scope.mPageTitle = " APPOINTMENT REQUEST ";
-    $scope.mAptId = "0";
+   
     $scope.mAptTime = "00:00";
     $scope.mAptRemark = "00:00";
-
-
+    var corsIgnoreURL = "https://cors-anywhere.herokuapp.com/";
 
     $scope.populateRequest = function(){
         
         showLoader();
-        var data =  "sCompanyFolder="+$scope.COMPANY_CODE+"&iDR_ID="+$scope.DCR_ID+"&iDCR_ID="+$scope.DR_ID;
+        //var data =  "sCompanyFolder="+$scope.COMPANY_CODE+"&iDR_ID="+$scope.DCR_ID+"&iDCR_ID="+$scope.DR_ID;
 
         var reqToSubmit = {
-            method: 'GET',
-            url: 'http://test.cboinfotech.co.in//MOBILERPT.ASMX/GETDOCTORDETAIL?'+data,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' ,'Access-Control-Allow-Origin': '*'},
-            //data: data
+            method: 'POST',
+            url: corsIgnoreURL+'http://test.cboinfotech.co.in/josapi/request/dataobj/DCRDRRemote/DCRDRRemotePopulate',
+            headers: {"Company-Code":$scope.COMPANY_CODE,"Authorization":"JOSMOBILE abcxyzsdfsdrwewer53345345sdwerwer234234"},
+            data: {"entityRows":[{"APPOINTMENT_ID":$scope.APT_ID}]}
         }
 
         $http(reqToSubmit).success(function (response) {
             hideLoader();
-            $scope.data = response.data;
+            if(response.status == "SUCCESS"){
 
-            alert(JSON.stringify($scope.data));
+                if (response.result.APPOINTMENT.length>0){
 
+                    $scope.data = response.result.APPOINTMENT[0];
+                    $scope.mMrName = $scope.data["PA_NAME"];
+                    $scope.mMrMobile = "1234567890";
+                    $scope.mApDate = $scope.data["APPOINTMENT_DATE"];
+                    $scope.mAptTime = $scope.data["TIME"];
+                    $scope.mAptRemark = $scope.data["DR_REMARK"];
+                    $scope.ACCEPTANCE = "ACCEPT";
+
+
+                    if($scope.mAptTime!=''){
+                       // goToThankyou();
+                    }
+                    
+                    
+                }else{
+                    alert("Data Not Found");
+                }
+
+              
+            }else{
+                alert(response.message);
+            }
+           
         }).error(function (data, status) {
             hideLoader();
             console.log('ERROR');
@@ -70,7 +92,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
         });
         
     }
-    if ( $scope.COMPANY_CODE != "" && $scope.DCR_ID > 0  && $scope.DR_ID > 0 ) {
+    if ( $scope.COMPANY_CODE != "" && $scope.APT_ID > 0 ) {
         
         $scope.populateRequest();   
 
@@ -80,21 +102,27 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
         alert("Incorrect Details");
     }
 
-    $scope.confirmApointment = function(){
-        
+    $scope.confirmApointment = function(ACCEPTANCE,mAptTime){
+       
         showLoader();
 
         var reqToSubmit = {
             method: 'POST',
-            url: 'http://test.cboinfotech.co.in/MOBILERPT.ASMX/DCRDRREMOTE_DRTIME_COMMIT',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            data: "sCompanyFolder="+$scope.COMPANY_CODE+"&iAPPOINTMENT_ID="+$scope.mAptId+"&sDR_TIME="+$scope.mAptTime+"&sDR_REMARK="+$scope.mAptRemark
+            url: corsIgnoreURL+'http://test.cboinfotech.co.in/josapi/request/dataobj/DCRDRRemote/DCRDRRemoteDRTimeCommit',
+            headers: {"Company-Code":$scope.COMPANY_CODE,"Authorization":"JOSMOBILE abcxyzsdfsdrwewer53345345sdwerwer234234"},
+            data: {"entityRows":[{"APPOINTMENT_ID":$scope.APT_ID,"DR_TIME":$scope.mAptTime,"DR_REMARK":$scope.mAptRemark,"ACCEPTANCE":ACCEPTANCE}]}
         }
         $http(reqToSubmit).success(function (response) {
             hideLoader();
-            $scope.data = response.data;
+            if(response.status == "SUCCESS"){
 
-            alert(JSON.stringify($scope.data));
+                alert("APPOINTMENT REQUEST HAS BEEN "+(ACCEPTANCE=="CONFIRM"?"ACCEPTED":"DECLINED"));
+                //window.open("thank-you.html","_self");
+                goToThankyou();
+              
+            }else{
+                alert(response.message);
+            }
 
         }).error(function (data, status) {
             console.log('ERROR');
@@ -103,6 +131,9 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             alert("Status=" + status);
         });
         
+    }
+    function goToThankyou(){
+        window.location.replace('thank-you');
     }
  
     function hideLoader() {

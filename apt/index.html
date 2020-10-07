@@ -36,88 +36,94 @@
 
     </div>
   </header>
-
-  <section id="hero">
+  <div class="container">
     <div class="center-square loader-lg" id="loaderView"></div>
     <div class="container" id="dataView">
-      <div class="row">
-        <div class="col-lg-6 order-1 order-lg-2">
+      <section id="hero">
 
-          <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="name">Representative Name</label>
-                <input type="text" name="name" disabled class="form-control" ng-model="mMrName" data-rule="minlen:4"
-                  data-msg="Please enter at least 4 chars" />
-                <div class="validate"></div>
-              </div>
-              <div class="form-group col-md-6">
-                <label for="name">Representative Mobile</label>
-                <input type="email" class="form-control" name="number" disabled ng-model="mMrMobile"
-                  data-msg="Please enter a valid Number" />
-                <div class="validate"></div>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="name">Appointment Date</label>
-                <input type="text" name="date" disabled class="form-control" ng-model="mApDate" data-rule="minlen:4"
-                  data-msg="" />
-                <div class="validate"></div>
-              </div>
-              <div class="form-group col-md-6">
-                <label for="name">Appointment Time</label>
-                <input type="time" class="form-control" name="time" ng-model="mAptTime"
-                  data-msg="Please enter valid time" />
-                <div class="validate"></div>
-              </div>
-            </div>
-            <div class="form-group" style="display: none;">
-              <label for="name">Subject</label>
-              <input type="text" class="form-control" disabled name="subject" id="subject" data-rule="minlen:4"
-                data-msg="Please enter at least 8 chars of subject" />
-              <div class="validate"></div>
-            </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 order-1 order-lg-2">
 
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label>Appointment Confirmation</label>
-              </div>
-              <div class="form-group col-md-6">
-                <table>
-                  <td>
-                    <div>
-                      <label class="form-control"><input type="radio" value="" name="radioGroup"> CONFIRM</label>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <label class="form-control"><input type="radio" value="" name="radioGroup"> DENY</label>
-                    </div>
-                  </td>
-                </table>
-              </div>
-              <div class="validate"></div>
-            </div>
+              <form method="post" role="form" class="php-email-form">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Representative Name</label>
+                    <input type="text" name="name" disabled class="form-control" ng-model="mMrName" data-rule="minlen:4"
+                      data-msg="Please enter at least 4 chars" />
+                    <div class="validate"></div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="name">Representative Mobile</label>
+                    <input type="text" class="form-control" name="number" disabled ng-model="mMrMobile"
+                      data-msg="Please enter a valid Number" />
+                    <div class="validate"></div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Appointment Date</label>
+                    <input type="text" name="date" disabled class="form-control" ng-model="mApDate" data-rule="minlen:4"
+                      data-msg="" />
+                    <div class="validate"></div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="name">Appointment Time</label>
+                    <input type="time" class="form-control" name="time" ng-model="mAptTime"
+                      data-msg="Please enter valid time" />
+                    <div class="validate"></div>
+                  </div>
+                </div>
+                <div class="form-group" style="display: none;">
+                  <label for="name">Subject</label>
+                  <input type="text" class="form-control" disabled name="subject" id="subject" 
+                    data-rule="minlen:4"
+                    data-msg="Please enter at least 8 chars of subject" />
+                  <div class="validate"></div>
+                </div>
 
-            <div class="form-group">
-              <label for="name">Remark</label>
-              <textarea class="form-control" name="message" rows="3"  data-msg="Write something..."></textarea>
-              <div class="validate"></div>
-            </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Appointment Confirmation</label>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <table>
+                      <td>
+                        <div>
+                          <label class="form-control"><input type="radio"  ng-model="ACCEPTANCE" value="CONFIRM" name="radioGroup"> CONFIRM</label>
+                        </div>
+                      </td>
+                      <td>
+                        <div>
+                          <label class="form-control"><input type="radio"  ng-model="ACCEPTANCE" value="DENY" name="radioGroup"> DENY</label>
+                        </div>
+                      </td>
+                    </table>
+                  </div>
+                  <div class="validate"></div>
+                </div>
 
-            <div class="text-center"><button type="submit" class="button">SUBMIT</button></div>
-          </form>
+                <div class="form-group">
+                  <label for="name">Remark</label>
+                  <textarea class="form-control" name="message" rows="3" ng-model="mAptRemark"  data-msg="Write something..."></textarea>
+                  <div class="validate"></div>
+                </div>
+
+                <div class="text-center"><button type="submit" class="button" ng-click='confirmApointment(ACCEPTANCE,mAptTime)'>SUBMIT</button></div>
+              </form>
+            </div>
+            <div class="col-lg-6 order-1 order-lg-2 hero-img">
+              <img src="../assets/img/hero-img.png" class="img-fluid" alt="">
+            </div>
+          </div>
+
         </div>
-        <div class="col-lg-6 order-1 order-lg-2 hero-img">
-          <img src="../assets/img/hero-img.png" class="img-fluid" alt="">
-        </div>
-      </div>
-
-    </div>
     </div>
 
-  </section><!-- End Hero -->
+    </section><!-- End Hero -->
+
+  </div>
+  </div>
 
 </body>
 
