@@ -40,6 +40,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
    
     $scope.mAptTime = "00:00";
     $scope.mAptRemark = "00:00";
+    $scope.drName ="";
     var corsIgnoreURL = "https://cors-anywhere.herokuapp.com/";
 
     $scope.populateRequest = function(){
@@ -64,7 +65,8 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                     $scope.mMrName = $scope.data["PA_NAME"];
                     $scope.mMrMobile = "1234567890";
                     $scope.mApDate = $scope.data["APPOINTMENT_DATE"];
-                    $scope.mAptTime = $scope.data["TIME"];
+                    $scope.mAptTime = $scope.data["DR_TIME"];
+                    $scope.drName = $scope.data["DR_NAME"];
                     $scope.mAptRemark = $scope.data["DR_REMARK"];
                     $scope.ACCEPTANCE = "ACCEPT";
 
@@ -133,6 +135,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
         
     }
     function goToThankyou(){
+        sessionStorage.setItem("drName",$scope.drName);
         window.location.replace('thank-you');
     }
  
