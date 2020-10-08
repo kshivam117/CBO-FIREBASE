@@ -42,6 +42,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     $scope.mAptRemark = "00:00";
     $scope.drName ="";
     var corsIgnoreURL = "https://cors-anywhere.herokuapp.com/";
+    //corsIgnoreURL="";
 
     $scope.populateRequest = function(){
         
@@ -68,7 +69,8 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                     $scope.mAptTime = $scope.data["DR_TIME"];
                     $scope.drName = $scope.data["DR_NAME"];
                     $scope.mAptRemark = $scope.data["DR_REMARK"];
-                    $scope.ACCEPTANCE = "ACCEPT";
+                    $scope.ACCEPTANCE = "CONFIRM";
+                    document.getElementById("acceptRadio").checked = true;
 
 
                     if($scope.mAptTime!=''){
@@ -105,6 +107,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     }
 
     $scope.confirmApointment = function(ACCEPTANCE,mAptTime){
+        if(ACCEPTANCE==undefined){
+            alert("Please Select Confirmtion Option");
+            return;
+        }
        
         showLoader();
 

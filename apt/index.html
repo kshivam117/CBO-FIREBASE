@@ -18,6 +18,7 @@
 
   <link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/css/index_apt.css" rel="stylesheet">
+  <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
 
   <script src="../script/angular/angular.min.js"></script>
   <script src="../script/appointment_request.js"></script>
@@ -90,7 +91,7 @@
                     <table>
                       <td>
                         <div>
-                          <label class="form-control"><input type="radio"  ng-model="ACCEPTANCE" value="CONFIRM" name="radioGroup"> CONFIRM</label>
+                          <label class="form-control"><input type="radio"  id="acceptRadio" ng-model="ACCEPTANCE" value="CONFIRM" name="radioGroup"> CONFIRM</label>
                         </div>
                       </td>
                       <td>

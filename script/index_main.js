@@ -356,7 +356,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             // eachItem.src = activeImageURL;
             // eachItem.style.height ="72%";
             // eachItem.style.width ="auto";
-             eachItem.className="img-responsive";
+            //  eachItem.className="img-responsive";
             // visualAdDiv.append(eachItem);
 
             if(activeImageURL != "") {
