@@ -36,7 +36,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     var loaderView = document.getElementById("loaderView");
     var dataView = document.getElementById("dataView");
 
-    $scope.mPageTitle = " APPOINTMENT REQUEST ";
+    $scope.mPageTitle = " APPOINTMENT REQUEST FROM '"+$scope.COMPANY_CODE+"'";
    
     $scope.mAptTime = "00:00";
     $scope.mAptRemark = "00:00";
@@ -63,11 +63,14 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                 if (response.result.APPOINTMENT.length>0){
 
                     $scope.data = response.result.APPOINTMENT[0];
+                    
+                    $scope.mPageTitle = " APPOINTMENT REQUEST FROM '"+$scope.COMPANY_CODE+"'";
                     $scope.mMrName = $scope.data["PA_NAME"];
                     $scope.mMrMobile = "1234567890";
                     $scope.mApDate = $scope.data["APPOINTMENT_DATE"];
                     $scope.mAptTime = $scope.data["DR_TIME"];
-                    $scope.drName = $scope.data["DR_NAME"];
+                    $scope.mDrName = $scope.data["DR_NAME"];
+                    $scope.mDrMobile = "0000000000";
                     $scope.mAptRemark = $scope.data["DR_REMARK"];
                     $scope.ACCEPTANCE = "CONFIRM";
                     document.getElementById("acceptRadio").checked = true;

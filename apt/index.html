@@ -31,7 +31,7 @@
     <div class="container">
 
       <div class="logo mr-auto">
-        <h1 class="text-light" style="text-align: center;"><a><span>APPOINTMENT REQUEST</span></a></h1>
+        <h1 class="text-light" style="text-align: center;"><a><span>{{mPageTitle}}</span></a></h1>
 
       </div>
 
@@ -57,6 +57,20 @@
                   <div class="form-group col-md-6">
                     <label for="name">Representative Mobile</label>
                     <input type="text" class="form-control" name="number" disabled ng-model="mMrMobile"
+                      data-msg="Please enter a valid Number" />
+                    <div class="validate"></div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Doctor Name</label>
+                    <input type="text" name="name" disabled class="form-control" ng-model="mDrName" data-rule="minlen:4"
+                      data-msg="Please enter at least 4 chars" />
+                    <div class="validate"></div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="name">Doctor Mobile</label>
+                    <input type="text" class="form-control" name="number" disabled ng-model="mDrMobile"
                       data-msg="Please enter a valid Number" />
                     <div class="validate"></div>
                   </div>
