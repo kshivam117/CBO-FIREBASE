@@ -68,7 +68,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                     $scope.mMrName = $scope.data["PA_NAME"];
                     $scope.mMrMobile = $scope.data["MOBILE"];
                     $scope.mApDate = $scope.data["APPOINTMENT_DATE"];
-                    $scope.mAptTime = $scope.data["DR_TIME"];
+                    $scope.mAptTime = $scope.data["DR_TIME"]==""?($scope.data["TIME"]):($scope.data["DR_TIME"]);
                     $scope.mDrName = $scope.data["DR_NAME"];
                     $scope.mDrMobile = $scope.data["DR_MOBILE"];
                     $scope.mAptRemark = $scope.data["DR_REMARK"];
