@@ -64,13 +64,13 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
                     $scope.data = response.result.APPOINTMENT[0];
                     
-                    $scope.mPageTitle = " APPOINTMENT REQUEST FROM '"+$scope.COMPANY_CODE+"'";
+                    $scope.mPageTitle = " APPOINTMENT REQUEST FROM '"+$scope.data["COMPANY_NAME"]+"'";
                     $scope.mMrName = $scope.data["PA_NAME"];
-                    $scope.mMrMobile = "1234567890";
+                    $scope.mMrMobile = $scope.data["MOBILE"];
                     $scope.mApDate = $scope.data["APPOINTMENT_DATE"];
                     $scope.mAptTime = $scope.data["DR_TIME"];
                     $scope.mDrName = $scope.data["DR_NAME"];
-                    $scope.mDrMobile = "0000000000";
+                    $scope.mDrMobile = $scope.data["DR_MOBILE"];
                     $scope.mAptRemark = $scope.data["DR_REMARK"];
                     $scope.ACCEPTANCE = "CONFIRM";
                     document.getElementById("acceptRadio").checked = true;
