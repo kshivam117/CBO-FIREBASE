@@ -22,15 +22,17 @@ rootController.config(['$locationProvider', function ($locationProvider) {
 
 rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
    
-    $scope.COMPANY_CODE = $location.search().companyCode;
-    $scope.APT_ID = $location.search().aptId;
+    var APT_DETAIL = $location.search().aptId;
+    //$scope.COMPANY_CODE = $location.search().companyCode;
     // $scope.DR_ID = $location.search().DRID;
 
     //dcrId= 621
     // drid = 3384
 
-    $scope.COMPANY_CODE = $scope.COMPANY_CODE == undefined || $scope.COMPANY_CODE== "" ? "DEMOTEST" : $scope.COMPANY_CODE;
-    $scope.APT_ID = $scope.APT_ID == undefined || $scope.APT_ID== "" ? 0 : $scope.APT_ID;
+    APT_DETAIL = APT_DETAIL == undefined || APT_DETAIL== "" ? "0^DEMOTEST" : APT_DETAIL;
+
+    $scope.APT_ID = APT_DETAIL.split("^")[0];
+    $scope.COMPANY_CODE = APT_DETAIL.split("^")[1];
     //$scope.DR_ID = $scope.DR_ID == undefined || $scope.DR_ID== "" ? 3384 : $scope.DR_ID;
    
     var loaderView = document.getElementById("loaderView");
