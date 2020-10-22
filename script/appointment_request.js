@@ -29,10 +29,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     //dcrId= 621
     // drid = 3384
 
-    APT_DETAIL = APT_DETAIL == undefined || APT_DETAIL== "" ? "0^DEMOTEST" : APT_DETAIL;
+    APT_DETAIL = APT_DETAIL == undefined || APT_DETAIL== "" ? "0@DEMOTEST" : APT_DETAIL;
 
-    $scope.APT_ID = APT_DETAIL.split("^")[0];
-    $scope.COMPANY_CODE = APT_DETAIL.split("^")[1];
+    $scope.APT_ID = APT_DETAIL.split("@")[0];
+    $scope.COMPANY_CODE = APT_DETAIL.split("@")[1];
     //$scope.DR_ID = $scope.DR_ID == undefined || $scope.DR_ID== "" ? 3384 : $scope.DR_ID;
    
     var loaderView = document.getElementById("loaderView");
