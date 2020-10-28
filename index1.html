@@ -1,0 +1,219 @@
+<!-- used account kshivam117@gmail.com -->
+<!-- follow these commands for run/deploment and setup https://github.com/firebase/quickstart-js/tree/master/database -->
+<html>
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="description" content="">
+   <meta name="keywords" content="">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>CBO PRESENTATION </title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-database.js"></script>
+   <script src="script/angular/angular.min.js"></script>
+   <script src="script/index_main.js"></script>
+   <script src="script/vendor/jquery.min.js"></script>
+   <script src="script/vendor/materialize.min.js"></script>
+   <script src="script/video_rtc_sdk_3_2_2.js"></script>
+   <link rel="stylesheet" href="assets/css/index_main.css">
+   <link rel="stylesheet" href="assets/css/common.css">
+   <link rel="manifest" href="manifest.json">
+   <script type="text/javascript">
+       //  eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('(3(){(3 a(){8{(3 b(2){7((\'\'+(2/2)).6!==1||2%5===0){(3(){}).9(\'4\')()}c{4}b(++2)})(0)}d(e){g(a,f)}})()})();',17,17,'||i|function|debugger|20|length|if|try|constructor|||else|catch||5000|setTimeout'.split('|'),0,{}))
+   </script>
+</head>
+
+<body data-ng-app="MyApp" data-ng-controller="MyCntrl">
+   <div class="bgr" id="fullscreen">
+      <div class="header ">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-9 col-9">
+                  <a data-ng-bind="mCompanyName" id="mCompanyName"></a>
+               </div>
+               <div class="col-md-3 col-3">
+                  <div class="header-right">
+                     <img src="img_avatar.png" id="mrPhotoImg" class="image-circle" alt="Avatar">
+                  </div>
+               </div>
+
+            </div>
+
+         </div>
+      </div>
+      <div class="container-fluid">
+         <div class="center-square loader-lg" id="loaderView"></div>
+
+         <div class="row " style="width:100%" id="dataView">
+            <div class="container">
+               <div style="width:50%">
+                  <div id="visualAdDiv" style="text-align: center; margin-bottom: 20px;">
+                     <img id="imageCnter" class="img-responsive" style="height: 90%; width: auto;">
+                  </div>
+
+               </div>
+
+
+               <div style="width:50%">
+
+                  <div class="" id="video">
+
+                     <div class="">
+
+                        <div id="local_stream" class="video-placeholder"></div>
+                        <div id="local_video_info" class="video-profile hide"></div>
+                        <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+      </div>
+
+      <div class="row col-lg-12 uppernex" style="display: none;">
+         <div class="col-sm-2 col">
+            <button class="btn btn-primary" id="PreviousBTN" style="margin-top: 4px"
+               ng-click="goPrevious()">Previous</button>
+         </div>
+         <div class="col-sm-8 col">
+            <p id="titleAds" style="text-align: center;">VISUAL GRAPICS</p>
+         </div>
+         <div class="col-sm-2 col coln">
+            <button class="btn btn-success" id="NextBTN" style="margin-top: 4px" ng-click="goNext()">Next</button>
+         </div>
+         <div id="myBottomDiv">
+            <!-- <button class="feedback">Feedback</button> -->
+            <div class="horizontalScrollableItems" id="horizontalRow"> </div>
+         </div>
+      </div>
+
+
+
+
+
+
+      <form id="form" class="row col l12 s12">
+         <div class="row container col l12 s12">
+            <div class="col" style="min-width: 433px; max-width: 443px">
+               <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
+                  <div class="row card-content" style="margin-bottom: 0px;">
+                     <div class="input-field">
+                        <label for="appID" class="active">App ID</label>
+                        <input type="text" placeholder="App ID" name="appID">
+                     </div>
+                     <div class="input-field">
+                        <label for="channel" class="active">Channel</label>
+                        <input type="text" placeholder="channel" name="channel">
+                     </div>
+                     <div class="input-field">
+                        <label for="token" class="active">Token</label>
+                        <input type="text" placeholder="token" name="token">
+                     </div>
+                     <div class="row" style="margin: 0">
+                        <div class="col s12">
+                           <button class="btn btn-raised btn-primary waves-effect waves-light" id="join">JOIN</button>
+                           <button class="btn btn-raised btn-primary waves-effect waves-light" id="leave">LEAVE</button>
+                           <button class="btn btn-raised btn-primary waves-effect waves-light"
+                              id="publish">PUBLISH</button>
+                           <button class="btn btn-raised btn-primary waves-effect waves-light"
+                              id="unpublish">UNPUBLISH</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <ul class="collapsible card agora-secondary-border" style="margin-top: .4rem; border: 1px ">
+                  <li>
+                     <div class="collapsible-header agora-secondary-bg">
+                        <h8 class="center-align">ADVANCED SETTINGS</h8>
+                     </div>
+                     <div class="collapsible-body card-content">
+                        <div class="row">
+                           <div class="col s12">
+                              <div class="input-field">
+                                 <label for="UID" class="active">UID</label>
+                                 <input type="number" placeholder="UID" name="uid">
+                              </div>
+                              <div class="input-field">
+                                 <label for="cameraId" class="active">CAMERA</label>
+                                 <select name="cameraId" id="cameraId"></select>
+                              </div>
+                              <div class="input-field">
+                                 <label for="microphoneId" class="active">MICROPHONE</label>
+                                 <select name="microphoneId" id="microphoneId"></select>
+                              </div>
+                              <div class="input-field">
+                                 <label for="cameraResolution" class="active">CAMERA RESOLUTION</label>
+                                 <select name="cameraResolution" id="cameraResolution"></select>
+                              </div>
+                              <div class="row col s12">
+                                 <div class="row">
+                                    <label for="mode" class="active">MODE</label>
+                                 </div>
+                                 <div class="row">
+                                    <label>
+                                       <input type="radio" class="with-gap" name="mode" value="live" checked />
+                                       <span>live</span>
+                                    </label>
+
+                                    <label>
+                                       <input type="radio" class="with-gap" name="mode" value="rtc" />
+                                       <span>rtc</span>
+                                    </label>
+                                 </div>
+                              </div>
+                              <div class="row col s12">
+                                 <div class="row">
+                                    <label for="codec" class="active">CODEC</label>
+                                 </div>
+                                 <div class="row">
+                                    <label>
+                                       <input type="radio" class="with-gap" name="codec" value="h264" checked />
+                                       <span>h264</span>
+                                    </label>
+
+                                    <label>
+                                       <input type="radio" class="with-gap" name="codec" value="vp8" />
+                                       <span>vp8</span>
+                                    </label>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                  </li>
+               </ul>
+            </div>
+            <div class="col s7">
+
+
+               <!-- vide views  -->
+
+            </div>
+         </div>
+      </form>
+
+
+
+
+      <!-- <div class="col-lg-2" id="commandWriteDivRight">
+                  <button class="btn primary" style="margin-left: 4px;margin-top: 20px" onclick="getLinkForDoctor()">GET DOCTOR LINK</button>
+                  
+                  <div class="row" style="margin-top: 10px" >
+                    <input type="number" id="mdInput" placeholder="COMMNAD" style="text-transform:uppercase; width: 140px;" >
+                    <button class="btn success" style="margin-left: 4px" onclick="insertNewCommand()">SEND</button>
+                  </div>
+                  <div id="comandDivs"> </div>
+                  
+                  </div> -->
+   </div>
+   </div>
+   </div>
+
+</body>
+
+</html>

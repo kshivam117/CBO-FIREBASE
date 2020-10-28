@@ -1,7 +1,5 @@
 {
   "projects": {
-    "staging": "cbo-firebase",
-    "productio": "cbo-firebase",
-    "production": "cbo-firebase"
+    "default": "cbo-remote-detailing"
   }
 }
