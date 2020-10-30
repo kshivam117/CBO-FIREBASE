@@ -138,6 +138,12 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
                 $("#join").show();
 
+            } else if (snapshot.val()["DR_CALL_STATUS"] == "IN-CALL") {
+
+                Toast.info("JOINED");
+
+                $("#join").click();
+
             } else if (snapshot.val()["DR_CALL_STATUS"] == "ENDED") {
 
                 Toast.error(snapshot.val()["DR_CALL_STATUS"]);

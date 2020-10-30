@@ -505,3 +505,15 @@ button {
 .card {
     padding: 4px;
 }
+
+
+/* 
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    body {
+        -webkit-transform: rotate(-90deg);
+        -webkit-transform-origin: 50% 50%;
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+    }
+} 
+*/
