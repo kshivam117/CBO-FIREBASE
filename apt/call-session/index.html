@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>CALL-SESSION</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- FIREBASE AND VIDEOCALL CDN -->
+
+    <link rel="stylesheet" href="../../assets/css/call_session.css">
+
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-database.js"></script>
+    <script src="../../script/angular/angular.min.js"></script>
+
+
+    <script src="../../script/vendor/jquery.min.js"></script>
+    <script src="../../script/vendor/materialize.min.js"></script>
+
+    <script src="../../script/video_rtc_sdk_3_2_2.js"></script>
+    <script src="../../script/call_session.js"></script>
+
+
+    <link rel="manifest" href="../../manifest.json">
+    <script type="text/javascript">
+        //  eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('(3(){(3 a(){8{(3 b(2){7((\'\'+(2/2)).6!==1||2%5===0){(3(){}).9(\'4\')()}c{4}b(++2)})(0)}d(e){g(a,f)}})()})();',17,17,'||i|function|debugger|20|length|if|try|constructor|||else|catch||5000|setTimeout'.split('|'),0,{}))
+    </script>
+</head>
+
+<body data-ng-app="MyApp" data-ng-controller="MyCntrl">
+
+    <div class="center-square loader-lg" id="loaderView"></div>
+
+    <div class="container-fluid p-0" id="dataView">
+        <div class="">
+
+            <div class="col-lg-4 center ">
+
+                <div class="card">
+
+                    <div class="col-mob-4">
+
+                        <form id="form" style="display: none;">
+
+                            <div class="row " style="display: none;">
+                                <div class="input-field col-lg-3">
+                                    <label for="appID" class="active">App ID</label>
+                                    <input type="text" placeholder="App ID" name="appID" id="APP_ID">
+                                </div>
+                                <div class="input-field col-lg-3">
+                                    <label for="channel" class="active">Channel</label>
+                                    <input type="text" placeholder="channel" name="channel" id="CHANNEL_NAME">
+                                </div>
+                                <div class="input-field col-lg-3">
+                                    <label for="token" class="active">Token</label>
+                                    <input type="text" placeholder="token" name="token" id="CHANNEL_TOKEN">
+                                </div>
+                            </div>
+                            <!-- <h8 class="center-align">ADVANCED SETTINGS</h8> -->
+                            <div class="row">
+                                <div class="input-field col-lg-1" style="display: none;">
+                                    <label for="UID" class="active">UID</label>
+                                    <input type="number" placeholder="UID" name="uid">
+                                </div>
+                                <div class="input-field col-lg-2" style="display: none;">
+                                    <label for="cameraId" class="active">CAMERA</label>
+                                    <select name="cameraId" id="cameraId" class="browser-default custom-select"></select>
+                                </div>
+                                <div class="input-field col-lg-4" style="display: none;">
+                                    <label for="microphoneId" class="active">MICROPHONE</label>
+                                    <select name="microphoneId" id="microphoneId" class="browser-default custom-select"></select>
+                                </div>
+                                <div class="input-field col-lg-4">
+                                    <label for="cameraResolution" class="active">RESOLUTION</label>
+                                    <select name="cameraResolution" id="cameraResolution" class="browser-default custom-select"></select>
+                                </div>
+                                <div class="row  col-lg-2" style="display: none;">
+                                    <div class="row">
+                                        <label for="mode" class="active">MODE</label>
+                                    </div>
+                                    <div class="row">
+                                        <label>
+                                            <input type="radio" class="with-gap" name="mode" value="live" checked />
+                                            <span>live</span>
+                                        </label>
+
+                                        <label>
+                                            <input type="radio" class="with-gap" name="mode" value="rtc" />
+                                            <span>rtc</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row  col-lg-2" style="display: none;">
+                                    <div class="row">
+                                        <label for="codec" class="active">CODEC</label>
+                                    </div>
+                                    <div class="row">
+                                        <label>
+                                            <input type="radio" class="with-gap" name="codec" value="h264" checked />
+                                            <span>h264</span>
+                                        </label>
+
+                                        <label>
+                                            <input type="radio" class="with-gap" name="codec" value="vp8" />
+                                            <span>vp8</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="button-div col-lg-8">
+                                    <button type="button" class="btn btn-success btn-sm" id="join">JOIN SESSION</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" id="leave">LEAVE
+                                        SESSION</button>
+                                    <button type="button" class="btn btn-success btn-sm" id="publish">STREAM CAMERA</button>
+                                    <button type="button" class=" btn btn-outline-danger btn-sm" id="unpublish">DECLINE
+                                        CAMERA</button>
+
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <!-- <div class="row" style="margin: 0">
+                            <div class="col-lg-12">
+                                <button class="btn btn-raised btn-primary waves-effect waves-light col-lg-2" id="join">JOIN</button>
+                                <button class="btn btn-raised btn-primary waves-effect waves-light col-lg-2" id="leave">LEAVE</button>
+                                <button class="btn btn-raised btn-primary waves-effect waves-light col-lg-3" id="publish">ALLOW CAMERA</button>
+                                <button class="btn btn-raised btn-primary waves-effect waves-light col-lg-3"  id="unpublish">DECLINE CAMERA</button>
+                            </div>
+                        </div> -->
+
+                        <div class="" id="videoLocal">
+
+                            <div class="col-mob-4" id="videoSelected">
+                                <div class="video-placeholder-remote"></div>
+                            </div>
+                            <div id="local_video_info" class="video-profile hide"></div>
+                            <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
+
+                            <div class="video-grid" id="video">
+                                <div id="local_stream" class="video-placeholder"></div>
+                            </div>
+
+                            <!-- <div class="video-grid" id="video"></div>
+
+                            <div class="">
+                                <div id="local_stream" class="video-placeholder "></div>
+                                <div id="local_video_info" class="video-profile hide"></div>
+                                <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="" style="margin-bottom:0">
+            <div class="row col-lg-12 uppernex" style="display: none;">
+                <div class="col-sm-2 col">
+                    <button class="btn btn-primary" id="PreviousBTN" style="margin-top: 4px" ng-click="goPrevious()">Previous</button>
+                </div>
+                <div class="col-sm-8 col">
+                    <p id="titleAds" style="text-align: center;">VISUAL GRAPICS</p>
+                </div>
+                <div class="col-sm-2 col coln">
+                    <button class="btn btn-success" id="NextBTN" style="margin-top: 4px" ng-click="goNext()">Next</button>
+                </div>
+                <div id="myBottomDiv">
+                    <!-- <button class="feedback">Feedback</button> -->
+                    <div class="horizontalScrollableItems" id="horizontalRow"> </div>
+                </div>
+            </div>
+        </div>
+
+</body>
+
+</html>
