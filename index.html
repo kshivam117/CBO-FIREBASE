@@ -8,6 +8,7 @@
 
 
     <!--  bootstrap 4 css and js -->
+    <script src="https://kit.fontawesome.com/928368bda2.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -55,12 +56,12 @@
 
 <body data-ng-app="MyApp" data-ng-controller="MyCntrl">
 
-    <nav class="navbar navbar-expand-sm bg-dark">
-        <div class="row">
-            <div class="col-lg-10">
+    <nav class="navbar navbar-expand-sm bg-blue-dark">
+        <div class="row col-lg-12">
+            <div class="col-lg-11 header-align-center-left">
                 <a data-ng-bind="mCompanyName" id="mCompanyName"></a>
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-1 ">
 
                 <ul class="navbar-nav ml-auto">
                     <div class="header-right">
@@ -81,7 +82,7 @@
                 <div id="visualAdDiv" style="text-align: center; margin-bottom: 0px;">
                     <img id="imageCnter" class="img-responsive">
 
-                    <div class="containerX">
+                    <div class="containerX" id="videoCnter">
                         <video controls crossorigin playsinline poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg" id="player">
                                         Video files
                                         <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">
@@ -154,6 +155,7 @@
                                 <select name="microphoneId" id="microphoneId" class="browser-default custom-select"></select>
                             </div>
                             <div class="input-field col-lg-4">
+
                                 <label for="cameraResolution" class="active">RESOLUTION</label>
                                 <select name="cameraResolution" id="cameraResolution" class="browser-default custom-select"></select>
                             </div>
@@ -191,26 +193,25 @@
                             </div>
 
                             <div class="button-div col-lg-8">
-                                <button type="button" class="btn btn-success btn-sm" id="join">JOIN SESSION</button>
+                                <div class="btn-round btn-blue" id="switch-to-img"><span> <i class="fas fa-image btn-child" ></i></span></div>
+                                <div class="btn-round btn-blue" id="switch-to-video"><span> <i class="fas fa-play btn-child" ></i></span></div>
+                                <div class="btn-round btn-green" id="join"><span> <i class="fas fa-phone btn-child" ></i></span></div>
+                                <div class="btn-round btn-red" id="leave"><span> <i class="fas fa-phone-slash btn-child" ></i></span></div>
+                                <div class="btn-round btn-green" id="publish"><span> <i class="fas fa-video-slash btn-child" ></i></span></div>
+                                <div class="btn-round btn-red" id="unpublish"><span> <i class="fas fa-video-slash btn-child" ></i></span></div>
+
+
+                                <!-- <button type="button" class="btn btn-success btn-sm" id="join">JOIN SESSION</button>
                                 <button type="button" class="btn btn-outline-danger btn-sm" id="leave">LEAVE
                                     SESSION</button>
                                 <button type="button" class="btn btn-success btn-sm" id="publish">STREAM CAMERA</button>
                                 <button type="button" class=" btn btn-outline-danger btn-sm" id="unpublish">DECLINE
-                                    CAMERA</button>
+                                    CAMERA</button> -->
 
                             </div>
 
                         </div>
                     </form>
-
-                    <!-- <div class="row" style="margin: 0">
-                        <div class="col-lg-12">
-                            <button class="btn btn-raised btn-primary waves-effect waves-light col-lg-2" id="join">JOIN</button>
-                            <button class="btn btn-raised btn-primary waves-effect waves-light col-lg-2" id="leave">LEAVE</button>
-                            <button class="btn btn-raised btn-primary waves-effect waves-light col-lg-3" id="publish">ALLOW CAMERA</button>
-                            <button class="btn btn-raised btn-primary waves-effect waves-light col-lg-3"  id="unpublish">DECLINE CAMERA</button>
-                        </div>
-                    </div> -->
 
                     <div class="video-grid" id="video">
                         <div class="video-view">

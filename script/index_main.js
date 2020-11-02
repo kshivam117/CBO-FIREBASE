@@ -23,7 +23,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
     var MeetingId = $location.search().mId;
 
-    MeetingId = MeetingId == undefined || MeetingId.length < 10 ? "2121" : MeetingId;
+    MeetingId = MeetingId == undefined || MeetingId.length < 10 ? "" : MeetingId;
 
     var mVsualAdsArray = [];
     var itemsFilesOfBrand = [];
@@ -46,8 +46,6 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     var dataView = document.getElementById("dataView");
     var mCompanyNameId = document.getElementById("mCompanyName");
     var mrPhotoImg = document.getElementById("mrPhotoImg");
-
-
 
 
 
@@ -1031,6 +1029,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
 
 
+
     // ==========================plyr control here ========================
     const player = new Plyr('#player');
     var isFirstVideo = true;
@@ -1120,5 +1119,37 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             poster: '/path/to/poster.jpg'
         };
     }
+
+
+
+
+    $("#switch-to-img").on("click", function(e) {
+
+        $("#switch-to-img").hide();
+        $("#switch-to-video").show();
+
+        $("#imageCnter").show();
+        $("#videoCnter").hide();
+        player.pause();
+
+
+    })
+
+    $("#switch-to-video").on("click", function(e) {
+
+        $("#switch-to-img").show();
+        $("#switch-to-video").hide();
+
+        $("#imageCnter").hide();
+        $("#videoCnter").show();
+        player.play();
+    })
+
+    // default
+    $("#switch-to-img").hide();
+    $("#switch-to-video").show();
+    $("#imageCnter").show();
+    $("#videoCnter").hide();
+
 
 }]);

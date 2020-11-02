@@ -34,6 +34,68 @@ body {
 
 a {
     text-decoration: none;
+    color: white !important;
+}
+
+.header-align-center-left {
+    text-align: left;
+    margin: auto;
+}
+
+.btn-round {
+    background-color: #d23f31;
+    border-radius: 999em;
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    line-height: 1;
+    font-size: 36px;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 4px;
+    margin-right: 4px;
+    text-align: center;
+}
+
+.btn-round span {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    margin-top: -22px;
+    color: #FFF;
+}
+
+.btn-green {
+    background-color: #57A429;
+}
+
+.btn-red {
+    background-color: #d23f31;
+}
+
+.btn-blue {
+    background-color: #047AB4;
+}
+
+.btn-child {
+    font-size: 22px;
+    color: white;
+    margin-top: 4px;
+}
+
+.btn {
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+    padding: 4px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-color: #cacaca;
+    color: black;
 }
 
 li a {
@@ -268,6 +330,11 @@ li a {
     color: #fff !important;
     background-color: #28a745 !important;
     border-color: #28a745 !important;
+}
+
+.img-responsive {
+    /* height: 60% !important; */
+    width: 100% !important;
 }
 
 
@@ -506,8 +573,11 @@ label {
 }
 
 .card {
-    padding: 4px;
-    margin: 12px;
+    padding: 8px;
+    margin: 8px;
+    min-height: 87vh;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
+    transition: 0.3s;
 }
 
 
@@ -534,4 +604,8 @@ label {
     padding-right: 0px !important;
     margin-left: 0px !important;
     margin-right: 0px !important;
+}
+
+.bg-blue-dark {
+    background-color: #2391EC
 }
