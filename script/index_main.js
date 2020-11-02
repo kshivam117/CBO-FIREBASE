@@ -23,7 +23,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
     var MeetingId = $location.search().mId;
 
-    MeetingId = MeetingId == undefined || MeetingId.length < 10 ? "" : MeetingId;
+    MeetingId = MeetingId == undefined || MeetingId.length < 10 ? "2121" : MeetingId;
 
     var mVsualAdsArray = [];
     var itemsFilesOfBrand = [];
@@ -46,6 +46,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     var dataView = document.getElementById("dataView");
     var mCompanyNameId = document.getElementById("mCompanyName");
     var mrPhotoImg = document.getElementById("mrPhotoImg");
+
+
+
+
 
 
     $scope.initFirebase = function() {
@@ -103,11 +107,11 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
         });
 
+
         firebase.database().ref(mMeetingChannelName + "/ITEMS").orderByChild("SRN").on('value', function(snapshot) {
 
             hideLoader();
             //snapshot.sortBy("ISSELECTED","asc");
-
 
 
             snapshot.forEach(function(childSnapshot) {
@@ -491,6 +495,8 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     }
 
 
+
+    // ==========================agora client here ========================
     //  video calling feature 
 
 
@@ -1018,5 +1024,101 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
         $("#unpublish").hide();
     }
     resetCallActionButtons();
+
+
+
+
+
+
+
+    // ==========================plyr control here ========================
+    const player = new Plyr('#player');
+    var isFirstVideo = true;
+
+    // Expose
+    window.player = player;
+
+    // Bind event listener
+    function on(selector, type, callback) {
+        document.querySelector(selector).addEventListener(type, callback, false);
+    }
+
+    // Play
+    on('.js-play', 'click', () => {
+        player.play();
+    });
+
+    // Pause
+    on('.js-pause', 'click', () => {
+        player.pause();
+    });
+
+    // Stop
+    on('.js-stop', 'click', () => {
+        player.stop();
+    });
+
+    // Rewind
+    on('.js-rewind', 'click', () => {
+        player.rewind();
+    });
+
+    // Forward
+    on('.js-forward', 'click', () => {
+        player.forward();
+    });
+
+
+    // switch
+    on('.js-switch', 'click', () => {
+
+        player.source = getSource(isFirstVideo);
+        player.play();
+        isFirstVideo = !isFirstVideo;
+
+    });
+
+
+    on('.js-show-control', 'click', () => {
+        showControls(true)
+
+    });
+
+
+    on('.js-hide-control', 'click', () => {
+
+        showControls(false)
+    });
+
+
+
+    function showControls(shouldShowControls) {
+        if (shouldShowControls) {
+            $(".plyr__controls").show()
+        } else {
+            $(".plyr__controls").hide()
+        }
+    }
+
+    function timeoutJump(durationInSecond) {
+        setTimeout(function() {
+            player.currentTime = durationInSecond;
+
+        }, 5000);
+    }
+
+
+    function getSource(isFirstVideo) {
+        return {
+            type: 'video',
+            title: 'Example title',
+            sources: [{
+                src: isFirstVideo ? 'https://vjs.zencdn.net/v/oceans.mp4' : 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4',
+                type: 'video/webm',
+                size: 720,
+            }],
+            poster: '/path/to/poster.jpg'
+        };
+    }
 
 }]);

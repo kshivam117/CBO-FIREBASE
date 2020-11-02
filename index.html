@@ -5,31 +5,52 @@
     <title>E-DETAILING</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!--  bootstrap 4 css and js -->
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- FIREBASE AND VIDEOCALL CDN -->
-
+    <!-- index application cs  -->
     <link rel="stylesheet" href="./assets/css/index_main.css">
 
+
+    <!-- plyr css  -->
+    <link rel='stylesheet' href='https://cdn.plyr.io/3.4.6/plyr.css'>
+
+    <!-- plyr js -->
+    <script src='https://cdn.plyr.io/3.4.6/plyr.js'></script>
+    <!-- <script src="./script/index_main_player.js"></script> -->
+
+
+    <!-- firebase js -->
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-database.js"></script>
+
+    <!--  angularjs lib js -->
     <script src="script/angular/angular.min.js"></script>
 
-
+    <!--  agora video and suppport files js  -->
     <script src="script/vendor/jquery.min.js"></script>
     <script src="script/vendor/materialize.min.js"></script>
 
+    <!-- agora sdk js  -->
     <script src="./script/video_rtc_sdk_3_2_2.js"></script>
+
+
+    <!-- index application js  -->
     <script src="./script/index_main.js"></script>
 
+    <!-- firebase manifest  -->
 
     <link rel="manifest" href="manifest.json">
     <script type="text/javascript">
         //  eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('(3(){(3 a(){8{(3 b(2){7((\'\'+(2/2)).6!==1||2%5===0){(3(){}).9(\'4\')()}c{4}b(++2)})(0)}d(e){g(a,f)}})()})();',17,17,'||i|function|debugger|20|length|if|try|constructor|||else|catch||5000|setTimeout'.split('|'),0,{}))
     </script>
+
 </head>
 
 <body data-ng-app="MyApp" data-ng-controller="MyCntrl">
@@ -53,17 +74,50 @@
 
     <div class="center-square loader-lg" id="loaderView"></div>
 
-    <div class="container-fluid p-0" style="margin-top:30px" id="dataView">
+    <div class="container-fluid p-0" style="margin-top:4px" id="dataView">
         <div class="row">
             <div class="col-lg-8 p-0">
 
-                <div id="visualAdDiv" style="text-align: center; margin-bottom: 20px;">
+                <div id="visualAdDiv" style="text-align: center; margin-bottom: 0px;">
                     <img id="imageCnter" class="img-responsive">
+
+                    <div class="containerX">
+                        <video controls crossorigin playsinline poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg" id="player">
+                                        Video files
+                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">
+                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4" type="video/mp4" size="720">
+                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4" type="video/mp4" size="1080">
+                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1440p.mp4" type="video/mp4" size="1440">
+                        
+                                        <!-- Caption files -->
+                                        <track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+                                            default>
+                                        <track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
+                        
+                                        <!-- Fallback for browsers that don't support the <video> element -->
+                                        <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a>
+                                    </video>
+
+                        <div class="actions">
+                            <button type="button" class="btn js-play">Play</button>
+                            <button type="button" class="btn js-pause">Pause</button>
+                            <button type="button" class="btn js-stop">Stop</button>
+                            <button type="button" class="btn js-rewind">Rewind</button>
+                            <button type="button" class="btn js-forward">Forward</button>
+                            <button type="button" class="btn js-switch">Switch Video</button>
+                            <button type="button" class="btn js-show-control">Show Control</button>
+                            <button type="button" class="btn js-hide-control">Hide Control</button>
+                        </div>
+                    </div>
+
+
+
+
                 </div>
 
             </div>
 
-            <div class="col-lg-4 p-0">
+            <div class="col-lg-4 p-0" style="display: block;  ">
                 <div class="card">
 
                     <form id="form">
@@ -197,6 +251,8 @@
             </div>
         </div>
     </div>
+
+
 
 </body>
 

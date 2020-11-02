@@ -499,6 +499,9 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                     cameraId: option.cameraId
                 })
 
+                //getAudioContext().resume();
+
+
                 // initialize local stream. Callback function executed after intitialization is done
                 rtc.localStream.init(function() {
                     console.log("init local stream success")
