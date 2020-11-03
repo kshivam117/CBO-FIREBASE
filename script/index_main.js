@@ -34,6 +34,9 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
     var DEFAUL_USER_PICTURE = "https://f0.pngfuel.com/png/304/305/man-with-formal-suit-illustration-png-clip-art.png";
     var mCompanyBasURL = "";
+    var mVIDEO_URL = "";
+    var mHTML_URL = "";
+    var mCURRENT_ITEM = "IMAGE";
     var mVideoCurrStatus = "";
     var mVideoStartDuration = "";
 
@@ -89,6 +92,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
             mVideoCurrStatus = snapshot.val()["VIDEO_CURR_STATUS"];
             mVideoStartDuration = snapshot.val()["VIDEO_START_DURATION"];
+            mCURRENT_ITEM = snapshot.val()["CURRENT_ITEM"];
 
             if (COMPANY_NAME == undefined) {
                 COMPANY_NAME = "";
@@ -283,6 +287,9 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
     function diplayImage(brandIdStr, activeItemSRNStr) {
 
+        var _replaceBaseUrlFrom = "http://test.cboinfotech.co.in";
+        var _replaceBaseUrlTo = "https://seagullpharma1.net";
+
         var NextBTN = document.getElementById("NextBTN");
         var PreviousBTN = document.getElementById("PreviousBTN");
 
@@ -301,43 +308,15 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             if (brands.length > 0) {
 
                 brandObject = brands[0];
+                mVIDEO_URL = brandObject["VIDEO_PATH"].split(",")[0];
+                mHTML_URL = brandObject["HTML_PATH"].split(",")[0];
                 itemsFilesOfBrand = brandObject["FILE_NAME"].split(",");
                 itemsNamesOfBrand = brandObject["ITEM_NAME"].split(",");
 
                 mActiveItemIndex = parseInt(activeItemSRNStr);
 
-                //var itemsLST = itemsIdsOfBrand.filter((y) => { return parseInt(itemsIdsOfBrand[y])==itemId;});
-                //activeItemId = singleItem[""];
-
-                // for(var y=0; y<itemsIdsOfBrand.length; y++){
-
-                //     if( parseInt(itemsIdsOfBrand[y]) == itemId ){
-
-                //         if( parseInt(itemsSRNOfBrand[y]) == parseInt(activeItemSRNStr) ){
-
-                //             mActiveItemId = itemId;
-                //             mActiveItemIndex = y;
-                //             break;
-                //         }
-                //     }
-                // }
-
-
-
-                // titleString =  "Visual Ad => "+(itemsIdsOfBrand[mActiveItemIndex])+" of "+ itemsIdsOfBrand.length+"<br> "
-                // + "BRAND ID : "+brandIdStr +" & ITEM NAME : "+ itemsNamesOfBrand[mActiveItemIndex];
-
                 titleString = itemsNamesOfBrand[mActiveItemIndex];
                 activeImageURL = itemsFilesOfBrand[mActiveItemIndex];
-                if (activeImageURL.includes("http://test.cboinfotech.co.in")) {
-
-                    //if( mCompanyBasURL === '' || mCompanyBasURL == undefined){
-                    mCompanyBasURL = "https://seagullpharma1.net";
-                    // }
-
-                    activeImageURL = activeImageURL.replace("http://test.cboinfotech.co.in", mCompanyBasURL);
-                }
-
 
 
                 // titleString =  activeImageURL;
@@ -368,53 +347,93 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             titleAds.innerHTML = titleString;
 
 
+            switch (mCURRENT_ITEM) {
+                case "VIDEO":
+
+                    if (mVIDEO_URL.includes(_replaceBaseUrlFrom)) {
+
+                        mCompanyBasURL = _replaceBaseUrlTo;
+
+                        mVIDEO_URL = mVIDEO_URL.replace(_replaceBaseUrlFrom, mCompanyBasURL);
+                    }
+
+
+
+                    // if (activeImageURL.endsWith(".mp4") || activeImageURL.endsWith(".webm")) {
+                    // }
+                    $("#imageCnter").hide();
+                    $("#videoCnter").show();
+                    $("#visualAdDiv").removeClass("containerImg");
+
+                    //alert("PLAYING...");
+
+                    if (!player.source.includes(mVIDEO_URL)) {
+                        player.source = getSource(mVIDEO_URL);
+                    }
+
+                    setTimeout(function() {
+
+                        if (mVideoCurrStatus.includes("ENDED") || mVideoCurrStatus.includes("STOPPED")) {
+
+                            player.stop();
+
+                        } else if (mVideoCurrStatus.includes("PAUSE")) {
+
+                            player.pause();
+
+                        } else if (mVideoCurrStatus.includes("RESUME")) {
+
+                            player.play();
+
+                        } else {
+
+                            player.currentTime = parseInt(mVideoStartDuration);
+
+                            player.play();
+                        }
+
+                    }, 100);
+
+                    document.addEventListener('DOMContentLoaded', () => { /* call back function */ });
+
+
+                    break;
+                case "HTML":
+
+                    activeImageURL = mHTML_URL;
+
+                    if (mHTML_URL.includes(_replaceBaseUrlFrom)) {
+
+                        mCompanyBasURL = _replaceBaseUrlTo;
+
+                        mHTML_URL = mHTML_URL.replace(_replaceBaseUrlFrom, mCompanyBasURL);
+                    }
+
+
+
+
+                    break;
+                default:
+
+                    if (activeImageURL.includes(_replaceBaseUrlFrom)) {
+
+                        mCompanyBasURL = _replaceBaseUrlTo;
+
+                        activeImageURL = activeImageURL.replace(_replaceBaseUrlFrom, mCompanyBasURL);
+                    }
+
+
+                    player.pause();
+                    $("#imageCnter").show();
+                    $("#videoCnter").hide();
+                    $("#visualAdDiv").addClass("containerImg");
+            }
+
+
             var visualAdDiv = document.getElementById("imageCnter");
             visualAdDiv.src = activeImageURL;
 
-            if (activeImageURL.endsWith(".mp4") || activeImageURL.endsWith(".webm")) {
-                $("#imageCnter").hide();
-                $("#videoCnter").show();
-                $("#visualAdDiv").removeClass("containerImg");
 
-                //alert("PLAYING...");
-
-                if (!player.source.includes(activeImageURL)) {
-                    player.source = getSource(activeImageURL);
-                }
-
-                setTimeout(function() {
-
-                    if (mVideoCurrStatus.includes("ENDED") || mVideoCurrStatus.includes("STOPPED")) {
-
-                        player.stop();
-
-                    } else if (mVideoCurrStatus.includes("PAUSE")) {
-
-                        player.pause();
-
-                    } else if (mVideoCurrStatus.includes("RESUME")) {
-
-                        player.play();
-
-                    } else {
-
-                        player.currentTime = parseInt(mVideoStartDuration);
-
-                        player.play();
-                    }
-
-                }, 100);
-
-                document.addEventListener('DOMContentLoaded', () => { /* call back function */ });
-
-
-            } else {
-
-                player.pause();
-                $("#imageCnter").show();
-                $("#videoCnter").hide();
-                $("#visualAdDiv").addClass("containerImg");
-            }
             //removeAllChildNodes(visualAdDiv);
 
             // var eachItem =  document.createElement("img");
