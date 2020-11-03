@@ -409,6 +409,8 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
 
             } else {
+
+                player.pause();
                 $("#imageCnter").show();
                 $("#videoCnter").hide();
                 $("#visualAdDiv").addClass("containerImg");
@@ -1233,6 +1235,8 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     $("#switch-to-video").show();
     $("#imageCnter").show();
     $("#videoCnter").hide();
+    $("#videoActionButtons").hide();
+
     $("#mCompanyName").click();
 
 
