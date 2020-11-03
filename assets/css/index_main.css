@@ -332,9 +332,26 @@ li a {
     border-color: #28a745 !important;
 }
 
+.containerImg {
+    background-color: white;
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    max-height: 80vh;
+    text-align: center;
+    /* 1:1 Aspect Ratio */
+}
+
 .img-responsive {
     /* height: 60% !important; */
     width: 100% !important;
+    max-height: 90%;
+    max-width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
 

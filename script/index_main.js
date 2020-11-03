@@ -34,6 +34,8 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
     var DEFAUL_USER_PICTURE = "https://f0.pngfuel.com/png/304/305/man-with-formal-suit-illustration-png-clip-art.png";
     var mCompanyBasURL = "";
+    var mVideoCurrStatus = "";
+    var mVideoStartDuration = "";
 
     var mRootChannelName = "CBO-E-DETAILING";
     var mMeetingChannelName = (mRootChannelName + "/" + MeetingId);
@@ -46,6 +48,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     var dataView = document.getElementById("dataView");
     var mCompanyNameId = document.getElementById("mCompanyName");
     var mrPhotoImg = document.getElementById("mrPhotoImg");
+
+    const player = new Plyr('#player');
+    // Expose
+    window.player = player;
 
 
 
@@ -80,6 +86,9 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
 
             mCompanyBasURL = snapshot.val()["COMPANY_WEBURL"];
+
+            mVideoCurrStatus = snapshot.val()["VIDEO_CURR_STATUS"];
+            mVideoStartDuration = snapshot.val()["VIDEO_START_DURATION"];
 
             if (COMPANY_NAME == undefined) {
                 COMPANY_NAME = "";
@@ -129,35 +138,51 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
             mCallSessionSnapshot = snapshot.val();
 
-            $("#APP_ID:text").val(snapshot.val()["APP_ID"]);
-            $("#CHANNEL_NAME:text").val(snapshot.val()["CHANNEL_NAME"]);
-            $("#CHANNEL_TOKEN:text").val(snapshot.val()["CHANNEL_TOKEN"]);
+            if (mCallSessionSnapshot == null || mCallSessionSnapshot == undefined) {
 
+                $("#cardView").hide();
 
-            if (snapshot.val()["DR_CALL_STATUS"] == "RINGING") {
+                $("#visualView").removeClass("col-lg-8 p-0");
+                $("#visualView").addClass("col-lg-10 p-0");
 
-                Toast.info(snapshot.val()["DR_CALL_STATUS"]);
-
-                $("#join").show();
-
-            } else if (snapshot.val()["DR_CALL_STATUS"] == "IN-CALL") {
-
-                Toast.info("JOINED");
-
-                $("#join").click();
-
-            } else if (snapshot.val()["DR_CALL_STATUS"] == "ENDED") {
-
-                Toast.error(snapshot.val()["DR_CALL_STATUS"]);
-                resetCallActionButtons();
 
             } else {
 
-                //resetCallActionButtons();
+
+                $("#cardView").show();
+
+                $("#visualView").removeClass("col-lg-10 p-0");
+                $("#visualView").addClass("col-lg-8 p-0");
+
+
+                $("#APP_ID:text").val(snapshot.val()["APP_ID"]);
+                $("#CHANNEL_NAME:text").val(snapshot.val()["CHANNEL_NAME"]);
+                $("#CHANNEL_TOKEN:text").val(snapshot.val()["CHANNEL_TOKEN"]);
+
+
+                if (snapshot.val()["DR_CALL_STATUS"] == "RINGING") {
+
+                    Toast.info(snapshot.val()["DR_CALL_STATUS"]);
+
+                    $("#join").show();
+
+                } else if (snapshot.val()["DR_CALL_STATUS"] == "IN-CALL") {
+
+                    Toast.info("JOINED");
+
+                    $("#join").click();
+
+                } else if (snapshot.val()["DR_CALL_STATUS"] == "ENDED") {
+
+                    Toast.error(snapshot.val()["DR_CALL_STATUS"]);
+                    resetCallActionButtons();
+
+                } else {
+                    //resetCallActionButtons();
+                }
+
+
             }
-
-
-
 
             // mCallSessionReference.set({ APP_ID :});
 
@@ -345,6 +370,49 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
             var visualAdDiv = document.getElementById("imageCnter");
             visualAdDiv.src = activeImageURL;
+
+            if (activeImageURL.endsWith(".mp4") || activeImageURL.endsWith(".webm")) {
+                $("#imageCnter").hide();
+                $("#videoCnter").show();
+                $("#visualAdDiv").removeClass("containerImg");
+
+                //alert("PLAYING...");
+
+                if (!player.source.includes(activeImageURL)) {
+                    player.source = getSource(activeImageURL);
+                }
+
+                setTimeout(function() {
+
+                    if (mVideoCurrStatus.includes("ENDED") || mVideoCurrStatus.includes("STOPPED")) {
+
+                        player.stop();
+
+                    } else if (mVideoCurrStatus.includes("PAUSE")) {
+
+                        player.pause();
+
+                    } else if (mVideoCurrStatus.includes("RESUME")) {
+
+                        player.play();
+
+                    } else {
+
+                        player.currentTime = parseInt(mVideoStartDuration);
+
+                        player.play();
+                    }
+
+                }, 100);
+
+                document.addEventListener('DOMContentLoaded', () => { /* call back function */ });
+
+
+            } else {
+                $("#imageCnter").show();
+                $("#videoCnter").hide();
+                $("#visualAdDiv").addClass("containerImg");
+            }
             //removeAllChildNodes(visualAdDiv);
 
             // var eachItem =  document.createElement("img");
@@ -1031,11 +1099,13 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
 
     // ==========================plyr control here ========================
-    const player = new Plyr('#player');
-    var isFirstVideo = true;
+    // const player = new Plyr('#player');
 
-    // Expose
-    window.player = player;
+
+    // // Expose
+    // window.player = player;
+
+    var isFirstVideo = true;
 
     // Bind event listener
     function on(selector, type, callback) {
@@ -1107,13 +1177,26 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     }
 
 
-    function getSource(isFirstVideo) {
+    function getSourceOLD(isFirstVideo) {
         return {
             type: 'video',
             title: 'Example title',
             sources: [{
                 src: isFirstVideo ? 'https://vjs.zencdn.net/v/oceans.mp4' : 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4',
                 type: 'video/webm',
+                size: 720,
+            }],
+            poster: '/path/to/poster.jpg'
+        };
+    }
+
+    function getSource(videoURL) {
+        return {
+            type: 'video',
+            title: 'Example title',
+            sources: [{
+                src: videoURL,
+                type: videoURL.endsWith(".mp4") ? 'video/mp4' : 'video/webm',
                 size: 720,
             }],
             poster: '/path/to/poster.jpg'
@@ -1150,6 +1233,9 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     $("#switch-to-video").show();
     $("#imageCnter").show();
     $("#videoCnter").hide();
+    $("#mCompanyName").click();
+
+
 
 
 }]);
