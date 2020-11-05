@@ -90,9 +90,31 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
             mCompanyBasURL = snapshot.val()["COMPANY_WEBURL"];
 
-            mVideoCurrStatus = snapshot.val()["VIDEO_CURR_STATUS"];
-            mVideoStartDuration = snapshot.val()["VIDEO_START_DURATION"];
-            mCURRENT_ITEM = snapshot.val()["CURRENT_ITEM"];
+            // mVideoCurrStatus = snapshot.val()["VIDEO_CURR_STATUS"];
+            // mVideoStartDuration = snapshot.val()["VIDEO_START_DURATION"];
+            // mCURRENT_ITEM = snapshot.val()["CURRENT_ITEM"];
+
+            if (snapshot.val()["VIDEO_CURR_STATUS"] == null || snapshot.val()["VIDEO_CURR_STATUS"] == undefined) {
+                mVideoCurrStatus = "PLAY";
+            } else {
+                mVideoCurrStatus = snapshot.val()["VIDEO_CURR_STATUS"];
+            }
+
+
+            if (snapshot.val()["VIDEO_START_DURATION"] == null || snapshot.val()["VIDEO_START_DURATION"] == undefined) {
+                mVideoStartDuration = "0";
+            } else {
+                mVideoStartDuration = snapshot.val()["VIDEO_START_DURATION"];
+            }
+
+
+            if (snapshot.val()["CURRENT_ITEM"] == null || snapshot.val()["CURRENT_ITEM"] == undefined) {
+                mCURRENT_ITEM = "IMAGE";
+            } else {
+                mCURRENT_ITEM = snapshot.val()["CURRENT_ITEM"];
+            }
+
+
 
             if (COMPANY_NAME == undefined) {
                 COMPANY_NAME = "";
@@ -308,8 +330,25 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             if (brands.length > 0) {
 
                 brandObject = brands[0];
-                mVIDEO_URL = brandObject["VIDEO_PATH"].split(",")[0];
-                mHTML_URL = brandObject["HTML_PATH"].split(",")[0];
+
+                mVIDEO_URL = brandObject["VIDEO_PATH"];
+                if (brandObject["VIDEO_PATH"] == null || brandObject["VIDEO_PATH"] == undefined) {
+                    mVIDEO_URL = "";
+
+                } else {
+
+                    mVIDEO_URL = brandObject["VIDEO_PATH"].split(",")[0];
+                }
+                mHTML_URL = brandObject["HTML_PATH"];
+                if (brandObject["HTML_PATH"] == null || brandObject["HTML_PATH"] == undefined) {
+                    mHTML_URL = "";
+
+                } else {
+
+                    mHTML_URL = brandObject["HTML_PATH"].split(",")[0];
+                }
+
+
                 itemsFilesOfBrand = brandObject["FILE_NAME"].split(",");
                 itemsNamesOfBrand = brandObject["ITEM_NAME"].split(",");
 
@@ -343,6 +382,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                 activeImageURL = "";
             }
 
+
             var titleAds = document.getElementById("titleAds");
             titleAds.innerHTML = titleString;
 
@@ -372,10 +412,12 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                     }
 
                     setTimeout(function() {
+                        $("#mCompanyName").click();
 
                         if (mVideoCurrStatus.includes("ENDED") || mVideoCurrStatus.includes("STOPPED")) {
 
                             player.stop();
+                            //player.muted = false;
 
                         } else if (mVideoCurrStatus.includes("PAUSE")) {
 
@@ -383,18 +425,29 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
                         } else if (mVideoCurrStatus.includes("RESUME")) {
 
+
+
                             player.play();
+
+                            // player.on('ready', () => {
+                            //     if (player.config.autoplay === true) {
+                            //         player.media.play();
+                            //     }
+                            // })
 
                         } else {
 
                             player.currentTime = parseInt(mVideoStartDuration);
 
+
                             player.play();
+                            //player.muted = false;
+
                         }
 
                     }, 100);
 
-                    document.addEventListener('DOMContentLoaded', () => { /* call back function */ });
+                    document.addEventListener('DOMContentLoaded', () => { /* call back function */ alert("hee"); });
 
 
                     break;
@@ -423,6 +476,8 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                     }
 
 
+
+
                     player.pause();
                     $("#imageCnter").show();
                     $("#videoCnter").hide();
@@ -430,9 +485,31 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             }
 
 
+            var imgHeight = 0;
+            var imgWidth = 0;
+
+            const img = new Image();
+            img.onload = function() {
+                imgHeight = this.height;
+                imgWidth = this.width;
+                //alert(this.width + 'x' + this.height);
+                resizeImage(imgHeight, imgWidth);
+            }
+            img.src = activeImageURL;
+
+
+
+            $(document).ready(function() {
+                $(window).resize(function() {
+
+                    resizeImage(imgHeight, imgWidth);
+
+                });
+            });
+
+
             var visualAdDiv = document.getElementById("imageCnter");
             visualAdDiv.src = activeImageURL;
-
 
             //removeAllChildNodes(visualAdDiv);
 
@@ -471,6 +548,41 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                     }
                 }
             }
+        }
+
+    }
+
+    function resizeImage(imgH, imgW) {
+
+        var screenW = document.documentElement.clientWidth;
+        var screenH = document.documentElement.clientHeight;
+
+        if (screenH > imgH) {
+
+            if (screenW > imgW) {
+
+                $("#imageCnter").css('height', imgH);
+                $("#imageCnter").css('width', "auto");
+
+            } else {
+
+                $("#imageCnter").css('height', 'auto');
+                $("#imageCnter").css('width', screenW);
+
+            }
+
+        } else {
+
+            if (screenW > imgW) {
+
+                $("#imageCnter").css('height', screenH);
+                $("#imageCnter").css('width', "auto");
+
+            } else {
+                $("#imageCnter").css('height', 'auto');
+                $("#imageCnter").css('width', screenW);
+            }
+
         }
 
     }
