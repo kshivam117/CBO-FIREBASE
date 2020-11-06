@@ -175,7 +175,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
             } else {
 
 
-                $("#cardView").show();
+                // $("#cardView").show();
 
                 $("#visualView").removeClass("col-lg-10 p-0");
                 $("#visualView").addClass("col-lg-8 p-0");
@@ -188,13 +188,15 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
                 if (snapshot.val()["DR_CALL_STATUS"] == "RINGING") {
 
-                    Toast.info(snapshot.val()["DR_CALL_STATUS"]);
+                    //Toast.info(snapshot.val()["DR_CALL_STATUS"]);
+                    $("#cardView").show();
 
                     $("#join").show();
 
                 } else if (snapshot.val()["DR_CALL_STATUS"] == "IN-CALL") {
 
-                    Toast.info("JOINED");
+                    // Toast.info("JOINED");
+                    $("#cardView").show();
 
                     $("#join").click();
 
@@ -204,6 +206,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
                     resetCallActionButtons();
 
                 } else {
+                    $("#cardView").hide();
                     //resetCallActionButtons();
                 }
 
@@ -553,6 +556,7 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
     }
 
     function resizeImage(imgH, imgW) {
+        //$("#imageCnter").css("margin-top", 40);
 
         var screenW = document.documentElement.clientWidth;
         var screenH = document.documentElement.clientHeight;
@@ -1361,14 +1365,109 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
         player.play();
     })
 
+
+
+    $("#video").on("click", function(e) {
+
+
+        $("#cardView").removeClass("card-shadow");
+
+
+        $("#cardView").addClass("card-no-shadow");
+
+        $("#video").removeClass("video-view");
+        $("#video").addClass("video-view-full");
+
+
+        $("#imageCnter").hide();
+        $("#videoCnter").hide();
+        $("#visualAdDiv").hide();
+        $("#backToVisualAd").show();
+
+        player.pause();
+    })
+
     // default
     $("#switch-to-img").hide();
-    $("#switch-to-video").show();
+    $("#switch-to-video").hide();
     $("#imageCnter").show();
     $("#videoCnter").hide();
     $("#videoActionButtons").hide();
+    $("#cardView").hide();
+
 
     $("#mCompanyName").click();
+
+
+    $("#toggleCallVisual").on("click", function(e) {
+
+        if ($("#toggleCallVisual").text() == "Back to Visual Ad") {
+
+            goToFullScreenVisualAd()
+
+        } else {
+
+            toToFullScreencall();
+        }
+    });
+
+
+    $("#toggleCallVisual1").on("click", function(e) {
+
+        if ($("#toggleCallVisual").text() == "Back to Visual Ad") {
+
+            goToFullScreenVisualAd()
+
+        } else {
+
+            toToFullScreencall();
+        }
+    });
+
+    function toToFullScreencall() {
+        $("#cardView").removeClass("card-shadow");
+
+
+        $("#cardView").addClass("card-no-shadow");
+
+        $("#video").removeClass("video-view");
+        $("#video").addClass("video-view-full");
+
+
+        $("#imageCnter").hide();
+        $("#videoCnter").hide();
+        $("#visualAdDiv").hide();
+        $("#backToVisualAd").show();
+
+        $("#toggleCallVisual").text("Back to Visual Ad");
+        $("#toggleCallVisual1").text("Back to Visual Ad");
+        $("#backToVisualAd1").hide();
+        $("#cardView").show();
+
+    }
+
+    function goToFullScreenVisualAd() {
+
+        $("#cardView").removeClass("card-shadow");
+
+
+        $("#cardView").addClass("card-no-shadow");
+
+        $("#video").removeClass("video-view");
+        $("#video").addClass("video-view-full");
+
+
+        $("#imageCnter").show();
+        $("#videoCnter").hide();
+        $("#visualAdDiv").show();
+        $("#backToVisualAd").show();
+        $("#cardView").hide();
+        $("#backToVisualAd1").show();
+
+        $("#toggleCallVisual").text("Go To Full Screen Call");
+        $("#toggleCallVisual1").text("Go To Full Screen Call");
+    }
+
 
 
 

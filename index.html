@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="./assets/css/index_main.css">
 
 
+
     <!-- plyr css  -->
     <link rel='stylesheet' href='https://cdn.plyr.io/3.4.6/plyr.css'>
 
@@ -76,6 +77,11 @@
     <div class="center-square loader-lg" id="loaderView"></div>
 
     <div class="container-fluid p-0" style="margin-top:4px" id="dataView">
+
+        <div class="col-lg-12 center" style="display: none;" id="backToVisualAd1">
+            <button type="button " id="toggleCallVisual1" class="btn btn-success ">Full screen call</button>
+        </div>
+
         <div class="row">
             <div class="col-lg-1"></div>
             <div class="col-lg-8 p-0" id="visualView">
@@ -119,12 +125,21 @@
 
             </div>
             <div class="col-lg-"></div>
-            <div class="col-lg-4 p-0" style="display: none; " id="cardView">
-                <div class="card">
+            <div class="p-0 card-shadow" style="display: none; " id="cardView">
+                <div class="card" id="mydivheader">
+
+
+                    <div class="video-grid" id="video">
+                        <div class="video-view">
+                            <div id="local_stream" class="video-placeholder"></div>
+                            <div id="local_video_info" class="video-profile hide"></div>
+                            <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
+                        </div>
+                    </div>
 
                     <form id="form">
 
-                        <div class="row " style="display: none;">
+                        <div class="row center" style="display: none;">
 
                             <div class="input-field col-lg-3">
 
@@ -141,7 +156,7 @@
                             </div>
                         </div>
                         <!-- <h8 class="center-align">ADVANCED SETTINGS</h8> -->
-                        <div class="row">
+                        <div class="row center">
 
                             <div class="input-field col-lg-1" style="display: none;">
                                 <label for="UID" class="active">UID</label>
@@ -155,7 +170,7 @@
                                 <label for="microphoneId" class="active">MICROPHONE</label>
                                 <select name="microphoneId" id="microphoneId" class="browser-default custom-select"></select>
                             </div>
-                            <div class="input-field col-lg-4">
+                            <div class="input-field col-lg-4" style="display: none;">
 
                                 <label for="cameraResolution" class="active">RESOLUTION</label>
                                 <select name="cameraResolution" id="cameraResolution" class="browser-default custom-select"></select>
@@ -193,7 +208,7 @@
                                 </div>
                             </div>
 
-                            <div class="button-div col-lg-8">
+                            <div class="button-div col-lg-12 center">
                                 <div class="btn-round btn-blue" id="switch-to-img"><span> <i class="fas fa-image btn-child" ></i></span></div>
                                 <div class="btn-round btn-blue" id="switch-to-video"><span> <i class="fas fa-play btn-child" ></i></span></div>
                                 <div class="btn-round btn-green" id="join"><span> <i class="fas fa-phone btn-child" ></i></span></div>
@@ -214,18 +229,10 @@
                         </div>
                     </form>
 
-                    <div class="video-grid" id="video">
-                        <div class="video-view">
-                            <div id="local_stream" class="video-placeholder"></div>
-                            <div id="local_video_info" class="video-profile hide"></div>
-                            <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
-                        </div>
-                    </div>
+                </div>
 
-
-
-
-
+                <div class="col-lg-12 center" style="display: block;" id="backToVisualAd ">
+                    <button type="button " id="toggleCallVisual" class="btn btn-success ">Full screen call</button>
                 </div>
 
 
