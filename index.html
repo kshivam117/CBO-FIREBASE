@@ -122,121 +122,121 @@
 
 
                 </div>
-
-            </div>
-            <div class="col-lg-"></div>
-            <div class="p-0 card-shadow" style="display: none; " id="cardView">
-                <div class="card" id="mydivheader">
+                <div class="p-0 card-shadow" style="display: none; " id="cardView">
+                    <div class="card" id="mydivheader">
 
 
-                    <div class="video-grid" id="video">
-                        <div class="video-view">
-                            <div id="local_stream" class="video-placeholder"></div>
-                            <div id="local_video_info" class="video-profile hide"></div>
-                            <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
+                        <div class="video-grid" id="video">
+                            <div class="video-view">
+                                <div id="local_stream" class="video-placeholder"></div>
+                                <div id="local_video_info" class="video-profile hide"></div>
+                                <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
+                            </div>
                         </div>
+
+                        <form id="form">
+
+                            <div class="row center" style="display: none;">
+
+                                <div class="input-field col-lg-3">
+
+                                    <label for="appID" class="active">App ID</label>
+                                    <input type="text" placeholder="App ID" name="appID" id="APP_ID">
+                                </div>
+                                <div class="input-field col-lg-3">
+                                    <label for="channel" class="active">Channel</label>
+                                    <input type="text" placeholder="channel" name="channel" id="CHANNEL_NAME">
+                                </div>
+                                <div class="input-field col-lg-3">
+                                    <label for="token" class="active">Token</label>
+                                    <input type="text" placeholder="token" name="token" id="CHANNEL_TOKEN">
+                                </div>
+                            </div>
+                            <!-- <h8 class="center-align">ADVANCED SETTINGS</h8> -->
+                            <div class="row center">
+
+                                <div class="input-field col-lg-1" style="display: none;">
+                                    <label for="UID" class="active">UID</label>
+                                    <input type="number" placeholder="UID" name="uid">
+                                </div>
+                                <div class="input-field col-lg-2" style="display: none;">
+                                    <label for="cameraId" class="active">CAMERA</label>
+                                    <select name="cameraId" id="cameraId" class="browser-default custom-select"></select>
+                                </div>
+                                <div class="input-field col-lg-4" style="display: none;">
+                                    <label for="microphoneId" class="active">MICROPHONE</label>
+                                    <select name="microphoneId" id="microphoneId" class="browser-default custom-select"></select>
+                                </div>
+                                <div class="input-field col-lg-4" style="display: none;">
+
+                                    <label for="cameraResolution" class="active">RESOLUTION</label>
+                                    <select name="cameraResolution" id="cameraResolution" class="browser-default custom-select"></select>
+                                </div>
+                                <div class="row  col-lg-2" style="display: none;">
+                                    <div class="row">
+                                        <label for="mode" class="active">MODE</label>
+                                    </div>
+                                    <div class="row">
+                                        <label>
+                                            <input type="radio" class="with-gap" name="mode" value="live" checked />
+                                            <span>live</span>
+                                        </label>
+
+                                        <label>
+                                            <input type="radio" class="with-gap" name="mode" value="rtc" />
+                                            <span>rtc</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row  col-lg-2" style="display: none;">
+                                    <div class="row">
+                                        <label for="codec" class="active">CODEC</label>
+                                    </div>
+                                    <div class="row">
+                                        <label>
+                                            <input type="radio" class="with-gap" name="codec" value="h264" checked />
+                                            <span>h264</span>
+                                        </label>
+
+                                        <label>
+                                            <input type="radio" class="with-gap" name="codec" value="vp8" />
+                                            <span>vp8</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="button-div col-lg-12 center">
+                                    <div class="btn-round btn-blue" id="switch-to-img"><span> <i class="fas fa-image btn-child" ></i></span></div>
+                                    <div class="btn-round btn-blue" id="switch-to-video"><span> <i class="fas fa-play btn-child" ></i></span></div>
+                                    <div class="btn-round btn-green" id="join"><span> <i class="fas fa-phone btn-child" ></i></span></div>
+                                    <div class="btn-round btn-red" id="leave"><span> <i class="fas fa-phone-slash btn-child" ></i></span></div>
+                                    <div class="btn-round btn-green" id="publish"><span> <i class="fas fa-video-slash btn-child" ></i></span></div>
+                                    <div class="btn-round btn-red" id="unpublish"><span> <i class="fas fa-video-slash btn-child" ></i></span></div>
+
+
+                                    <!-- <button type="button" class="btn btn-success btn-sm" id="join">JOIN SESSION</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" id="leave">LEAVE
+                                        SESSION</button>
+                                    <button type="button" class="btn btn-success btn-sm" id="publish">STREAM CAMERA</button>
+                                    <button type="button" class=" btn btn-outline-danger btn-sm" id="unpublish">DECLINE
+                                        CAMERA</button> -->
+
+                                </div>
+
+                            </div>
+                        </form>
+
                     </div>
 
-                    <form id="form">
+                    <div class="col-lg-12 center" style="display: block;" id="backToVisualAd ">
+                        <button type="button " id="toggleCallVisual" class="btn btn-success ">Full screen call</button>
+                    </div>
 
-                        <div class="row center" style="display: none;">
-
-                            <div class="input-field col-lg-3">
-
-                                <label for="appID" class="active">App ID</label>
-                                <input type="text" placeholder="App ID" name="appID" id="APP_ID">
-                            </div>
-                            <div class="input-field col-lg-3">
-                                <label for="channel" class="active">Channel</label>
-                                <input type="text" placeholder="channel" name="channel" id="CHANNEL_NAME">
-                            </div>
-                            <div class="input-field col-lg-3">
-                                <label for="token" class="active">Token</label>
-                                <input type="text" placeholder="token" name="token" id="CHANNEL_TOKEN">
-                            </div>
-                        </div>
-                        <!-- <h8 class="center-align">ADVANCED SETTINGS</h8> -->
-                        <div class="row center">
-
-                            <div class="input-field col-lg-1" style="display: none;">
-                                <label for="UID" class="active">UID</label>
-                                <input type="number" placeholder="UID" name="uid">
-                            </div>
-                            <div class="input-field col-lg-2" style="display: none;">
-                                <label for="cameraId" class="active">CAMERA</label>
-                                <select name="cameraId" id="cameraId" class="browser-default custom-select"></select>
-                            </div>
-                            <div class="input-field col-lg-4" style="display: none;">
-                                <label for="microphoneId" class="active">MICROPHONE</label>
-                                <select name="microphoneId" id="microphoneId" class="browser-default custom-select"></select>
-                            </div>
-                            <div class="input-field col-lg-4" style="display: none;">
-
-                                <label for="cameraResolution" class="active">RESOLUTION</label>
-                                <select name="cameraResolution" id="cameraResolution" class="browser-default custom-select"></select>
-                            </div>
-                            <div class="row  col-lg-2" style="display: none;">
-                                <div class="row">
-                                    <label for="mode" class="active">MODE</label>
-                                </div>
-                                <div class="row">
-                                    <label>
-                                        <input type="radio" class="with-gap" name="mode" value="live" checked />
-                                        <span>live</span>
-                                    </label>
-
-                                    <label>
-                                        <input type="radio" class="with-gap" name="mode" value="rtc" />
-                                        <span>rtc</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="row  col-lg-2" style="display: none;">
-                                <div class="row">
-                                    <label for="codec" class="active">CODEC</label>
-                                </div>
-                                <div class="row">
-                                    <label>
-                                        <input type="radio" class="with-gap" name="codec" value="h264" checked />
-                                        <span>h264</span>
-                                    </label>
-
-                                    <label>
-                                        <input type="radio" class="with-gap" name="codec" value="vp8" />
-                                        <span>vp8</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="button-div col-lg-12 center">
-                                <div class="btn-round btn-blue" id="switch-to-img"><span> <i class="fas fa-image btn-child" ></i></span></div>
-                                <div class="btn-round btn-blue" id="switch-to-video"><span> <i class="fas fa-play btn-child" ></i></span></div>
-                                <div class="btn-round btn-green" id="join"><span> <i class="fas fa-phone btn-child" ></i></span></div>
-                                <div class="btn-round btn-red" id="leave"><span> <i class="fas fa-phone-slash btn-child" ></i></span></div>
-                                <div class="btn-round btn-green" id="publish"><span> <i class="fas fa-video-slash btn-child" ></i></span></div>
-                                <div class="btn-round btn-red" id="unpublish"><span> <i class="fas fa-video-slash btn-child" ></i></span></div>
-
-
-                                <!-- <button type="button" class="btn btn-success btn-sm" id="join">JOIN SESSION</button>
-                                <button type="button" class="btn btn-outline-danger btn-sm" id="leave">LEAVE
-                                    SESSION</button>
-                                <button type="button" class="btn btn-success btn-sm" id="publish">STREAM CAMERA</button>
-                                <button type="button" class=" btn btn-outline-danger btn-sm" id="unpublish">DECLINE
-                                    CAMERA</button> -->
-
-                            </div>
-
-                        </div>
-                    </form>
 
                 </div>
-
-                <div class="col-lg-12 center" style="display: block;" id="backToVisualAd ">
-                    <button type="button " id="toggleCallVisual" class="btn btn-success ">Full screen call</button>
-                </div>
-
-
             </div>
+            <div class="col-lg-"></div>
+
 
         </div>
 

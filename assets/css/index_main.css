@@ -440,12 +440,14 @@ li a {
 
 .video-grid {
     display: grid;
-    grid-gap: 16px;
-    margin-top: 6px;
+    grid-gap: 0px;
+    margin-top: 0px;
     grid-template-columns: repeat(2, auto);
     grid-template-rows: auto;
 }
 
+
+/* 
 .video-view {
     position: relative;
 }
@@ -456,6 +458,14 @@ li a {
 #local_video_info {
     width: 180px;
     height: 250px;
+} */
+
+.video-view,
+.video-placeholder,
+#local_stream,
+#local_video_info {
+    width: 100%;
+    height: 70vh;
 }
 
 .video-profile {
@@ -473,7 +483,7 @@ li a {
 
 .video-grid {
     display: grid;
-    grid-gap: 8px;
+    grid-gap: 0px;
     grid-template-columns: repeat(2, auto);
     grid-template-rows: auto;
 }
@@ -509,7 +519,9 @@ label {
 }
 
 .button-div {
-    margin-top: 27px;
+    position: absolute;
+    bottom: 50px;
+    left: 0;
 }
 
 
@@ -526,15 +538,15 @@ label {
         min-width: 100%;
         bottom: 0%;
     }
-    .card-shadow {
+    /* .card-shadow {
         color: rgb(30, 154, 236);
         height: 40vh !important;
         width: 40vh !important;
         position: fixed !important;
         top: 26vh !important;
         left: 8vh !important;
-    }
-    .video-view,
+    } */
+    /* .video-view,
     .video-placeholder,
     #local_stream,
     #local_video_info {
@@ -544,7 +556,7 @@ label {
     .video-view-full {
         width: 200px;
         height: 300px;
-    }
+    } */
 }
 
 @media only screen and (min-width: 601px) and (max-width: 992px) {
@@ -553,14 +565,14 @@ label {
         bottom: 7%;
         max-width: 90%;
     }
-    .card-shadow {
+    /* .card-shadow {
         color: rgb(30, 154, 236);
         height: 40% !important;
         width: 40% !important;
         position: fixed !important;
         top: 30vh !important;
         left: 32vh !important;
-    }
+    } */
 }
 
 @media only screen and (min-width: 993px) {
@@ -569,14 +581,14 @@ label {
         right: 7%;
         max-width: 86%;
     }
-    .card-shadow {
+    /* .card-shadow {
         color: rgb(30, 154, 236);
         height: 40% !important;
         width: 40% !important;
         position: fixed !important;
         top: 28vh !important;
         left: 40vh !important;
-    }
+    } */
 }
 
 .toast {
@@ -639,7 +651,8 @@ label {
     background-color: #e74c3c;
 }
 
-.card {
+
+/* .card {
     padding: 8px;
     margin: 8px;
     min-height: 42vh;
@@ -647,7 +660,7 @@ label {
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
     transition: 0.3s;
     border: SOLID;
-}
+} */
 
 
 /* ================== aggora css end here ================== */
@@ -679,6 +692,12 @@ label {
     background-color: #2391EC
 }
 
+.center {
+    text-align: center;
+}
+
+
+/* 
 .card-shadow {
     color: rgb(30, 154, 236);
     height: 40%;
@@ -688,18 +707,88 @@ label {
     left: 40vh;
 }
 
-.center {
-    text-align: center;
-}
 
 .card-no-shadow {
     border: transparent;
     box-shadow: none;
     width: 100vh;
     height: 100vh;
+} */
+
+.card-shadow {
+    color: rgb(30, 154, 236);
+    position: fixed !important;
+    top: 8vh !important;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100vh;
 }
 
+.card {
+    padding: 8px;
+    margin: 8px;
+    min-height: 75vh;
+    min-width: 50vh;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
+    transition: 0.3s;
+    border: SOLID;
+}
+
+.card-shadow-fullscreen {
+    position: fixed !important;
+    top: 0vh !important;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100%;
+    color: #fff;
+}
+
+.card-fullscreen {
+    padding: 0px;
+    margin: 0px;
+    min-height: 88vh;
+    min-width: 100vh;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
+    transition: 0.3s;
+    border: SOLID;
+}
+
+#backToVisualAd1 {
+    z-index: 99999999;
+}
+
+
+/* 
 .video-view-full {
     width: 200px;
     height: 300px;
+} */
+
+@media only screen and (max-width: 768px) {
+    .card-fullscreen {
+        padding: 0px;
+        margin: 0px;
+        min-height: 88vh;
+        min-width: 0;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
+        transition: 0.3s;
+        border: SOLID;
+        max-width: 100vh;
+    }
+    .video-grid {
+        display: block;
+        grid-gap: 0px;
+        margin-top: 0px;
+        grid-template-columns: repeat(2, auto);
+        grid-template-rows: auto;
+    }
+    .video-view,
+    .video-placeholder,
+    #local_stream,
+    #local_video_info {
+        width: 100%;
+        height: 36vh;
+    }
 }

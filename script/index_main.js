@@ -1177,6 +1177,15 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
         $("#join").on("click", function(e) {
 
 
+                $("#cardView").removeClass("card-shadow");
+                $("#cardView").addClass("card-shadow-fullscreen");
+
+                $("#mydivheader").removeClass("card");
+                $("#mydivheader").addClass("card-fullscreen");
+
+
+
+
                 console.log("join")
                 e.preventDefault();
                 var params = serializeformData(); // Data is feteched and serilized from the form element.
@@ -1371,12 +1380,10 @@ rootController.controller("MyCntrl", ['$scope', '$http', '$location', '$window',
 
 
         $("#cardView").removeClass("card-shadow");
-
-
         $("#cardView").addClass("card-no-shadow");
 
-        $("#video").removeClass("video-view");
-        $("#video").addClass("video-view-full");
+        // $("#video").removeClass("video-view");
+        // $("#video").addClass("video-view-full");
 
 
         $("#imageCnter").hide();
