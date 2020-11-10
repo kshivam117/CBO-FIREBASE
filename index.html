@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!--  angularjs lib js -->
+    <!-- <script src="script/angular/angular.min.js"></script> -->
 
     <!--  bootstrap 4 css and js -->
     <script src="https://kit.fontawesome.com/928368bda2.js" crossorigin="anonymous"></script>
@@ -23,35 +25,6 @@
     <!-- plyr css  -->
     <link rel='stylesheet' href='https://cdn.plyr.io/3.4.6/plyr.css'>
 
-    <!-- plyr js -->
-    <script src='https://cdn.plyr.io/3.4.6/plyr.js'></script>
-    <!-- <script src="./script/index_main_player.js"></script> -->
-
-
-    <!-- firebase js -->
-    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-database.js"></script>
-
-    <!--  angularjs lib js -->
-    <script src="script/angular/angular.min.js"></script>
-
-    <!--  agora video and suppport files js  -->
-    <script src="script/vendor/jquery.min.js"></script>
-    <script src="script/vendor/materialize.min.js"></script>
-
-    <!-- agora sdk js  -->
-    <script src="./script/video_rtc_sdk_3_2_2.js"></script>
-
-
-    <!-- index application js  -->
-    <script src="./script/index_main.js"></script>
-
-    <!-- firebase manifest  -->
-
-    <link rel="manifest" href="manifest.json">
-    <script type="text/javascript">
-        //  eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('(3(){(3 a(){8{(3 b(2){7((\'\'+(2/2)).6!==1||2%5===0){(3(){}).9(\'4\')()}c{4}b(++2)})(0)}d(e){g(a,f)}})()})();',17,17,'||i|function|debugger|20|length|if|try|constructor|||else|catch||5000|setTimeout'.split('|'),0,{}))
-    </script>
 
 </head>
 
@@ -78,9 +51,7 @@
 
     <div class="container-fluid p-0" style="margin-top:4px" id="dataView">
 
-        <div class="col-lg-12 center" style="display: none;" id="backToVisualAd1">
-            <button type="button " id="toggleCallVisual1" class="btn btn-success ">Full screen call</button>
-        </div>
+
 
         <div class="row">
             <div class="col-lg-1"></div>
@@ -122,122 +93,134 @@
 
 
                 </div>
-                <div class="p-0 card-shadow" style="display: none; " id="cardView">
-                    <div class="card" id="mydivheader">
+                <div class="modal_css" id="cardViewParent">
 
+                    <div class="p-0 card-shadow" style="display: block; " id="cardView">
+                        <div class="card" id="mydivheader">
 
-                        <div class="video-grid" id="video">
-                            <div class="video-view">
-                                <div id="local_stream" class="video-placeholder"></div>
-                                <div id="local_video_info" class="video-profile hide"></div>
-                                <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
+                            <div id="callInfo" class="incoming_call_div">
+                                <img class="incoming_call_img" src="https://f0.pngfuel.com/png/304/305/man-with-formal-suit-illustration-png-clip-art.png" height="70" width="70" />
+                                <h3 class="incoming_text">Incoming Call </h3>
                             </div>
-                        </div>
 
-                        <form id="form">
 
-                            <div class="row center" style="display: none;">
-
-                                <div class="input-field col-lg-3">
-
-                                    <label for="appID" class="active">App ID</label>
-                                    <input type="text" placeholder="App ID" name="appID" id="APP_ID">
-                                </div>
-                                <div class="input-field col-lg-3">
-                                    <label for="channel" class="active">Channel</label>
-                                    <input type="text" placeholder="channel" name="channel" id="CHANNEL_NAME">
-                                </div>
-                                <div class="input-field col-lg-3">
-                                    <label for="token" class="active">Token</label>
-                                    <input type="text" placeholder="token" name="token" id="CHANNEL_TOKEN">
+                            <div class="video-grid" id="video">
+                                <div class="video-view">
+                                    <div id="local_stream" class="video-placeholder"></div>
+                                    <div id="local_video_info" class="video-profile hide"></div>
+                                    <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
                                 </div>
                             </div>
-                            <!-- <h8 class="center-align">ADVANCED SETTINGS</h8> -->
-                            <div class="row center">
 
-                                <div class="input-field col-lg-1" style="display: none;">
-                                    <label for="UID" class="active">UID</label>
-                                    <input type="number" placeholder="UID" name="uid">
-                                </div>
-                                <div class="input-field col-lg-2" style="display: none;">
-                                    <label for="cameraId" class="active">CAMERA</label>
-                                    <select name="cameraId" id="cameraId" class="browser-default custom-select"></select>
-                                </div>
-                                <div class="input-field col-lg-4" style="display: none;">
-                                    <label for="microphoneId" class="active">MICROPHONE</label>
-                                    <select name="microphoneId" id="microphoneId" class="browser-default custom-select"></select>
-                                </div>
-                                <div class="input-field col-lg-4" style="display: none;">
+                            <form id="form">
 
-                                    <label for="cameraResolution" class="active">RESOLUTION</label>
-                                    <select name="cameraResolution" id="cameraResolution" class="browser-default custom-select"></select>
-                                </div>
-                                <div class="row  col-lg-2" style="display: none;">
-                                    <div class="row">
-                                        <label for="mode" class="active">MODE</label>
+                                <div class="row center" style="display: none;">
+
+                                    <div class="input-field col-lg-3">
+
+                                        <label for="appID" class="active">App ID</label>
+                                        <input type="text" placeholder="App ID" name="appID" id="APP_ID">
                                     </div>
-                                    <div class="row">
-                                        <label>
+                                    <div class="input-field col-lg-3">
+                                        <label for="channel" class="active">Channel</label>
+                                        <input type="text" placeholder="channel" name="channel" id="CHANNEL_NAME">
+                                    </div>
+                                    <div class="input-field col-lg-3">
+                                        <label for="token" class="active">Token</label>
+                                        <input type="text" placeholder="token" name="token" id="CHANNEL_TOKEN">
+                                    </div>
+                                </div>
+                                <!-- <h8 class="center-align">ADVANCED SETTINGS</h8> -->
+                                <div class="row center">
+
+                                    <div class="input-field col-lg-1" style="display: none;">
+                                        <label for="UID" class="active">UID</label>
+                                        <input type="number" placeholder="UID" name="uid">
+                                    </div>
+                                    <div class="input-field col-lg-2" style="display: none;">
+                                        <label for="cameraId" class="active">CAMERA</label>
+                                        <select name="cameraId" id="cameraId" class="browser-default custom-select"></select>
+                                    </div>
+                                    <div class="input-field col-lg-4" style="display: none;">
+                                        <label for="microphoneId" class="active">MICROPHONE</label>
+                                        <select name="microphoneId" id="microphoneId" class="browser-default custom-select"></select>
+                                    </div>
+                                    <div class="input-field col-lg-4" style="display: none;">
+
+                                        <label for="cameraResolution" class="active">RESOLUTION</label>
+                                        <select name="cameraResolution" id="cameraResolution" class="browser-default custom-select"></select>
+                                    </div>
+                                    <div class="row  col-lg-2" style="display: none;">
+                                        <div class="row">
+                                            <label for="mode" class="active">MODE</label>
+                                        </div>
+                                        <div class="row">
+                                            <label>
                                             <input type="radio" class="with-gap" name="mode" value="live" checked />
                                             <span>live</span>
                                         </label>
 
-                                        <label>
+                                            <label>
                                             <input type="radio" class="with-gap" name="mode" value="rtc" />
                                             <span>rtc</span>
                                         </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row  col-lg-2" style="display: none;">
-                                    <div class="row">
-                                        <label for="codec" class="active">CODEC</label>
-                                    </div>
-                                    <div class="row">
-                                        <label>
+                                    <div class="row  col-lg-2" style="display: none;">
+                                        <div class="row">
+                                            <label for="codec" class="active">CODEC</label>
+                                        </div>
+                                        <div class="row">
+                                            <label>
                                             <input type="radio" class="with-gap" name="codec" value="h264" checked />
                                             <span>h264</span>
                                         </label>
 
-                                        <label>
+                                            <label>
                                             <input type="radio" class="with-gap" name="codec" value="vp8" />
                                             <span>vp8</span>
                                         </label>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="button-div col-lg-12 center">
-                                    <div class="btn-round btn-blue" id="switch-to-img"><span> <i class="fas fa-image btn-child" ></i></span></div>
-                                    <div class="btn-round btn-blue" id="switch-to-video"><span> <i class="fas fa-play btn-child" ></i></span></div>
-                                    <div class="btn-round btn-green" id="join"><span> <i class="fas fa-phone btn-child" ></i></span></div>
-                                    <div class="btn-round btn-red" id="leave"><span> <i class="fas fa-phone-slash btn-child" ></i></span></div>
-                                    <div class="btn-round btn-green" id="publish"><span> <i class="fas fa-video-slash btn-child" ></i></span></div>
-                                    <div class="btn-round btn-red" id="unpublish"><span> <i class="fas fa-video-slash btn-child" ></i></span></div>
+                                    <div class="button-div col-lg-12 center">
+                                        <div class="btn-round btn-blue" id="switch-to-img"><span> <i class="fas fa-image btn-child" ></i></span></div>
+                                        <div class="btn-round btn-blue" id="switch-to-video"><span> <i class="fas fa-play btn-child" ></i></span></div>
+                                        <div class="btn-round btn-green" id="join"><span> <i class="fas fa-phone btn-child" ></i></span></div>
+                                        <div class="btn-round btn-red" id="leave"><span> <i class="fas fa-phone-slash btn-child" ></i></span></div>
+                                        <div class="btn-round btn-green" id="publish"><span> <i class="fas fa-video-slash btn-child" ></i></span></div>
+                                        <div class="btn-round btn-red" id="unpublish"><span> <i class="fas fa-video-slash btn-child" ></i></span></div>
 
 
-                                    <!-- <button type="button" class="btn btn-success btn-sm" id="join">JOIN SESSION</button>
+                                        <!-- <button type="button" class="btn btn-success btn-sm" id="join">JOIN SESSION</button>
                                     <button type="button" class="btn btn-outline-danger btn-sm" id="leave">LEAVE
                                         SESSION</button>
                                     <button type="button" class="btn btn-success btn-sm" id="publish">STREAM CAMERA</button>
                                     <button type="button" class=" btn btn-outline-danger btn-sm" id="unpublish">DECLINE
                                         CAMERA</button> -->
 
+                                    </div>
+
                                 </div>
+                            </form>
 
-                            </div>
-                        </form>
+                        </div>
 
-                    </div>
-
-                    <div class="col-lg-12 center" style="display: block;" id="backToVisualAd ">
+                        <!-- <div class="col-lg-12 center" style="display: block;" id="backToVisualAd ">
                         <button type="button " id="toggleCallVisual" class="btn btn-success ">Full screen call</button>
+                    </div> -->
+
+
                     </div>
-
-
                 </div>
             </div>
             <div class="col-lg-"></div>
 
 
+        </div>
+
+        <div class="col-lg-12 center" style="display: none;" id="backToVisualAd1">
+            <button type="button " id="toggleCallVisual1" class="btn btn-success ">Full screen call</button>
         </div>
 
 
@@ -263,6 +246,33 @@
 
 
 
+    <!-- plyr js -->
+    <script src='https://cdn.plyr.io/3.4.6/plyr.js'></script>
+    <!-- <script src="./script/index_main_player.js"></script> -->
+
+
+    <!-- firebase js -->
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-database.js"></script>
+
+
+    <!--  agora video and suppport files js  -->
+    <script src="script/vendor/jquery.min.js"></script>
+    <script src="script/vendor/materialize.min.js"></script>
+
+    <!-- agora sdk js  -->
+    <script src="./script/video_rtc_sdk_3_2_2.js"></script>
+
+
+    <!-- index application js  -->
+    <script src="./script/index_main.js"></script>
+
+    <!-- firebase manifest  -->
+
+    <link rel="manifest" href="manifest.json">
+    <script type="text/javascript">
+        //  eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('(3(){(3 a(){8{(3 b(2){7((\'\'+(2/2)).6!==1||2%5===0){(3(){}).9(\'4\')()}c{4}b(++2)})(0)}d(e){g(a,f)}})()})();',17,17,'||i|function|debugger|20|length|if|try|constructor|||else|catch||5000|setTimeout'.split('|'),0,{}))
+    </script>
 </body>
 
 </html>

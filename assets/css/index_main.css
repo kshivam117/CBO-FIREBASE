@@ -520,7 +520,7 @@ label {
 
 .button-div {
     position: absolute;
-    bottom: 50px;
+    bottom: 25px;
     left: 0;
 }
 
@@ -718,7 +718,7 @@ label {
 .card-shadow {
     color: rgb(30, 154, 236);
     position: fixed !important;
-    top: 8vh !important;
+    top: 0vh !important;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -728,11 +728,12 @@ label {
 .card {
     padding: 8px;
     margin: 8px;
-    min-height: 75vh;
+    min-height: 85vh;
     min-width: 50vh;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
     transition: 0.3s;
     border: SOLID;
+    background: #fff;
 }
 
 .card-shadow-fullscreen {
@@ -743,6 +744,7 @@ label {
     margin: 0 auto;
     width: 100%;
     color: #fff;
+    background: #fff;
 }
 
 .card-fullscreen {
@@ -757,6 +759,12 @@ label {
 
 #backToVisualAd1 {
     z-index: 99999999;
+}
+
+#backToVisualAd1 {
+    z-index: 99999999;
+    position: absolute;
+    bottom: 30px;
 }
 
 
@@ -791,4 +799,44 @@ label {
         width: 100%;
         height: 36vh;
     }
+    .card-shadow {
+        color: rgb(30, 154, 236);
+        position: fixed !important;
+        top: 3vh !important;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        width: 90%!important;
+    }
+}
+
+.incoming_text {
+    font-weight: 700;
+    margin-top: 13px;
+}
+
+.incoming_call_div {
+    position: absolute;
+    top: 40%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.incoming_call_img {
+    border-radius: 50%
+}
+
+.modal_css {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    cursor: pointer;
 }
