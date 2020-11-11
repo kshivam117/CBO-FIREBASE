@@ -195,7 +195,7 @@ function initFirebase() {
 
                 //Toast.info(snapshot.val()["DR_CALL_STATUS"]);
                 $("#cardViewParent").show();
-                $("#backToVisualAd1").show();
+                $("#backToVisualAd1").hide();
 
                 $("#join").show();
 
@@ -1028,12 +1028,15 @@ function join(rtc, option) {
                 console.log("init local stream success")
                     // play stream with html element id "local_stream"
 
-                setTimeout(function() { rtc.localStream.play("local_stream"); }, 1000);
+                setTimeout(function() {
+                    rtc.localStream.play("local_stream");
+                    publish(rtc);
+                }, 1000);
 
 
 
                 // publish local stream
-                publish(rtc)
+
             }, function(err) {
                 Toast.error("stream init failed, please open console see more detail")
                 console.error("init local stream failed ", err)
@@ -1185,17 +1188,17 @@ $(function() {
     // This will start the join functions with all the configuration selected by the user.
     $("#join").on("click", function(e) {
 
-            $("#callInfo").hide();
-            $("#toggleCallVisual1").hide();
+            // $("#callInfo").hide();
+            // $("#toggleCallVisual1").show();
 
 
-            $("#cardView").removeClass("card-shadow");
-            $("#cardView").addClass("card-shadow-fullscreen");
+            // $("#cardView").removeClass("card-shadow");
+            // $("#cardView").addClass("card-shadow-fullscreen");
 
-            $("#mydivheader").removeClass("card");
-            $("#mydivheader").addClass("card-fullscreen");
+            // $("#mydivheader").removeClass("card");
+            // $("#mydivheader").addClass("card-fullscreen");
 
-
+            toToFullScreencall();
 
 
             console.log("join")
@@ -1421,7 +1424,7 @@ $("#mCompanyName").click();
 
 $("#toggleCallVisual1").on("click", function(e) {
 
-    if ($("#toggleCallVisual1").text() == "Back to Visual Ad") {
+    if ($("#toggleCallVisual1").text() == "Switch to Visual Ad") {
 
         goToFullScreenVisualAd()
 
@@ -1433,6 +1436,7 @@ $("#toggleCallVisual1").on("click", function(e) {
 
 function toToFullScreencall() {
 
+    $("#callInfo").hide();
     $("#cardView").removeClass("card-shadow");
 
 
@@ -1446,7 +1450,7 @@ function toToFullScreencall() {
     $("#videoCnter").hide();
     $("#visualAdDiv").hide();
 
-    $("#toggleCallVisual1").text("Back to Visual Ad");
+    $("#toggleCallVisual1").text("Switch to Visual Ad");
     $("#backToVisualAd1").show();
     $("#cardViewParent").show();
 
@@ -1476,5 +1480,5 @@ function goToFullScreenVisualAd() {
     }
 
 
-    $("#toggleCallVisual1").text("Go To Full Screen Call");
+    $("#toggleCallVisual1").text("Switch to Call");
 }
