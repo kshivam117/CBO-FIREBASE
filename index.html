@@ -51,8 +51,6 @@
 
     <div class="container-fluid p-0" style="margin-top:4px" id="dataView">
 
-
-
         <div class="row">
             <div class="col-lg-1"></div>
             <div class="col-lg-8 p-0" id="visualView">
@@ -61,20 +59,20 @@
                     <img id="imageCnter" class="img-responsive2">
 
                     <div class="containerX" id="videoCnter" style="display: none;">
-                        <video controls crossorigin playsinline poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg" id="player">
+                        <video controls crossorigin playsinline poster="" id="player">
                                         Video files
-                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">
+                                        <!-- <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">
                                         <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4" type="video/mp4" size="720">
                                         <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4" type="video/mp4" size="1080">
-                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1440p.mp4" type="video/mp4" size="1440">
+                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1440p.mp4" type="video/mp4" size="1440"> -->
                         
                                         <!-- Caption files -->
-                                        <track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+                                        <!-- <track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
                                             default>
-                                        <track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
+                                        <track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt"> -->
                         
                                         <!-- Fallback for browsers that don't support the <video> element -->
-                                        <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a>
+                                        <!-- <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a> -->
                                     </video>
 
                         <div class="actions" id="videoActionButtons">
@@ -99,10 +97,10 @@
                         <div class="card" id="mydivheader">
 
                             <div id="callInfo" class="incoming_call_div">
-                                <img class="incoming_call_img" src="https://f0.pngfuel.com/png/304/305/man-with-formal-suit-illustration-png-clip-art.png" height="70" width="70" />
-                                <h3 class="incoming_text">Incoming Call </h3>
+                                <h5 class="incoming_text" id="PA_NAME_TXT">Shivam Kumar </h5>
+                                <img class="incoming_call_img call-animation" id="call-img" src="https://f0.pngfuel.com/png/304/305/man-with-formal-suit-illustration-png-clip-art.png" height="70" width="70" />
+                                <p class="incoming_text2 ">Incoming Call </p>
                             </div>
-
 
                             <div class="video-grid" id="video">
                                 <div class="video-view">
@@ -219,11 +217,20 @@
 
         </div>
 
+
         <div class="col-lg-12 center" style="display: none;" id="backToVisualAd1">
             <button type="button " id="toggleCallVisual1" class="btn btn-success ">Full screen call</button>
         </div>
 
 
+    </div>
+
+    <div class="modal-agreement" id="agreementView" style="display: none;">
+        <img src="assets/img/info_pharma.jpg" id="agreement-img" />
+        <h4 class="welcome_text" style="text-align: center;">Welcome to the Remote Detailing </h4>
+        <p style="text-align: center;">Please click on 'Go Ahead' button to proceed further</p>
+
+        <button type="button " id="agreed" class="btn2 go-ahead">Go Ahead</button>
     </div>
 
     <div class="" style="margin-bottom:0">

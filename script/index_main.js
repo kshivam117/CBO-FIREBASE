@@ -42,6 +42,7 @@ var mHTML_URL = "";
 var mCURRENT_ITEM = "IMAGE";
 var mVideoCurrStatus = "";
 var mVideoStartDuration = "";
+var mRepresentativName = "";
 
 var mRootChannelName = "CBO-E-DETAILING";
 var mMeetingChannelName = (mRootChannelName + "/" + MeetingId);
@@ -49,18 +50,28 @@ var mMeetingDbRfrence;
 var mMeetingDbSnapShot;
 var mCallSessionReference;
 var mCallSessionSnapshot;
+var mIsCallOngoing = false;
 
 var loaderView = document.getElementById("loaderView");
 var dataView = document.getElementById("dataView");
+var agreementView = document.getElementById("agreementView");
+
 var mCompanyNameId = document.getElementById("mCompanyName");
 var mrPhotoImg = document.getElementById("mrPhotoImg");
 
 const player = new Plyr('#player');
+// var audioMedia = new Audio('../assets/audio/bell-bell.mp3');
+// audioMedia.loop = true;
+
 // Expose
 window.player = player;
 
 
 
+$("#agreed").on("click", function(e) {
+
+    hideAgreement();
+})
 
 function initFirebase() {
 
@@ -85,7 +96,7 @@ function initFirebase() {
         mActiveBrandId = snapshot.val()["ACTIVE_BRAND_ID"];
         // mActiveItemId = snapshot.val()["ACTIVE_ITEM_ID"];
 
-        var mRepresentativName = snapshot.val()["PA_NAME"];
+        mRepresentativName = snapshot.val()["PA_NAME"];
         var COMPANY_NAME = snapshot.val()["COMPANY_NAME"];
         var PA_NAME = snapshot.val()["PA_NAME"];
         var USER_PROFILE_PIC = snapshot.val()["USER_PROFILE_PIC"];
@@ -193,11 +204,7 @@ function initFirebase() {
 
             if (snapshot.val()["DR_CALL_STATUS"] == "RINGING") {
 
-                //Toast.info(snapshot.val()["DR_CALL_STATUS"]);
-                $("#cardViewParent").show();
-                $("#backToVisualAd1").hide();
-
-                $("#join").show();
+                goToDialogCall();
 
             } else if (snapshot.val()["DR_CALL_STATUS"] == "IN-CALL") {
 
@@ -677,13 +684,21 @@ function updateCallSessionToDb(CALL_STATUS) {
 }
 
 
+function hideAgreement() {
+    hideView(loaderView);
+    hideView(agreementView);
+    showView(dataView);
+}
+
 function hideLoader() {
     hideView(loaderView);
-    showView(dataView);
+    hideView(dataView);
+    showView(agreementView);
 }
 
 function showLoader() {
     hideView(dataView);
+    hideView(agreementView);
     showView(loaderView);
 }
 
@@ -1031,6 +1046,7 @@ function join(rtc, option) {
                 setTimeout(function() {
                     rtc.localStream.play("local_stream");
                     publish(rtc);
+
                 }, 1000);
 
 
@@ -1188,6 +1204,9 @@ $(function() {
     // This will start the join functions with all the configuration selected by the user.
     $("#join").on("click", function(e) {
 
+            //audioMedia.pause();
+            // audioMedia.currentTime = 0;
+
             // $("#callInfo").hide();
             // $("#toggleCallVisual1").show();
 
@@ -1218,6 +1237,7 @@ $(function() {
             publish(rtc)
 
         }
+        hideShowLocalStream(true);
     });
     // Unpublishes the video feed from Agora
     $("#unpublish").on("click", function(e) {
@@ -1228,6 +1248,8 @@ $(function() {
             unpublish(rtc)
 
         }
+
+        hideShowLocalStream(false);
     });
     // Leeaves the chanenl if someone clicks the leave button
     $("#leave").on("click", function(e) {
@@ -1235,12 +1257,40 @@ $(function() {
         e.preventDefault()
         var params = serializeformData()
         if (validator(params, fields)) {
-            leave(rtc)
+            leave(rtc);
 
         }
+        goToFullScreenVisualAd();
     })
 })
 
+
+function hideShowLocalStream(showShow) {
+    if (showShow) {
+
+        $("#local_stream").show();
+        $("#local_video_info").show();
+        $("#video_autoplay_local").show();
+
+        $("#local_stream").css("height", window.innerWidth > 768 ? "80vh" : "39vh");
+        $("#local_video_info").css("height", window.innerWidth > 768 ? "80vh" : "39vh");
+        $("#video_autoplay_local").css("height", window.innerWidth > 768 ? "80vh" : "39vh");
+
+
+
+    } else {
+
+        $("#local_stream").hide();
+        $("#local_video_info").hide();
+        $("#video_autoplay_local").hide();
+
+
+        $("#local_stream").css("height", "0px");
+        $("#local_video_info").css("height", "0px");
+        $("#video_autoplay_local").css("height", "0px");
+    }
+
+}
 
 
 function resetCallActionButtons() {
@@ -1395,6 +1445,8 @@ $("#video").on("click", function(e) {
 
 
     $("#cardView").removeClass("card-shadow");
+    $("#cardView").removeClass("card-transform");
+
     $("#cardView").addClass("card-shadow-fullscreen");
 
     $("#mydivheader").removeClass("card");
@@ -1436,8 +1488,14 @@ $("#toggleCallVisual1").on("click", function(e) {
 
 function toToFullScreencall() {
 
+    $(".card").css('height', '100vh');
+
+    mIsCallOngoing = true;
+
     $("#callInfo").hide();
     $("#cardView").removeClass("card-shadow");
+    $("#cardView").removeClass("card-transform");
+
 
 
     $("#cardView").addClass("card-shadow-fullscreen");
@@ -1453,12 +1511,18 @@ function toToFullScreencall() {
     $("#toggleCallVisual1").text("Switch to Visual Ad");
     $("#backToVisualAd1").show();
     $("#cardViewParent").show();
+    $("#call-img").removeClass("call-animation");
 
 }
 
+
 function goToFullScreenVisualAd() {
 
+
+    $("#call-img").removeClass("call-animation");
     $("#cardView").removeClass("card-shadow");
+    $("#cardView").removeClass("card-transform");
+
     $("#cardView").addClass("card-shadow-fullscreen");
 
     $("#mydivheader").removeClass("card");
@@ -1481,4 +1545,42 @@ function goToFullScreenVisualAd() {
 
 
     $("#toggleCallVisual1").text("Switch to Call");
+}
+
+function goToDialogCall() {
+
+    $(".card").css('height', '70vh');
+    $("#callInfo").show();
+    $("#call-img").addClass("call-animation");
+    $("#cardView").removeClass("card-shadow-fullscreen");
+    $("#cardView").addClass("card-shadow");
+    $("#cardView").addClass("card-transform");
+
+
+    $("#mydivheader").removeClass("card-fullscreen");
+    $("#mydivheader").addClass("card");
+
+    // audioMedia.play();
+
+    $("#PA_NAME_TXT").text(mRepresentativName);
+    $("#cardViewParent").show();
+    $("#backToVisualAd1").hide();
+
+    $("#join").show();
+
+    setTimeout(function() {
+
+        //audioMedia.pause();
+        //audioMedia.currentTime = 0;
+
+        if (!mIsCallOngoing) {
+
+            updateCallSessionToDb("NOT-ANSWERED");
+
+            goToFullScreenVisualAd();
+
+        }
+
+    }, 45000);
+
 }

@@ -102,6 +102,17 @@ a {
     color: black;
 }
 
+.btn2 {
+    border: 2px solid #004364;
+    background-color: #047AB4;
+    color: rgb(255, 255, 255);
+    padding: 4px 12px;
+    font-size: 14px;
+    cursor: pointer !important;
+    border-color: #004364;
+    border-radius: 2px;
+}
+
 li a {
     text-decoration: underline;
     color: #0288d1;
@@ -469,7 +480,7 @@ li a {
 #local_stream,
 #local_video_info {
     width: 100%;
-    height: 70vh;
+    height: 80vh;
 }
 
 .video-profile {
@@ -524,7 +535,7 @@ label {
 
 .button-div {
     position: absolute;
-    bottom: 25px;
+    bottom: 50px;
     left: 0;
 }
 
@@ -727,17 +738,23 @@ label {
     right: 0;
     margin: 0 auto;
     width: 100vh;
+    height: 100vh;
 }
 
 .card {
     padding: 8px;
     margin: 8px;
-    min-height: 85vh;
+    min-height: 70vh;
     min-width: 50vh;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
     transition: 0.3s;
-    border: SOLID;
-    background: #fff;
+    background: white;
+    border: 1px solid;
+    border-radius: 5px;
+    box-shadow: 0 2px 300px 0 rgba(69, 171, 255, 0.26);
+}
+
+.card-transform {
+    transform: translateY(17%);
 }
 
 .card-shadow-fullscreen {
@@ -747,6 +764,7 @@ label {
     right: 0;
     margin: 0 auto;
     width: 100%;
+    height: 100vh;
     color: #fff;
     background: #fff;
 }
@@ -754,11 +772,12 @@ label {
 .card-fullscreen {
     padding: 0px;
     margin: 0px;
-    min-height: 88vh;
+    min-height: 100vh;
     min-width: 100vh;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
     transition: 0.3s;
     border: SOLID;
+    background-color: white;
 }
 
 #backToVisualAd1 {
@@ -768,7 +787,7 @@ label {
 #backToVisualAd1 {
     z-index: 99999999;
     position: absolute;
-    bottom: 30px;
+    bottom: 4px;
 }
 
 
@@ -782,7 +801,7 @@ label {
     .card-fullscreen {
         padding: 0px;
         margin: 0px;
-        min-height: 88vh;
+        min-height: 100vh;
         min-width: 0;
         box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
         transition: 0.3s;
@@ -801,7 +820,7 @@ label {
     #local_stream,
     #local_video_info {
         width: 100%;
-        height: 36vh;
+        height: 39vh;
     }
     .card-shadow {
         color: rgb(30, 154, 236);
@@ -815,13 +834,22 @@ label {
 }
 
 .incoming_text {
-    font-weight: 700;
-    margin-top: 13px;
+    font-weight: 400;
+    margin-top: 15px;
+    margin-top: 15px;
+    color: #055dd1;
+}
+
+.incoming_text2 {
+    font-weight: 400;
+    margin-top: 35px;
+    margin-top: 15px;
+    color: black;
 }
 
 .incoming_call_div {
     position: absolute;
-    top: 40%;
+    top: 5%;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -829,7 +857,8 @@ label {
 }
 
 .incoming_call_img {
-    border-radius: 50%
+    border-radius: 50%;
+    margin-top: 20px !important;
 }
 
 .modal_css {
@@ -843,4 +872,81 @@ label {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
     cursor: pointer;
+}
+
+.modal-agreement {
+    text-align: center;
+    width: 50vh;
+    height: 80vh;
+    margin: 0 auto;
+    display: table;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border: 1px solid;
+    border-radius: 5px;
+    box-shadow: 0 2px 300px 0 rgba(69, 171, 255, 0.26);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+#agreement-img {
+    height: 40vh !important;
+    width: 49vh !important;
+}
+
+.go-ahead {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 45px;
+    width: 150px;
+    text-align: center;
+}
+
+.welcome_text {
+    font-weight: 500;
+    margin-top: 13px;
+}
+
+#toggleCallVisual1 {
+    height: 40px;
+    width: 200px;
+}
+
+
+/* call animation */
+
+.call-animation {
+    background: rgb(18, 123, 243);
+    ;
+    width: 135px;
+    height: 135px;
+    position: relative;
+    margin: 0 auto;
+    border-radius: 100%;
+    border: solid 5px rgb(18, 123, 243);
+    animation: play 2s ease infinite;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+@keyframes play {
+    0% {
+        transform: scale(1);
+    }
+    15% {
+        box-shadow: 0 0 0 5px rgba(7, 134, 238, 0.4);
+    }
+    25% {
+        box-shadow: 0 0 0 10px rgba(7, 134, 238, 0.4), 0 0 0 20px rgba(7, 134, 238, 0.2);
+    }
+    25% {
+        box-shadow: 0 0 0 15px rgba(7, 134, 238, 0.4), 0 0 0 30px rgba(7, 134, 238, 0.2);
+    }
 }
