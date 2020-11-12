@@ -752,7 +752,7 @@ var resolutions = [{
 ]
 
 function Toastify(options) {
-    // M.toast({ html: options.text, classes: options.classes })
+    //M.toast({ html: options.text, classes: options.classes })
 }
 
 var Toast = {
@@ -886,31 +886,33 @@ var rtc = {
 
 function handleEvents(rtc) {
     // Occurs when an error message is reported and requires error handling.
-    rtc.client.on("error", (err) => {
-            console.log(err)
-        })
-        // Occurs when the peer user leaves the channel; for example, the peer user calls Client.leave.
+
+    rtc.client.on("error", (err) => { console.log(err) })
+
+    // Occurs when the peer user leaves the channel; for example, the peer user calls Client.leave.
     rtc.client.on("peer-leave", function(evt) {
-            var id = evt.uid;
-            console.log("id", evt)
-            let streams = rtc.remoteStreams.filter(e => id !== e.getId())
-            let peerStream = rtc.remoteStreams.find(e => id === e.getId())
-            if (peerStream && peerStream.isPlaying()) {
-                peerStream.stop()
-            }
-            rtc.remoteStreams = streams
-            if (id !== rtc.params.uid) {
-                removeView(id)
-            }
-            Toast.notice("peer leave")
-            console.log("peer-leave", id)
-        })
-        // Occurs when the local stream is published.
+        var id = evt.uid;
+        console.log("id", evt)
+        let streams = rtc.remoteStreams.filter(e => id !== e.getId())
+        let peerStream = rtc.remoteStreams.find(e => id === e.getId())
+        if (peerStream && peerStream.isPlaying()) {
+            peerStream.stop()
+        }
+        rtc.remoteStreams = streams
+        if (id !== rtc.params.uid) {
+            removeView(id)
+        }
+        Toast.notice("peer leave")
+        console.log("peer-leave", id)
+    })
+
+    // Occurs when the local stream is published.
     rtc.client.on("stream-published", function(evt) {
-            Toast.notice("stream published success")
-            console.log("stream-published")
-        })
-        // Occurs when the remote stream is added.
+        Toast.notice("stream published success")
+        console.log("stream-published")
+    })
+
+    // Occurs when the remote stream is added.
     rtc.client.on("stream-added", function(evt) {
             var remoteStream = evt.stream
             var id = remoteStream.getId()
@@ -924,15 +926,17 @@ function handleEvents(rtc) {
         })
         // Occurs when a user subscribes to a remote stream.
     rtc.client.on("stream-subscribed", function(evt) {
-            var remoteStream = evt.stream
-            var id = remoteStream.getId()
-            rtc.remoteStreams.push(remoteStream)
-            addView(id)
-            remoteStream.play("remote_video_" + id)
-            Toast.info("stream-subscribed remote-uid: " + id)
-            console.log("stream-subscribed remote-uid: ", id)
-        })
-        // Occurs when the remote stream is removed; for example, a peer user calls Client.unpublish.
+        var remoteStream = evt.stream
+        var id = remoteStream.getId()
+        rtc.remoteStreams.push(remoteStream)
+        addView(id)
+        remoteStream.play("remote_video_" + id)
+        Toast.info("stream-subscribed remote-uid: " + id)
+        console.log("stream-subscribed remote-uid: ", id)
+    })
+
+
+    // Occurs when the remote stream is removed; for example, a peer user calls Client.unpublish.
     rtc.client.on("stream-removed", function(evt) {
         var remoteStream = evt.stream
         var id = remoteStream.getId()
@@ -946,12 +950,16 @@ function handleEvents(rtc) {
         removeView(id)
         console.log("stream-removed remote-uid: ", id)
     })
+
+
     rtc.client.on("onTokenPrivilegeWillExpire", function() {
         // After requesting a new token
         // rtc.client.renewToken(token);
         Toast.info("onTokenPrivilegeWillExpire")
         console.log("onTokenPrivilegeWillExpire")
     })
+
+
     rtc.client.on("onTokenPrivilegeDidExpire", function() {
         // After requesting a new token
         // client.renewToken(token);
@@ -971,6 +979,7 @@ function handleEvents(rtc) {
  *  token; string,
  * }
  **/
+
 function join(rtc, option) {
 
     // hiding and showing the join and leave button
@@ -991,6 +1000,7 @@ function join(rtc, option) {
      *    Ensure that you set these properties before calling Client.join.
      *  You could find more detail here. https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.clientconfig.html
      **/
+
     rtc.client = AgoraRTC.createClient({ mode: option.mode, codec: option.codec })
 
     rtc.params = option
@@ -1022,41 +1032,19 @@ function join(rtc, option) {
          *      All users in the same channel should have the same type (number or string) of uid.
          *      If you use a number as the user ID, it should be a 32-bit unsigned integer with a value ranging from 0 to (232-1).
          **/
+
         rtc.client.join(option.token ? option.token : null, option.channel, option.uid ? +option.uid : null, function(uid) {
+
             Toast.notice("join channel: " + option.channel + " success, uid: " + uid)
             console.log("join channel: " + option.channel + " success, uid: " + uid)
             rtc.joined = true
 
             rtc.params.uid = uid
 
+            // init local stream
+            switchToAudioCall(true, rtc, option);
 
-            // create local stream
-            rtc.localStream = AgoraRTC.createStream({
-                streamID: rtc.params.uid,
-                audio: true,
-                video: true,
-                screen: false,
-                microphoneId: option.microphoneId,
-                cameraId: option.cameraId
-            })
 
-            // initialize local stream. Callback function executed after intitialization is done
-            rtc.localStream.init(function() {
-                console.log("init local stream success")
-                    // play stream with html element id "local_stream"
-
-                setTimeout(function() {
-                    rtc.localStream.play("local_stream");
-                    publish(rtc);
-
-                }, 1000);
-
-                // publish local stream
-
-            }, function(err) {
-                Toast.error("stream init failed, please open console see more detail")
-                console.error("init local stream failed ", err)
-            })
         }, function(err) {
             Toast.error("client join failed, please open console see more detail")
             console.error("client join failed", err)
@@ -1065,6 +1053,60 @@ function join(rtc, option) {
         Toast.error("client init failed, please open console see more detail")
         console.error(err)
     })
+}
+
+function switchToAudioCall(turnOffVideo, rtc, option) {
+
+    if (rtc.localStream != null) {
+        unpublish(rtc);
+    }
+
+    // create local stream
+    rtc.localStream = AgoraRTC.createStream({
+        streamID: rtc.params.uid,
+        audio: true,
+        video: turnOffVideo,
+        screen: false,
+        microphoneId: option.microphoneId,
+        cameraId: option.cameraId
+    })
+
+    // initialize local stream. Callback function executed after intitialization is done
+    rtc.localStream.init(function() {
+
+        // play stream with html element id "local_stream"
+
+        setTimeout(function() {
+
+            $("#player_" + rtc.params.uid).remove();
+
+            rtc.localStream.play("local_stream");
+
+            publish(rtc);
+
+        }, 500);
+
+        // publish local stream
+
+    }, function(err) {
+        Toast.error("stream init failed, please open console see more detail")
+        console.error("init local stream failed ", err)
+    })
+
+    if (turnOffVideo) {
+
+        $("#unpublish").show();
+        $("#publish").hide();
+        $("#local-view-parent").css("height", '');
+
+    } else {
+        $("#local-view-parent").css("height", '0px');
+        $("#unpublish").hide();
+        $("#publish").show();
+    }
+
+
+
 }
 
 function publish(rtc) {
@@ -1088,8 +1130,8 @@ function publish(rtc) {
     Toast.info("Streaming Camera...")
 
     // hiding and showing the publish  and unpublish button
-    $("#unpublish").show();
-    $("#publish").hide();
+    // $("#unpublish").show();
+    // $("#publish").hide();
 
 
     rtc.published = true
@@ -1115,8 +1157,6 @@ function unpublish(rtc) {
     Toast.info("Stopped Camera Streaming!!!")
 
     // hiding and showing the publish  and unpublish button
-    $("#unpublish").hide();
-    $("#publish").show();
 
     rtc.published = false
 }
@@ -1222,7 +1262,9 @@ $(function() {
         e.preventDefault()
         var params = serializeformData()
         if (validator(params, fields)) {
-            publish(rtc)
+            //publish(rtc)
+
+            switchToAudioCall(true, rtc, params);
 
         }
         hideShowLocalStream(true);
@@ -1233,7 +1275,8 @@ $(function() {
         e.preventDefault()
         var params = serializeformData()
         if (validator(params, fields)) {
-            unpublish(rtc)
+            //unpublish(rtc)
+            switchToAudioCall(false, rtc, params);
 
         }
 
@@ -1546,7 +1589,7 @@ function goToFullScreenVisualAd() {
 
 function goToDialogCall() {
 
-    $(".card").css('height', '70vh');
+
     $("#callInfo").show();
     $("#video").hide();
     $("#call-img").addClass("call-animation");
@@ -1557,6 +1600,7 @@ function goToDialogCall() {
 
     $("#mydivheader").removeClass("card-fullscreen");
     $("#mydivheader").addClass("card");
+    $(".card").css('height', '70vh');
 
     // audioMedia.play();
 
