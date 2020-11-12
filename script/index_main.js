@@ -406,6 +406,8 @@ function diplayImage(brandIdStr, activeItemSRNStr) {
         var titleAds = document.getElementById("titleAds");
         titleAds.innerHTML = titleString;
 
+        $("#toggleCallVisual1").click();
+        goToFullScreenVisualAd();
 
         switch (mCURRENT_ITEM) {
             case "VIDEO":
@@ -467,7 +469,7 @@ function diplayImage(brandIdStr, activeItemSRNStr) {
 
                 }, 100);
 
-                document.addEventListener('DOMContentLoaded', () => { /* call back function */ alert("hee"); });
+                document.addEventListener('DOMContentLoaded', () => { /* call back function */ });
 
 
                 break;
@@ -499,10 +501,13 @@ function diplayImage(brandIdStr, activeItemSRNStr) {
 
 
                 player.pause();
+
+
                 $("#imageCnter").show();
                 $("#videoCnter").hide();
                 $("#visualAdDiv").addClass("containerImg");
         }
+
 
 
         var imgHeight = 0;
@@ -967,20 +972,17 @@ function handleEvents(rtc) {
  * }
  **/
 function join(rtc, option) {
-    if (rtc.joined) {
-        Toast.error("Your already joined")
-        return;
-    }
-
 
     // hiding and showing the join and leave button
     $("#join").hide();
     $("#leave").show();
 
-
     updateCallSessionToDb("IN-CALL");
 
-
+    if (rtc.joined) {
+        Toast.error("Your already joined")
+        return;
+    }
 
     /**
      * A class defining the properties of the config parameter in the createClient method.
@@ -1049,8 +1051,6 @@ function join(rtc, option) {
 
                 }, 1000);
 
-
-
                 // publish local stream
 
             }, function(err) {
@@ -1117,7 +1117,6 @@ function unpublish(rtc) {
     // hiding and showing the publish  and unpublish button
     $("#unpublish").hide();
     $("#publish").show();
-
 
     rtc.published = false
 }
@@ -1207,18 +1206,7 @@ $(function() {
             //audioMedia.pause();
             // audioMedia.currentTime = 0;
 
-            // $("#callInfo").hide();
-            // $("#toggleCallVisual1").show();
-
-
-            // $("#cardView").removeClass("card-shadow");
-            // $("#cardView").addClass("card-shadow-fullscreen");
-
-            // $("#mydivheader").removeClass("card");
-            // $("#mydivheader").addClass("card-fullscreen");
-
             toToFullScreencall();
-
 
             console.log("join")
             e.preventDefault();
@@ -1276,18 +1264,15 @@ function hideShowLocalStream(showShow) {
         $("#local_video_info").css("height", window.innerWidth > 768 ? "80vh" : "39vh");
         $("#video_autoplay_local").css("height", window.innerWidth > 768 ? "80vh" : "39vh");
 
-
-
     } else {
 
         $("#local_stream").hide();
         $("#local_video_info").hide();
         $("#video_autoplay_local").hide();
 
-
-        $("#local_stream").css("height", "0px");
-        $("#local_video_info").css("height", "0px");
-        $("#video_autoplay_local").css("height", "0px");
+        $("#local_stream").css("height", "0vh");
+        $("#local_video_info").css("height", "0vh");
+        $("#video_autoplay_local").css("height", "0vh");
     }
 
 }
@@ -1493,6 +1478,7 @@ function toToFullScreencall() {
     mIsCallOngoing = true;
 
     $("#callInfo").hide();
+    $("#video").show();
     $("#cardView").removeClass("card-shadow");
     $("#cardView").removeClass("card-transform");
 
@@ -1518,7 +1504,7 @@ function toToFullScreencall() {
 
 function goToFullScreenVisualAd() {
 
-
+    $("#video").hide();
     $("#call-img").removeClass("call-animation");
     $("#cardView").removeClass("card-shadow");
     $("#cardView").removeClass("card-transform");
@@ -1537,10 +1523,21 @@ function goToFullScreenVisualAd() {
     $("#visualAdDiv").show();
     $("#cardViewParent").hide();
 
-    if (mCallSessionSnapshot["DR_CALL_STATUS"] == "IN-CALL" || mCallSessionSnapshot["DR_CALL_STATUS"] == "RINGING") {
-        $("#backToVisualAd1").show();
-    } else {
+    if (mCallSessionSnapshot == null) {
+
         $("#backToVisualAd1").hide();
+
+    } else {
+
+        if (mCallSessionSnapshot["DR_CALL_STATUS"] == "IN-CALL" || mCallSessionSnapshot["DR_CALL_STATUS"] == "RINGING") {
+
+            $("#backToVisualAd1").show();
+
+        } else {
+
+            $("#backToVisualAd1").hide();
+
+        }
     }
 
 
@@ -1551,6 +1548,7 @@ function goToDialogCall() {
 
     $(".card").css('height', '70vh');
     $("#callInfo").show();
+    $("#video").hide();
     $("#call-img").addClass("call-animation");
     $("#cardView").removeClass("card-shadow-fullscreen");
     $("#cardView").addClass("card-shadow");
