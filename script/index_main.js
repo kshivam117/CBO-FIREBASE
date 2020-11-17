@@ -212,7 +212,10 @@ function initFirebase() {
                 $("#cardViewParent").show();
                 $("#backToVisualAd1").show();
 
-                $("#join").click();
+                // $("#join").click();
+                onJoinCLick();
+
+
 
             } else if (snapshot.val()["DR_CALL_STATUS"] == "ENDED") {
 
@@ -429,9 +432,19 @@ function diplayImage(brandIdStr, activeItemSRNStr) {
 
                 //alert("PLAYING...");
 
-                if (!player.source.includes(mVIDEO_URL)) {
-                    player.source = getSource(mVIDEO_URL);
-                }
+                // if (!player.source.includes(mVIDEO_URL)) {
+                //     player.source = getSource(mVIDEO_URL);
+                // }
+
+
+                var videoP = document.getElementById("player");
+                var source = document.createElement('source');
+
+                source.setAttribute('src', mVIDEO_URL);
+                videoP.appendChild(source);
+
+
+
 
                 setTimeout(function() {
                     $("#mCompanyName").click();
@@ -449,7 +462,24 @@ function diplayImage(brandIdStr, activeItemSRNStr) {
 
 
 
-                        player.play();
+                        var promise = player.play();
+
+                        if (promise !== undefined) {
+
+                            promise.then(_ => {
+
+                                // Autoplay started!
+
+                            }).catch(error => {
+
+                                // Autoplay was prevented.
+
+                                // Show a "Play" button so that user can start playback.
+
+                            });
+                        }
+
+                        // $('.plyr__controls[data-plyr="play"]').click();
 
                         // player.on('ready', () => {
                         //     if (player.config.autoplay === true) {
@@ -462,10 +492,34 @@ function diplayImage(brandIdStr, activeItemSRNStr) {
                         player.currentTime = parseInt(mVideoStartDuration);
 
 
-                        player.play();
+                        var promise = player.play();
+
+                        if (promise !== undefined) {
+
+                            promise.then(_ => {
+
+                                // Autoplay started!
+
+                                // alert("STARTED");
+
+                            }).catch(error => {
+
+                                //alert("Prevented");
+                                // Autoplay was prevented.
+
+                                // Show a "Play" button so that user can start playback.
+
+                            });
+                        }
+
+                        // $('.plyr__controls[data-plyr="play"]').focus();
+                        // $('.plyr__controls[data-plyr="play"]').click();
+
                         //player.muted = false;
 
                     }
+
+                    // player.muted = false;
 
                 }, 100);
 
@@ -986,7 +1040,12 @@ function join(rtc, option) {
     $("#join").hide();
     $("#leave").show();
 
-    updateCallSessionToDb("IN-CALL");
+    if (mCallSessionSnapshot != null &&
+        mCallSessionSnapshot != undefined &&
+        mCallSessionSnapshot["DR_CALL_STATUS"] != "IN-CALL") {
+        updateCallSessionToDb("IN-CALL");
+    }
+
 
     if (rtc.joined) {
         Toast.error("Your already joined")
@@ -1084,7 +1143,7 @@ function switchToAudioCall(turnOffVideo, rtc, option) {
 
             publish(rtc);
 
-        }, 500);
+        }, 300);
 
         // publish local stream
 
@@ -1246,15 +1305,11 @@ $(function() {
             //audioMedia.pause();
             // audioMedia.currentTime = 0;
 
-            toToFullScreencall();
+            onJoinCLick();
 
             console.log("join")
             e.preventDefault();
-            var params = serializeformData(); // Data is feteched and serilized from the form element.
-            if (validator(params, fields)) {
-                join(rtc, params)
 
-            }
         })
         // This publishes the video feed to Agora
     $("#publish").on("click", function(e) {
@@ -1294,6 +1349,18 @@ $(function() {
         goToFullScreenVisualAd();
     })
 })
+
+function onJoinCLick() {
+
+    toToFullScreencall();
+
+    var fields1 = ["appID", "channel"];
+    var params = serializeformData(); // Data is feteched and serilized from the form element.
+    if (validator(params, fields1)) {
+        join(rtc, params)
+
+    }
+}
 
 
 function hideShowLocalStream(showShow) {
