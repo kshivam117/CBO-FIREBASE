@@ -1,0 +1,33 @@
+<html>
+
+<body>
+
+    hello
+
+</body>
+
+
+<script>
+    var xhr = new XMLHttpRequest();
+    var url = "http://127.0.0.1:8000/api/user";
+    xhr.open("GET", url, true);
+    //xhr.setRequestHeader("Content-Type", "application/json");
+    //xhr.setRequestHeader("Company-Code", "demotest");
+    //xhr.setRequestHeader("Authorization", "JOSMOBILE abcxyzsdfsdrwewer53345345sdwerwer234234");
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+
+            alert(xhr.responseText);
+        }
+    };
+    var data = JSON.stringify({
+        "entityRows": [{
+            "PA_ID": 11189,
+            "LOGIN_PA_ID": 11189
+        }]
+    });
+    xhr.send();
+</script>
+
+</html>

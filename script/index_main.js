@@ -332,8 +332,11 @@ function displayBrandWiseItems(mVsualAdsArray, brandId, itemSRN) {
 
 function diplayImage(brandIdStr, activeItemSRNStr) {
 
-    var _replaceBaseUrlFrom = "http://test.cboinfotech.co.in";
-    var _replaceBaseUrlTo = "https://seagullpharma1.net";
+    var _replaceBaseUrlFrom1 = "http://test.cboinfotech.co.in/visualaid/remote";
+    var _replaceBaseUrlFrom2 = "http://manish.cboinfotech.co.in/visualaid/remote";
+
+    var _replaceBaseUrlTo1 = "https://seagullpharma1.net/visualaid/REMOTE-DEMOTEST";
+    var _replaceBaseUrlTo2 = "https://seagullpharma1.net/visualaid/REMOTE-MANISH";
 
     var NextBTN = document.getElementById("NextBTN");
     var PreviousBTN = document.getElementById("PreviousBTN");
@@ -415,11 +418,18 @@ function diplayImage(brandIdStr, activeItemSRNStr) {
         switch (mCURRENT_ITEM) {
             case "VIDEO":
 
-                if (mVIDEO_URL.includes(_replaceBaseUrlFrom)) {
+                if (mVIDEO_URL.includes(_replaceBaseUrlFrom1)) {
 
-                    mCompanyBasURL = _replaceBaseUrlTo;
+                    mCompanyBasURL = _replaceBaseUrlTo1;
 
-                    mVIDEO_URL = mVIDEO_URL.replace(_replaceBaseUrlFrom, mCompanyBasURL);
+                    mVIDEO_URL = mVIDEO_URL.replace(_replaceBaseUrlFrom1, mCompanyBasURL);
+                }
+
+                if (mVIDEO_URL.includes(_replaceBaseUrlFrom2)) {
+
+                    mCompanyBasURL = _replaceBaseUrlTo2;
+
+                    mVIDEO_URL = mVIDEO_URL.replace(_replaceBaseUrlFrom2, mCompanyBasURL);
                 }
 
 
@@ -531,11 +541,17 @@ function diplayImage(brandIdStr, activeItemSRNStr) {
 
                 activeImageURL = mHTML_URL;
 
-                if (mHTML_URL.includes(_replaceBaseUrlFrom)) {
+                if (mHTML_URL.includes(_replaceBaseUrlFrom1)) {
 
-                    mCompanyBasURL = _replaceBaseUrlTo;
+                    mCompanyBasURL = _replaceBaseUrlTo1;
 
-                    mHTML_URL = mHTML_URL.replace(_replaceBaseUrlFrom, mCompanyBasURL);
+                    mHTML_URL = mHTML_URL.replace(_replaceBaseUrlFrom1, mCompanyBasURL);
+
+                } else if (mHTML_URL.includes(_replaceBaseUrlFrom2)) {
+
+                    mCompanyBasURL = _replaceBaseUrlTo2;
+
+                    mHTML_URL = mHTML_URL.replace(_replaceBaseUrlFrom2, mCompanyBasURL);
                 }
 
 
@@ -544,11 +560,18 @@ function diplayImage(brandIdStr, activeItemSRNStr) {
                 break;
             default:
 
-                if (activeImageURL.includes(_replaceBaseUrlFrom)) {
+                if (activeImageURL.includes(_replaceBaseUrlFrom1)) {
 
-                    mCompanyBasURL = _replaceBaseUrlTo;
+                    mCompanyBasURL = _replaceBaseUrlTo1;
 
-                    activeImageURL = activeImageURL.replace(_replaceBaseUrlFrom, mCompanyBasURL);
+                    activeImageURL = activeImageURL.replace(_replaceBaseUrlFrom1, mCompanyBasURL);
+                }
+
+                if (activeImageURL.includes(_replaceBaseUrlFrom2)) {
+
+                    mCompanyBasURL = _replaceBaseUrlTo2;
+
+                    activeImageURL = activeImageURL.replace(_replaceBaseUrlFrom2, mCompanyBasURL);
                 }
 
 

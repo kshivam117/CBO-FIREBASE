@@ -831,6 +831,14 @@ label {
         margin: 0 auto;
         width: 90%!important;
     }
+    .card-transform {
+        transform: translateY(10%);
+    }
+    .button-div {
+        position: absolute;
+        bottom: 50px;
+        left: 0;
+    }
 }
 
 .incoming_text {
